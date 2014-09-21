@@ -1,0 +1,28 @@
+{
+  "name": "nscale-compiler",
+  "description": "nearForm's nscale deployment compiler",
+  "keywords": [
+    "nearForm",
+    "deployer",
+    "nscale"
+  ],
+  "version": "0.0.1",
+  "license": "Artistic License 2.0",
+  "author": "Peter Elger (http://nearform.com/)",
+  "contributors": [
+    "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)",
+    "Matteo Collina <matteo.collina@nearform.com>"
+  ],
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "traverse": "^0.6.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nearform/nscale-compiler.git"
+  },
+  "devDependencies": {}
+}
