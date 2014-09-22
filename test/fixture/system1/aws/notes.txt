@@ -1,0 +1,37 @@
+
+abstract tree:
+
+  type: 'machine-image',
+  type: 'load-balancer',
+  type: 'autoscale-group',
+  type: 'access-rules',
+  type: 'process', (can beprocess, docker or boot2docker)
+  type: 'container',  generic hold all
+
+
+
+
+abstract tree
+analyzed tree
+aggregate tree
+
+
+system.js + definintions.js -> compiled.json
+analysis                    -> analyzed.json
+actual woring tree          -> aggregate.json
+
+then use aggreagte to test against analyzed for deployment etc...
+
+
+compiled + mappings + analyzed => aggregate
+
+compare aggreage version
+
+
+previously we wre directly editing aggreate
+
+create tree for SUDC with mappings and make it work
+
+when we do a build where does the data go? into the js definitions or into compiled or into aggregate ?
+
+

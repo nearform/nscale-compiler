@@ -181,26 +181,3 @@ module.exports = function() {
   };
 };
  
-
-
-/*
- * TODO:
- *
- * - take analyzed sudc + mappings to produce aggreagate
- *
- * - only compile on change nsd system compile
- * - use the aggregate all the time and reproduce on compile
- *
- * - assumes GOOD system 
- *
- * if have aggreagate with no matching WTF happens
- *
- * need some flow charts and also a set of use cases to cover off
- *
- * use cases:
- *   - build system from scratch
- *   - transfer suystem between zones (aws -> aws)
- *   - modify defs and update system
- *   - build new container and deploy - how does this affect the .js (if at all?)
- */
-

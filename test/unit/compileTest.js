@@ -23,8 +23,8 @@ var compiler = require('../../compile')();
 
 describe('compiler test', function() {
   it('should correctly compile a system definition', function(done){
-    var expected = require('../data/system2/expected.json');
-    compiler.compile(__dirname + '/../data/system2', function(err, system) {
+    var expected = require('../fixture/system2/expected.json');
+    compiler.compile(__dirname + '/../fixture/system2', function(err, system) {
       assert(!err);
       assert(system);
       assert(_.isEqual(system, expected));
