@@ -61,7 +61,8 @@ module.exports = function() {
     _.each(defs, function(def) {
       _.each(_.keys(def), function(key) {
         var obj = def[key];
-        obj.id =  key;
+        if (!obj.id) { obj.id =  key; }
+        if (!obj.name) { obj.name = key; }
         system.containerDefinitions.push(obj);
       });
     });
@@ -121,12 +122,12 @@ module.exports = function() {
 
 
 
-  var compileTopology = function compileTopology(system, sys, defs) {
+  var compileTopology = function compileTopology(platform, system, sys, defs) {
     system.topology = {containers: {}};
     var containers = system.topology.containers;
 
-    if (sys.topology) {
-      traverse(sys.topology).forEach(function() {
+    if (sys.topology[platform]) {
+      traverse(sys.topology[platform]).forEach(function() {
         var _this = this;
         _.each(defs, function(def) {
           var match = _.find(_.keys(def), function(key) { return key === _this.key; });
@@ -151,7 +152,7 @@ module.exports = function() {
    * - system.js
    */
   // handle require fail
-  var compile = function compile(path, cb) {
+  var compile = function compile(path, platform, cb) {
     var defs = [];
     var sys;
     var system = {};
@@ -168,7 +169,7 @@ module.exports = function() {
 
         compileHeader(system, sys);
         compileContainerDefs(system, sys, defs);
-        compileTopology(system, sys, defs);
+        compileTopology(platform, system, sys, defs);
         cb(null, system);
       });
     });

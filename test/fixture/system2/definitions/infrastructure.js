@@ -1,3 +1,7 @@
+exports.root = {
+  type: 'container'
+};
+
 exports.webElb = {
   type: 'load-balancer',
   specific: {
@@ -7,7 +11,6 @@ exports.webElb = {
     instancePort: 8000
   }
 };
-
 
 exports.webSg = {
   type: 'access-rules',
@@ -24,8 +27,7 @@ exports.webSg = {
   }
 };
 
-
-exports.ami = {
+exports.machine = {
   type: 'machine-image',
 };
 

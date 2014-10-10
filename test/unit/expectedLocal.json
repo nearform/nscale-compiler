@@ -1,0 +1,113 @@
+  {
+  "name": "sudc",
+  "namespace": "sudc",
+  "id": "e7bb3963-fd16-4b1b-ae9f-5fa16e2d192d",
+  "containerDefinitions": [
+    {
+      "type": "blank-container",
+      "id": "85d99b2c-06d0-5485-9501-4d4ed429799c",
+      "name": "root"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "builddoc.sh",
+        "container": {
+          "args": "-p 9002:9002",
+          "exec": "/usr/bin/node /srv/doc-srv"
+        }
+      },
+      "id": "docsrv",
+      "name": "doc-srv"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "buildhist.sh",
+        "container": {
+          "args": "-p 9000:9000",
+          "exec": "/usr/bin/node /srv/hist-srv"
+        }
+      },
+      "id": "histsrv",
+      "name": "hist-srv"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "buildreal.sh",
+        "container": {
+          "args": "-p 9001:9001",
+          "exec": "/usr/bin/node /srv/real-srv"
+        }
+      },
+      "id": "realsrv",
+      "name": "real-srv"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "buildweb.sh",
+        "container": {
+          "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+          "exec": "sh /web/run.sh"
+        }
+      },
+      "id": "web",
+      "name": "web"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "root-16f4f95b": {
+        "id": "root-16f4f95b",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "85d99b2c-06d0-5485-9501-4d4ed429799c",
+        "type": "blank-container",
+        "contains": [
+          "web-c31f912e",
+          "docsrv-b418a1b8",
+          "histsrv-2d11f002",
+          "realsrv-5a16c094"
+        ],
+        "specific": {}
+      },
+      "web-c31f912e": {
+        "id": "web-c31f912e",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "web",
+        "type": "docker",
+        "contains": [],
+        "specific": {}
+      },
+      "docsrv-b418a1b8": {
+        "id": "docsrv-b418a1b8",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "docsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {}
+      },
+      "histsrv-2d11f002": {
+        "id": "histsrv-2d11f002",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "histsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {}
+      },
+      "realsrv-5a16c094": {
+        "id": "realsrv-5a16c094",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "realsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {}
+      }
+    }
+  }
+}

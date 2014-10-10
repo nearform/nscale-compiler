@@ -17,14 +17,25 @@
 var _ = require('lodash');
 
 var assert = require('assert');
-var compiler = require('../../compile')();
-
+var compiler = require('../../main')();
 
 
 describe('compiler test', function() {
-  it('should correctly compile a system definition', function(done){
-    var expected = require('../fixture/system2/expected.json');
-    compiler.compile(__dirname + '/../fixture/system2', function(err, system) {
+
+  it('should correctly compile a system definition for local', function(done){
+    var expected = require('./expectedLocal.json');
+    compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
+      assert(!err);
+      assert(system);
+      assert(_.isEqual(system, expected));
+      done();
+    });
+  });
+
+
+  it('should correctly compile a system definition for aws', function(done){
+    var expected = require('./expectedAws.json');
+    compiler.compile(__dirname + '/../fixture/system2', 'aws', function(err, system) {
       assert(!err);
       assert(system);
       assert(_.isEqual(system, expected));

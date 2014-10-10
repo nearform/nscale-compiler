@@ -1,7 +1,3 @@
-exports.services = {
-  type: 'container'
-};
-
 exports.docsrv = {
   type: 'process',
   specific: {

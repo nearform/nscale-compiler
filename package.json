@@ -13,6 +13,7 @@
     "Peter Elger <elger.peter@gmail.com> (http://peterelger.com/)",
     "Matteo Collina <matteo.collina@nearform.com>"
   ],
+  "main": "./main.js",
   "engines": {
     "node": "*"
   },
