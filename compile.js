@@ -31,6 +31,16 @@ var crc = require('crc');
  */
 module.exports = function() {
 
+ 
+
+  var loadModule = function(moduleName) {
+    var mod = require.resolve(moduleName);
+    if (mod && ((mod = require.cache[mod]) !== undefined)) {
+      delete require.cache[moduleName];
+    }
+    return require(moduleName);
+  };
+
 
 
   var checkPaths = function checkPaths(path, cb) {
@@ -163,9 +173,9 @@ module.exports = function() {
       fs.readdir(path + '/definitions', function(err, files) {
         if (err) { return cb(err); }
         _.each(files, function(file) {
-          defs.push(require(path + '/definitions/' + file));
+          defs.push(loadModule(path + '/definitions/' + file));
         });
-        sys = require(path + '/system.js');
+        sys = loadModule(path + '/system.js');
 
         compileHeader(system, sys);
         compileContainerDefs(system, sys, defs);
