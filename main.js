@@ -16,6 +16,7 @@
 
 var cmp = require('./compile')();
 var map = require('./map')();
+var editor = require('./edit')();
 
 
 
@@ -42,8 +43,16 @@ module.exports = function() {
 
 
 
+  var edit = function(path, command, data, cb) {
+    editor.edit(path, command, data, cb);
+  };
+
+
+
   return {
-    compile: compile
+    compile: compile,
+    edit: edit
   };
 };
  
+
