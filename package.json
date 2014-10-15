@@ -18,6 +18,7 @@
     "node": "*"
   },
   "dependencies": {
+    "crc": "^3.0.0",
     "lodash": "^2.4.1",
     "traverse": "^0.6.6"
   },
@@ -25,5 +26,10 @@
     "type": "git",
     "url": "https://github.com/nearform/nscale-compiler.git"
   },
-  "devDependencies": {}
+  "scripts": {
+    "test": "mocha test/**/*Test.js"
+  },
+  "devDependencies": {
+    "mocha": "^1.21.5"
+  }
 }
