@@ -4,9 +4,12 @@
   "keywords": [
     "nearForm",
     "deployer",
-    "nscale"
+    "nscale",
+    "compiler",
+    "system",
+    "definition"
   ],
-  "version": "0.0.3",
+  "version": "0.1.0",
   "license": "Artistic License 2.0",
   "author": "Peter Elger (http://nearform.com/)",
   "contributors": [
