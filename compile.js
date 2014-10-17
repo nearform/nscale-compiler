@@ -58,6 +58,19 @@ module.exports = function() {
 
 
 
+  var validate = function(system) {
+    var valid = true;
+
+    _.each(system.containerDefinitions, function(cdef) {
+      if (valid) {
+        valid = _.isString(cdef.type);
+      }
+    });
+    return valid;
+  };
+
+
+
   var compileHeader = function compileHeader(system, sys) {
     system.name = sys.name;
     system.namespace = sys.namespace;
@@ -136,7 +149,7 @@ module.exports = function() {
     system.topology = {containers: {}};
     var containers = system.topology.containers;
 
-    if (sys.topology[platform]) {
+    if (sys.topology[platform] && _.keys(sys.topology[platform]).length > 0) {
       traverse(sys.topology[platform]).forEach(function() {
         var _this = this;
         _.each(defs, function(def) {
@@ -180,7 +193,7 @@ module.exports = function() {
         compileHeader(system, sys);
         compileContainerDefs(system, sys, defs);
         compileTopology(platform, system, sys, defs);
-        cb(null, system);
+        cb(!validate(system), system);
       });
     });
   };
