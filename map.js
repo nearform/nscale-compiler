@@ -54,7 +54,7 @@ module.exports = function() {
     var idx = 0;
 
     _.each(sys.containerDefinitions, function(cdef) {
-      if (!(cdef.type && mappings.types[platform][cdef.type])) {
+      if (!(cdef.type && mappings.types[platform] && mappings.types[platform][cdef.type])) {
         toDelete.push(idx);
       }
       ++idx;
