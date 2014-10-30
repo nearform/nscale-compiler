@@ -107,6 +107,15 @@
       },
       "id": "web",
       "name": "web"
+    },
+    {
+      "type": "docker-registry",
+      "specific": {
+        "args": "-d --appendonly -p 6379:6379",
+        "name": "redis"
+      },
+      "id": "redis",
+      "name": "redis"
     }
   ],
   "topology": {
@@ -183,6 +192,24 @@
         "containedBy": "machine-14bce9a5",
         "containerDefinitionId": "realsrv",
         "type": "docker",
+        "contains": [],
+        "specific": {}
+      },
+      "machine-1505df84": {
+        "id": "machine-1505df84",
+        "containedBy": "machine-1505df84",
+        "containerDefinitionId": "machine",
+        "type": "aws-ami",
+        "contains": [
+          "redis-17b2cef2"
+        ],
+        "specific": {}
+      },
+      "redis-17b2cef2": {
+        "id": "redis-17b2cef2",
+        "containedBy": "machine-1505df84",
+        "containerDefinitionId": "redis",
+        "type": "docker-registry",
         "contains": [],
         "specific": {}
       }

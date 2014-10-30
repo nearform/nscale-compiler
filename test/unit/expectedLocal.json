@@ -59,6 +59,15 @@
       },
       "id": "web",
       "name": "web"
+    },
+    {
+      "type": "docker-registry",
+      "specific": {
+        "args": "-d --appendonly -p 6379:6379",
+        "name": "redis"
+      },
+      "id": "redis",
+      "name": "redis"
     }
   ],
   "topology": {
@@ -72,7 +81,8 @@
           "web-c31f912e",
           "docsrv-b418a1b8",
           "histsrv-2d11f002",
-          "realsrv-5a16c094"
+          "realsrv-5a16c094",
+          "redis-c4725537"
         ],
         "specific": {}
       },
@@ -105,6 +115,14 @@
         "containedBy": "root-16f4f95b",
         "containerDefinitionId": "realsrv",
         "type": "docker",
+        "contains": [],
+        "specific": {}
+      },
+      "redis-c4725537": {
+        "id": "redis-c4725537",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "redis",
+        "type": "docker-registry",
         "contains": [],
         "specific": {}
       }
