@@ -21,7 +21,6 @@ var compiler = require('../../main')();
 
 
 describe('blank test', function() {
-
   it('should correctly compile a blank empty system definition for local', function(done){
     var expected = require('./expectedBlank.json');
     compiler.compile(__dirname + '/../fixture/blank', 'local', function(err, system) {
@@ -31,6 +30,5 @@ describe('blank test', function() {
       done();
     });
   });
-
 });
 

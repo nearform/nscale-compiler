@@ -119,7 +119,12 @@
         "contains": [
           "webSg-af30ca23"
         ],
-        "specific": {}
+        "specific": {
+          "protocol": "HTTP",
+          "loadBalancerPort": 80,
+          "instanceProtocol": "HTTP",
+          "instancePort": 8000
+        }
       },
       "webSg-af30ca23": {
         "id": "webSg-af30ca23",
@@ -130,7 +135,31 @@
           "machine-3c7fde6",
           "machine-14bce9a5"
         ],
-        "specific": {}
+        "specific": {
+          "ingress": [
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 22,
+              "toPort": 22,
+              "ipRanges": [
+                {
+                  "cidrIp": "0.0.0.0/0"
+                }
+              ]
+            },
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 3000,
+              "toPort": 3000,
+              "ipRanges": [
+                {
+                  "cidrIp": "0.0.0.0/0"
+                }
+              ]
+            }
+          ],
+          "egress": []
+        }
       },
       "machine-3c7fde6": {
         "id": "machine-3c7fde6",
@@ -148,7 +177,14 @@
         "containerDefinitionId": "web",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildweb.sh",
+          "container": {
+            "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+            "exec": "sh /web/run.sh"
+          }
+        }
       },
       "machine-14bce9a5": {
         "id": "machine-14bce9a5",
@@ -168,7 +204,14 @@
         "containerDefinitionId": "docsrv",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "builddoc.sh",
+          "container": {
+            "args": "-p 9002:9002",
+            "exec": "/usr/bin/node /srv/doc-srv"
+          }
+        }
       },
       "histsrv-23907fa7": {
         "id": "histsrv-23907fa7",
@@ -176,7 +219,14 @@
         "containerDefinitionId": "histsrv",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildhist.sh",
+          "container": {
+            "args": "-p 9000:9000",
+            "exec": "/usr/bin/node /srv/hist-srv"
+          }
+        }
       },
       "realsrv-ba992e1d": {
         "id": "realsrv-ba992e1d",
@@ -184,8 +234,16 @@
         "containerDefinitionId": "realsrv",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildreal.sh",
+          "container": {
+            "args": "-p 9001:9001",
+            "exec": "/usr/bin/node /srv/real-srv"
+          }
+        }
       }
     }
   }
 }
+

@@ -127,7 +127,7 @@ module.exports = function() {
 
 
 
-  var createTopologyNode = function(system, _this, containers) {
+  var createTopologyNode = function(system, _this, containers, def) {
     var identifier = _this.isLeaf ? _this.node : _this.key;
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
     var id = identifier + '-' + crc.crc32('' + _this.path).toString(16);
@@ -137,7 +137,7 @@ module.exports = function() {
                       containerDefinitionId: identifier,
                       type: getType(system, identifier),
                       contains: [],
-                      specific: {}};
+                      specific: def.specific || {}};
     if (containers[parentId] && !containedBy.selfRef) {
       containers[parentId].contains.push(id);
     }
@@ -148,18 +148,26 @@ module.exports = function() {
   var compileTopology = function compileTopology(platform, system, sys, defs) {
     system.topology = {containers: {}};
     var containers = system.topology.containers;
+    var match;
 
     if (sys.topology[platform] && _.keys(sys.topology[platform]).length > 0) {
       traverse(sys.topology[platform]).forEach(function() {
         var _this = this;
-        _.each(defs, function(def) {
-          var match = _.find(_.keys(def), function(key) { return key === _this.key; });
-          if (match) {
-            createTopologyNode(system, _this, containers);
-          }
-        });
         if (_this.isLeaf) {
-          createTopologyNode(system, _this, containers);
+          _.each(defs, function(def) {
+            match = _.find(_.keys(def), function(key) { return key === _this.node; });
+            if (match) {
+              createTopologyNode(system, _this, containers, def[match]);
+            }
+          });
+        }
+        else {
+          _.each(defs, function(def) {
+            match = _.find(_.keys(def), function(key) { return key === _this.key; });
+            if (match) {
+              createTopologyNode(system, _this, containers, def[match]);
+            }
+          });
         }
       });
     }

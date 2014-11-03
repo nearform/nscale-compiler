@@ -1,4 +1,4 @@
-  {
+{
   "name": "sudc",
   "namespace": "sudc",
   "id": "e7bb3963-fd16-4b1b-ae9f-5fa16e2d192d",
@@ -82,7 +82,14 @@
         "containerDefinitionId": "web",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildweb.sh",
+          "container": {
+            "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+            "exec": "sh /web/run.sh"
+          }
+        }
       },
       "docsrv-b418a1b8": {
         "id": "docsrv-b418a1b8",
@@ -90,7 +97,14 @@
         "containerDefinitionId": "docsrv",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "builddoc.sh",
+          "container": {
+            "args": "-p 9002:9002",
+            "exec": "/usr/bin/node /srv/doc-srv"
+          }
+        }
       },
       "histsrv-2d11f002": {
         "id": "histsrv-2d11f002",
@@ -98,7 +112,14 @@
         "containerDefinitionId": "histsrv",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildhist.sh",
+          "container": {
+            "args": "-p 9000:9000",
+            "exec": "/usr/bin/node /srv/hist-srv"
+          }
+        }
       },
       "realsrv-5a16c094": {
         "id": "realsrv-5a16c094",
@@ -106,7 +127,14 @@
         "containerDefinitionId": "realsrv",
         "type": "docker",
         "contains": [],
-        "specific": {}
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildreal.sh",
+          "container": {
+            "args": "-p 9001:9001",
+            "exec": "/usr/bin/node /srv/real-srv"
+          }
+        }
       }
     }
   }
