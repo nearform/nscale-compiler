@@ -31,8 +31,6 @@ var crc = require('crc');
  */
 module.exports = function() {
 
- 
-
   var loadModule = function(moduleName) {
     var mod = require.resolve(moduleName);
     if (mod && ((mod = require.cache[mod]) !== undefined)) {
@@ -106,6 +104,9 @@ module.exports = function() {
         if (isNaN(path[idx])) {
           if (isLeaf) {
             result.path = path.slice(0, idx + 1);
+            if (result.path[result.path.length - 1] === 'contains') {
+              result.path = path.slice(0, result.path.length - 1);
+            }
           }
           else {
             result.path = path.slice(0, idx - 1);
@@ -132,12 +133,25 @@ module.exports = function() {
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
     var id = identifier + '-' + crc.crc32('' + _this.path).toString(16);
     var parentId = containedBy.name + '-' + crc.crc32('' + containedBy.path).toString(16);
+
     containers[id] = {id: id,
                       containedBy: parentId,
                       containerDefinitionId: identifier,
                       type: getType(system, identifier),
                       contains: [],
                       specific: def.specific || {}};
+
+    _.each(_this.keys, function(key) {
+      if (isNaN(key) && key !== 'contains') {
+        if (key === 'specific') {
+          _.merge(containers[id].specific, _this.node[key]);
+        }
+        else {
+          containers[id][key] = _this.node[key];
+        }
+      }
+    });
+
     if (containers[parentId] && !containedBy.selfRef) {
       containers[parentId].contains.push(id);
     }

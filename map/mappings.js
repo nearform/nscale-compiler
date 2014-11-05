@@ -9,11 +9,16 @@ exports.types = {
   local: {
     'container': 'blank-container',
     'process': 'docker',
+  },
+  direct: {
+    'container': 'blank-container',
+    'process': 'docker',
   }
 };
 
 exports.ids = {
   aws: {},
-  local: {}
+  local: {},
+  direct: {}
 };
 

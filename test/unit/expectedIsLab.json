@@ -1,0 +1,224 @@
+{
+  "name": "isnc",
+  "namespace": "isnc",
+  "id": "12121212-bf98-4d29-b1c8-d1885bc5c294",
+  "containerDefinitions": [
+    {
+      "type": "blank-container",
+      "id": "root",
+      "name": "root"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildsrv.sh",
+        "repositoryUrl": "fish",
+        "execute": {
+          "args": "-e PORT=10002 -p 10002:10002 --dns 172.17.42.1 -d",
+          "exec": "node /isight/srv/users.js"
+        }
+      },
+      "id": "users",
+      "name": "users"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildsrv.sh",
+        "repositoryUrl": "fish",
+        "execute": {
+          "args": "-e POSTGRESQL=1 -e PORT=10005 -p 10005:10005 --dns 172.17.42.1 -d",
+          "exec": "node /isight/srv/permissions.js"
+        }
+      },
+      "id": "permissions",
+      "name": "permissions"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildsrv.sh",
+        "repositoryUrl": "fish",
+        "execute": {
+          "args": "-e POSTGRESQL=1 -e PORT=10001 -p 10001:10001 --dns 172.17.42.1 -d",
+          "exec": "node /isight/srv/business-logic.js"
+        }
+      },
+      "id": "business-logic",
+      "name": "business-logic"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildsrv.sh",
+        "repositoryUrl": "fish",
+        "execute": {
+          "args": "-e POSTGRESQL=1 -e PORT=10003 -p 10003:10003 --dns 172.17.42.1 -d",
+          "exec": "node /isight/srv/audit.js"
+        }
+      },
+      "id": "audit",
+      "name": "audit"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildsrv.sh",
+        "repositoryUrl": "fish",
+        "execute": {
+          "args": "-e PORT=10006 -p 10006:10006 --dns 172.17.42.1 -d",
+          "exec": "node /isight/srv/emails.js"
+        }
+      },
+      "id": "emails",
+      "name": "emails"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildsrv.sh",
+        "repositoryUrl": "fish",
+        "execute": {
+          "args": "-e PORT=8000 -p 8000:8000 --dns 172.17.42.1 -d",
+          "exec": "/bin/bash -c \"cd /isight/isight; node index.js\""
+        }
+      },
+      "id": "frontend",
+      "name": "frontend"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "root-16f4f95b": {
+        "id": "root-16f4f95b",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "root",
+        "type": "blank-container",
+        "contains": [
+          "machine-bae48723",
+          "machine-ad9f9360"
+        ],
+        "specific": {}
+      },
+      "machine-bae48723": {
+        "id": "machine-bae48723",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "machine",
+        "type": "machine-image",
+        "contains": [
+          "frontend-7d2a3e95"
+        ],
+        "specific": {
+          "ipAddress": "1.2.3.4"
+        }
+      },
+      "frontend-7d2a3e95": {
+        "id": "frontend-7d2a3e95",
+        "containedBy": "machine-bae48723",
+        "containerDefinitionId": "frontend",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e PORT=8000 -p 8000:8000 --dns 172.17.42.1 -d",
+            "exec": "/bin/bash -c \"cd /isight/isight; node index.js\""
+          }
+        }
+      },
+      "machine-ad9f9360": {
+        "id": "machine-ad9f9360",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "machine",
+        "type": "machine-image",
+        "contains": [
+          "users-184d05d3",
+          "permissions-6f4a3545",
+          "business-logic-f64364ff",
+          "audit-81445469",
+          "emails-1f20c1ca"
+        ],
+        "specific": {
+          "ipAddress": "1.2.3.4"
+        }
+      },
+      "users-184d05d3": {
+        "id": "users-184d05d3",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "users",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e PORT=10002 -p 10002:10002 --dns 172.17.42.1 -d",
+            "exec": "node /isight/srv/users.js"
+          }
+        }
+      },
+      "permissions-6f4a3545": {
+        "id": "permissions-6f4a3545",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "permissions",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e POSTGRESQL=1 -e PORT=10005 -p 10005:10005 --dns 172.17.42.1 -d",
+            "exec": "node /isight/srv/permissions.js"
+          }
+        }
+      },
+      "business-logic-f64364ff": {
+        "id": "business-logic-f64364ff",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "business-logic",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e POSTGRESQL=1 -e PORT=10001 -p 10001:10001 --dns 172.17.42.1 -d",
+            "exec": "node /isight/srv/business-logic.js"
+          }
+        }
+      },
+      "audit-81445469": {
+        "id": "audit-81445469",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "audit",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e POSTGRESQL=1 -e PORT=10003 -p 10003:10003 --dns 172.17.42.1 -d",
+            "exec": "node /isight/srv/audit.js"
+          }
+        }
+      },
+      "emails-1f20c1ca": {
+        "id": "emails-1f20c1ca",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "emails",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e PORT=10006 -p 10006:10006 --dns 172.17.42.1 -d",
+            "exec": "node /isight/srv/emails.js"
+          }
+        }
+      }
+    }
+  }
+}
+
