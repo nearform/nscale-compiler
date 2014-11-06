@@ -37,7 +37,6 @@ describe('compiler test', function() {
     var expected = require('./expectedAws.json');
     compiler.compile(__dirname + '/../fixture/system2', 'aws', function(err, system) {
       assert(!err);
-      assert(!err);
       assert(system);
       assert(_.isEqual(system, expected));
       done();
