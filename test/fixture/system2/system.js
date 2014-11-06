@@ -20,6 +20,9 @@ exports.topology={
           }
         ]
       }
+    ],
+    'machine': [
+      'redis'
     ]
   },
   'local': {
@@ -27,7 +30,8 @@ exports.topology={
       'web',
       'docsrv',
       'histsrv',
-      'realsrv'
+      'realsrv',
+      'redis'
     ]
   }
 };

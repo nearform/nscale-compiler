@@ -46,3 +46,11 @@ exports.web = {
   }
 };
 
+exports.redis = {
+  type: 'registry',
+  specific: {
+    args: '-d --appendonly -p 6379:6379',
+    name: 'redis'
+  }
+}
+

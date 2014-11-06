@@ -49,7 +49,7 @@ describe('compiler test', function() {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
         assert(cd);
-        assert(system.topology.containers['test123-c4725537']);
+        assert(system.topology.containers['test123-b37565a1']);
         done();
       });
     });

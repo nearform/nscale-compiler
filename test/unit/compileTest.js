@@ -27,7 +27,7 @@ describe('compiler test', function() {
     compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
       assert(!err);
       assert(system);
-      assert(_.isEqual(system, expected));
+      assert.deepEqual(system, expected);
       done();
     });
   });
