@@ -139,7 +139,7 @@ module.exports = function() {
                       containerDefinitionId: identifier,
                       type: getType(system, identifier),
                       contains: [],
-                      specific: def.specific || {}};
+                      specific: def.specific ? _.cloneDeep(def.specific) : {}};
 
     _.each(_this.keys, function(key) {
       if (isNaN(key) && key !== 'contains') {

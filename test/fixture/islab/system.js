@@ -26,7 +26,7 @@ exports.topology = {
       {machine: {contains: ['frontend', 'consul-onemachine'],
                  specific: { ipAddress: '1.2.3.4'}}},
       {machine: {contains: ['users', 'permissions', 'business-logic', 'audit', 'emails', 'consul-onemachine'],
-                 specific: { ipAddress: '1.2.3.4'}}},
+                 specific: { ipAddress: '10.20.30.40'}}},
     ]
   }
 };
