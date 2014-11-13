@@ -20,11 +20,9 @@ var compiler = require('../../main')();
 
 describe('compiler test', function() {
   it('should correctly compile a system definition for islab', function(done){
-    var expected = require('./expectedIsLab.json');
-    compiler.compile(__dirname + '/../fixture/islab', 'direct', function(err, system) {
-      assert(!err);
-      assert(system);
-      assert(JSON.stringify(expected) === JSON.stringify(system));
+    compiler.compile(__dirname + '/../fixture/jserrors', 'direct', function(err) {
+      assert(err.result === 'err');
+      assert(err.err[0].indexOf('error: Duplicate key') !== -1);
       done();
     });
   });

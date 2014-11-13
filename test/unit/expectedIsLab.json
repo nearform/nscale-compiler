@@ -15,7 +15,7 @@
         "repositoryUrl": "fish",
         "execute": {
           "args": "-e PORT=10002 -p 10002:10002 --dns 172.17.42.1 -d",
-          "exec": "node /isight/srv/users.js"
+          "exec": "node /wibble/srv/users.js"
         }
       },
       "id": "users",
@@ -28,7 +28,7 @@
         "repositoryUrl": "fish",
         "execute": {
           "args": "-e POSTGRESQL=1 -e PORT=10005 -p 10005:10005 --dns 172.17.42.1 -d",
-          "exec": "node /isight/srv/permissions.js"
+          "exec": "node /wibble/srv/permissions.js"
         }
       },
       "id": "permissions",
@@ -41,7 +41,7 @@
         "repositoryUrl": "fish",
         "execute": {
           "args": "-e POSTGRESQL=1 -e PORT=10001 -p 10001:10001 --dns 172.17.42.1 -d",
-          "exec": "node /isight/srv/business-logic.js"
+          "exec": "node /wibble/srv/business-logic.js"
         }
       },
       "id": "business-logic",
@@ -54,7 +54,7 @@
         "repositoryUrl": "fish",
         "execute": {
           "args": "-e POSTGRESQL=1 -e PORT=10003 -p 10003:10003 --dns 172.17.42.1 -d",
-          "exec": "node /isight/srv/audit.js"
+          "exec": "node /wibble/srv/audit.js"
         }
       },
       "id": "audit",
@@ -67,7 +67,7 @@
         "repositoryUrl": "fish",
         "execute": {
           "args": "-e PORT=10006 -p 10006:10006 --dns 172.17.42.1 -d",
-          "exec": "node /isight/srv/emails.js"
+          "exec": "node /wibble/srv/emails.js"
         }
       },
       "id": "emails",
@@ -80,7 +80,7 @@
         "repositoryUrl": "fish",
         "execute": {
           "args": "-e PORT=8000 -p 8000:8000 --dns 172.17.42.1 -d",
-          "exec": "/bin/bash -c \"cd /isight/isight; node index.js\""
+          "exec": "/bin/bash -c \"cd /wibble/wibble; node index.js\""
         }
       },
       "id": "frontend",
@@ -111,7 +111,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e PORT=8000 -p 8000:8000 --dns 172.17.42.1 -d",
-            "exec": "/bin/bash -c \"cd /isight/isight; node index.js\""
+            "exec": "/bin/bash -c \"cd /wibble/wibble; node index.js\""
           }
         }
       },
@@ -141,7 +141,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e PORT=10002 -p 10002:10002 --dns 172.17.42.1 -d",
-            "exec": "node /isight/srv/users.js"
+            "exec": "node /wibble/srv/users.js"
           }
         }
       },
@@ -156,7 +156,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e POSTGRESQL=1 -e PORT=10005 -p 10005:10005 --dns 172.17.42.1 -d",
-            "exec": "node /isight/srv/permissions.js"
+            "exec": "node /wibble/srv/permissions.js"
           }
         }
       },
@@ -171,7 +171,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e POSTGRESQL=1 -e PORT=10001 -p 10001:10001 --dns 172.17.42.1 -d",
-            "exec": "node /isight/srv/business-logic.js"
+            "exec": "node /wibble/srv/business-logic.js"
           }
         }
       },
@@ -186,7 +186,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e POSTGRESQL=1 -e PORT=10003 -p 10003:10003 --dns 172.17.42.1 -d",
-            "exec": "node /isight/srv/audit.js"
+            "exec": "node /wibble/srv/audit.js"
           }
         }
       },
@@ -201,7 +201,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e PORT=10006 -p 10006:10006 --dns 172.17.42.1 -d",
-            "exec": "node /isight/srv/emails.js"
+            "exec": "node /wibble/srv/emails.js"
           }
         }
       },
@@ -227,7 +227,7 @@
           "repositoryUrl": "fish",
           "execute": {
             "args": "-e PORT=8000 -p 8000:8000 --dns 172.17.42.1 -d",
-            "exec": "/bin/bash -c \"cd /isight/isight; node index.js\""
+            "exec": "/bin/bash -c \"cd /wibble/wibble; node index.js\""
           }
         }
       }
