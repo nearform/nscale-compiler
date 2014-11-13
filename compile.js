@@ -18,6 +18,8 @@ var fs = require('fs');
 var _ = require('lodash');
 var traverse = require('traverse');
 var crc = require('crc');
+var lint = require('./lint')();
+
 
 
 /*
@@ -194,6 +196,28 @@ module.exports = function() {
 
 
   /**
+   * lint system definition file list
+   */
+  var lintFiles = function(index, list, cb) {
+    if (index < list.length) {
+      lint(list[index], function(err, result) {
+        if (err) { return cb(err); }
+        if (result.result === 'ok') {
+          lintFiles(index + 1, list, cb);
+        }
+        else {
+          cb(null, result);
+        }
+      });
+    }
+    else {
+      cb(null, {result: 'ok'});
+    }
+  };
+
+
+
+  /**
    * compile an abstract system definition from the source files on disk.
    * The source files are:
    *
@@ -208,22 +232,31 @@ module.exports = function() {
 
     checkPaths(path, function(err) {
       if (err) { return cb(err); }
-
       fs.readdir(path + '/definitions', function(err, files) {
         if (err) { return cb(err); }
-        _.each(files, function(file) {
-          defs.push(loadModule(path + '/definitions/' + file));
-        });
-        sys = loadModule(path + '/system.js');
 
-        compileHeader(system, sys);
-        compileContainerDefs(system, sys, defs);
-        compileTopology(platform, system, sys, defs);
-        cb(!validate(system), system);
+        var lintList = [];
+        _.each(files, function(file) {
+          lintList.push(path + '/definitions/' + file);
+        });
+        lintList.push(path + '/system.js');
+        lintFiles(0, lintList, function(err, result) {
+          if (err) { return cb(err); }
+          if (result.result !== 'ok') { return cb(result); }
+
+          _.each(files, function(file) {
+            defs.push(loadModule(path + '/definitions/' + file));
+          });
+          sys = loadModule(path + '/system.js');
+
+          compileHeader(system, sys);
+          compileContainerDefs(system, sys, defs);
+          compileTopology(platform, system, sys, defs);
+          cb(!validate(system), system);
+        });
       });
     });
   };
-
 
 
   return {

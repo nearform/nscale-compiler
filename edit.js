@@ -48,6 +48,8 @@ module.exports = function() {
   var addContainer = function(path, container, cb) {
     var c = JSON.parse(container);
     if (!fs.existsSync(path + '/definitions/' + c.name)) {
+      container = container.replace(/"/g, '\'');
+      container = container + ';';
       var serialized = 'exports.' + c.name + '=' + container;
       fs.writeFileSync(path + '/definitions/' + c.name + '.js', serialized, 'utf8');
       cb();
