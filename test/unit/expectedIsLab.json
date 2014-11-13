@@ -89,32 +89,20 @@
   ],
   "topology": {
     "containers": {
-      "root-16f4f95b": {
-        "id": "root-16f4f95b",
-        "containedBy": "root-16f4f95b",
-        "containerDefinitionId": "root",
-        "type": "blank-container",
+      "machine$fe1-ff5e8cf0": {
+        "id": "machine$fe1-ff5e8cf0",
+        "containedBy": "machine$fe1-ff5e8cf0",
+        "containerDefinitionId": "machine$fe1",
         "contains": [
-          "machine-bae48723",
-          "machine-ad9f9360"
-        ],
-        "specific": {}
-      },
-      "machine-bae48723": {
-        "id": "machine-bae48723",
-        "containedBy": "root-16f4f95b",
-        "containerDefinitionId": "machine",
-        "type": "machine-image",
-        "contains": [
-          "frontend-7d2a3e95"
+          "frontend-af40cd52"
         ],
         "specific": {
           "ipAddress": "1.2.3.4"
         }
       },
-      "frontend-7d2a3e95": {
-        "id": "frontend-7d2a3e95",
-        "containedBy": "machine-bae48723",
+      "frontend-af40cd52": {
+        "id": "frontend-af40cd52",
+        "containedBy": "machine$fe1-ff5e8cf0",
         "containerDefinitionId": "frontend",
         "type": "docker",
         "contains": [],
@@ -127,25 +115,24 @@
           }
         }
       },
-      "machine-ad9f9360": {
-        "id": "machine-ad9f9360",
-        "containedBy": "root-16f4f95b",
-        "containerDefinitionId": "machine",
-        "type": "machine-image",
+      "machine$svc-1399c21": {
+        "id": "machine$svc-1399c21",
+        "containedBy": "machine$svc-1399c21",
+        "containerDefinitionId": "machine$svc",
         "contains": [
-          "users-184d05d3",
-          "permissions-6f4a3545",
-          "business-logic-f64364ff",
-          "audit-81445469",
-          "emails-1f20c1ca"
+          "users-94dc91d4",
+          "permissions-e3dba142",
+          "business-logic-7ad2f0f8",
+          "audit-dd5c06e",
+          "emails-93b155cd"
         ],
         "specific": {
           "ipAddress": "10.20.30.40"
         }
       },
-      "users-184d05d3": {
-        "id": "users-184d05d3",
-        "containedBy": "machine-ad9f9360",
+      "users-94dc91d4": {
+        "id": "users-94dc91d4",
+        "containedBy": "machine$svc-1399c21",
         "containerDefinitionId": "users",
         "type": "docker",
         "contains": [],
@@ -158,9 +145,9 @@
           }
         }
       },
-      "permissions-6f4a3545": {
-        "id": "permissions-6f4a3545",
-        "containedBy": "machine-ad9f9360",
+      "permissions-e3dba142": {
+        "id": "permissions-e3dba142",
+        "containedBy": "machine$svc-1399c21",
         "containerDefinitionId": "permissions",
         "type": "docker",
         "contains": [],
@@ -173,9 +160,9 @@
           }
         }
       },
-      "business-logic-f64364ff": {
-        "id": "business-logic-f64364ff",
-        "containedBy": "machine-ad9f9360",
+      "business-logic-7ad2f0f8": {
+        "id": "business-logic-7ad2f0f8",
+        "containedBy": "machine$svc-1399c21",
         "containerDefinitionId": "business-logic",
         "type": "docker",
         "contains": [],
@@ -188,9 +175,9 @@
           }
         }
       },
-      "audit-81445469": {
-        "id": "audit-81445469",
-        "containedBy": "machine-ad9f9360",
+      "audit-dd5c06e": {
+        "id": "audit-dd5c06e",
+        "containedBy": "machine$svc-1399c21",
         "containerDefinitionId": "audit",
         "type": "docker",
         "contains": [],
@@ -203,9 +190,9 @@
           }
         }
       },
-      "emails-1f20c1ca": {
-        "id": "emails-1f20c1ca",
-        "containedBy": "machine-ad9f9360",
+      "emails-93b155cd": {
+        "id": "emails-93b155cd",
+        "containedBy": "machine$svc-1399c21",
         "containerDefinitionId": "emails",
         "type": "docker",
         "contains": [],
@@ -215,6 +202,32 @@
           "execute": {
             "args": "-e PORT=10006 -p 10006:10006 --dns 172.17.42.1 -d",
             "exec": "node /isight/srv/emails.js"
+          }
+        }
+      },
+      "machine$fe2-6657dd4a": {
+        "id": "machine$fe2-6657dd4a",
+        "containedBy": "machine$fe2-6657dd4a",
+        "containerDefinitionId": "machine$fe2",
+        "contains": [
+          "frontend-d8de1fa2"
+        ],
+        "specific": {
+          "ipAddress": "5.6.7.8"
+        }
+      },
+      "frontend-d8de1fa2": {
+        "id": "frontend-d8de1fa2",
+        "containedBy": "machine$fe2-6657dd4a",
+        "containerDefinitionId": "frontend",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildsrv.sh",
+          "repositoryUrl": "fish",
+          "execute": {
+            "args": "-e PORT=8000 -p 8000:8000 --dns 172.17.42.1 -d",
+            "exec": "/bin/bash -c \"cd /isight/isight; node index.js\""
           }
         }
       }

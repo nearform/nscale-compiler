@@ -22,12 +22,12 @@ exports.topology = {
   },
 
   direct: {
-    root: [
-      {machine: {contains: ['frontend', 'consul-onemachine'],
-                 specific: { ipAddress: '1.2.3.4'}}},
-      {machine: {contains: ['users', 'permissions', 'business-logic', 'audit', 'emails', 'consul-onemachine'],
-                 specific: { ipAddress: '10.20.30.40'}}},
-    ]
+    machine$fe1: {contains: ['frontend'],
+                  specific: { ipAddress: '1.2.3.4'}},
+    machine$svc: {contains: ['users', 'permissions', 'business-logic', 'audit', 'emails'],
+                  specific: { ipAddress: '10.20.30.40'}},
+    machine$fe2: {contains: ['frontend'],
+               specific: { ipAddress: '5.6.7.8'}}
   }
 };
 

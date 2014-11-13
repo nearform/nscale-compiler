@@ -20,8 +20,6 @@ var traverse = require('traverse');
 var crc = require('crc');
 
 
-
-
 /*
  * compilation process is:
  *
@@ -109,7 +107,12 @@ module.exports = function() {
             }
           }
           else {
-            result.path = path.slice(0, idx - 1);
+            if (!isNaN(path[path.length - 2])) {
+              result.path = path.slice(0, idx - 1);
+            }
+            else {
+              result.path = path.slice(0, idx);
+            }
           }
           result.name = result.path[result.path.length - 1];
           break;
@@ -146,9 +149,6 @@ module.exports = function() {
         if (key === 'specific') {
           _.merge(containers[id].specific, _this.node[key]);
         }
-        else {
-          containers[id][key] = _this.node[key];
-        }
       }
     });
 
@@ -163,6 +163,7 @@ module.exports = function() {
     system.topology = {containers: {}};
     var containers = system.topology.containers;
     var match;
+    var key;
 
     if (sys.topology[platform] && _.keys(sys.topology[platform]).length > 0) {
       traverse(sys.topology[platform]).forEach(function() {
@@ -177,9 +178,12 @@ module.exports = function() {
         }
         else {
           _.each(defs, function(def) {
-            match = _.find(_.keys(def), function(key) { return key === _this.key; });
-            if (match) {
-              createTopologyNode(system, _this, containers, def[match]);
+            if (_this.key) {
+              key = _this.key.indexOf('$') !== -1 ? _this.key.split('$')[0] : _this.key;
+              match = _.find(_.keys(def), function(mkey) { return mkey === key; });
+              if (match) {
+                createTopologyNode(system, _this, containers, def[match]);
+              }
             }
           });
         }
