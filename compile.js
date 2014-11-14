@@ -175,6 +175,12 @@ module.exports = function() {
     if (sys.topology[platform] && _.keys(sys.topology[platform]).length > 0) {
       traverse(sys.topology[platform]).forEach(function() {
         var _this = this;
+
+        // do not create containers for the specific key.
+        if (_this.path.indexOf('specific') >= 0 ) {
+          return;
+        }
+
         if (_this.isLeaf) {
           _.each(defs, function(def) {
             match = _.find(_.keys(def), function(key) { return key === _this.node; });

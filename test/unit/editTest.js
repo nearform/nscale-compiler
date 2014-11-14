@@ -29,7 +29,6 @@ describe('compiler test', function() {
                   function(err) {
       assert(!err);
       compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
-        console.log(JSON.stringify(err, null, 2));
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
         assert(cd);
