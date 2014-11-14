@@ -1,0 +1,149 @@
+{
+  "name": "sudc-direct",
+  "namespace": "sudc",
+  "id": "62999e58-66a0-4e50-a870-f2673acf6c79",
+  "containerDefinitions": [
+    {
+      "type": "blank-container",
+      "id": "machine",
+      "name": "machine"
+    },
+    {
+      "type": "blank-container",
+      "id": "root",
+      "name": "root"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-doc.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 9002:9002 -d",
+          "exec": "/usr/bin/node /srv/doc-srv.js"
+        }
+      },
+      "id": "doc",
+      "name": "doc"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-history.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 9003:9003 -d",
+          "exec": "/usr/bin/node /srv/hist-srv.js"
+        }
+      },
+      "id": "hist",
+      "name": "hist"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-realtime.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 9001:9001 -d",
+          "exec": "/usr/bin/node /srv/real-srv.js"
+        }
+      },
+      "id": "real",
+      "name": "real"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-web.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 8000:8000 -d",
+          "exec": "/bin/bash /web/run.sh"
+        }
+      },
+      "id": "web",
+      "name": "web"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "machine$123-8d591e7a": {
+        "id": "machine$123-8d591e7a",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "machine$123",
+        "contains": [
+          "doc-754403b9",
+          "hist-243332f",
+          "real-9b4a6295",
+          "web-ec4d5203"
+        ],
+        "specific": {
+          "user": "root",
+          "identityFile": "sudc-key",
+          "ipAddress": "178.62.80.16"
+        }
+      },
+      "doc-754403b9": {
+        "id": "doc-754403b9",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "doc",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-doc.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 9002:9002 -d",
+            "exec": "/usr/bin/node /srv/doc-srv.js"
+          }
+        }
+      },
+      "hist-243332f": {
+        "id": "hist-243332f",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "hist",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-history.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 9003:9003 -d",
+            "exec": "/usr/bin/node /srv/hist-srv.js"
+          }
+        }
+      },
+      "real-9b4a6295": {
+        "id": "real-9b4a6295",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "real",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-realtime.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 9001:9001 -d",
+            "exec": "/usr/bin/node /srv/real-srv.js"
+          }
+        }
+      },
+      "web-ec4d5203": {
+        "id": "web-ec4d5203",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "web",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-web.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 8000:8000 -d",
+            "exec": "/bin/bash /web/run.sh"
+          }
+        }
+      }
+    }
+  }
+}

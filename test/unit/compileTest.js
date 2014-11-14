@@ -27,11 +27,10 @@ describe('compiler test', function() {
     compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
       assert(!err);
       assert(system);
-      assert.deepEqual(system, expected);
+      assert(_.isEqual(system, expected));
       done();
     });
   });
-
 
   it('should correctly compile a system definition for aws', function(done){
     var expected = require('./expectedAws.json');
@@ -39,6 +38,61 @@ describe('compiler test', function() {
       assert(!err);
       assert(system);
       assert(_.isEqual(system, expected));
+      done();
+    });
+  });
+
+  it('should correctly compile a blank empty system definition for local', function(done){
+    var expected = require('./expectedBlank.json');
+    compiler.compile(__dirname + '/../fixture/blank', 'local', function(err, system) {
+      assert(!err);
+      assert(system);
+      assert(_.isEqual(system, expected));
+      done();
+    });
+  });
+
+  it('should correctly compile a system definition for islab', function(done){
+    var expected = require('./expectedIsLab.json');
+    compiler.compile(__dirname + '/../fixture/islab', 'direct', function(err, system) {
+      assert(!err);
+      assert(system);
+      assert(JSON.stringify(expected) === JSON.stringify(system));
+      done();
+    });
+  });
+
+  it('should refuse to compile if types are missing', function(done){
+    compiler.compile(__dirname + '/../fixture/noType', 'local', function(err, system) {
+      assert(err);
+      assert(!system);
+      done();
+    });
+  });
+
+  it('should not add spurious containers', function(done){
+    var base = __dirname + '/../fixture/sudc-direct';
+    var expected = require(base + '/expected.json');
+    compiler.compile(__dirname + '/../fixture/sudc-direct', 'direct', function(err, system) {
+      assert(!err);
+      assert(system);
+      assert(JSON.stringify(system) == JSON.stringify(expected));
+      done();
+    });
+  });
+
+  it('should handle JS errors', function(done){
+    compiler.compile(__dirname + '/../fixture/jserrors', 'direct', function(err) {
+      assert(err.result === 'err');
+      assert(err.err[0].indexOf('error: Duplicate key') !== -1);
+      done();
+    });
+  });
+
+  it('should not compile a system with a missing definition', function(done){
+    compiler.compile(__dirname + '/../fixture/missing', 'direct', function(err) {
+      assert(err.result === 'err');
+      assert(err.err[0].indexOf('undefined element') !== -1);
       done();
     });
   });

@@ -1,0 +1,189 @@
+{
+  "name": "sudc-direct",
+  "namespace": "sudc",
+  "id": "62999e58-66a0-4e50-a870-f2673acf6c79",
+  "containerDefinitions": [
+    {
+      "type": "blank-container",
+      "id": "machine",
+      "name": "machine"
+    },
+    {
+      "type": "blank-container",
+      "id": "root",
+      "name": "root"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-doc.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 9002:9002 -d",
+          "exec": "/usr/bin/node /srv/doc-srv.js"
+        },
+        "buildHead": 5,
+        "binary": "/root/sudc-system/builds/doc-4",
+        "dockerImageId": "e20b840713c6dd086f40aea670c8a77a112f59f959e386f78ed8579b98d7d7e0"
+      },
+      "id": "doc",
+      "name": "doc"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-history.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 9003:9003 -d",
+          "exec": "/usr/bin/node /srv/hist-srv.js"
+        },
+        "buildHead": 3,
+        "binary": "/root/sudc-system/builds/hist-2",
+        "dockerImageId": "e571ac568fba475f98ef9273aeae1ac4c05dd72bde54dcfb3c98f7ad75cea0b9"
+      },
+      "id": "hist",
+      "name": "hist"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-realtime.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 9001:9001 -d",
+          "exec": "/usr/bin/node /srv/real-srv.js"
+        },
+        "buildHead": 4,
+        "binary": "/root/sudc-system/builds/real-3",
+        "dockerImageId": "1d02e82fff7d51209615f0d4fbaca531625d6a3fdc2d2caffd9466bdee60429f"
+      },
+      "id": "real",
+      "name": "real"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/sudc-web.git",
+        "buildScript": "build.sh",
+        "execute": {
+          "args": "-p 8000:8000 -d",
+          "exec": "/bin/bash /web/run.sh"
+        },
+        "buildHead": 3,
+        "binary": "/root/sudc-system/builds/web-2",
+        "dockerImageId": "150b0d04f43a1a4b572b65f522158c55a4e456bb28d806ded0c48c65dc46ead0"
+      },
+      "id": "web",
+      "name": "web"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "machine$123-8d591e7a": {
+        "id": "machine$123-8d591e7a",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "machine$123",
+        "contains": [
+          "doc-754403b9",
+          "hist-243332f",
+          "real-9b4a6295",
+          "web-ec4d5203"
+        ],
+        "specific": {
+          "user": "root",
+          "identityFile": "sudc-key",
+          "ipAddress": "178.62.80.16"
+        }
+      },
+      "doc-754403b9": {
+        "id": "doc-754403b9",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "doc",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-doc.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 9002:9002 -d",
+            "exec": "/usr/bin/node /srv/doc-srv.js"
+          },
+          "dockerImageId": "e20b840713c6dd086f40aea670c8a77a112f59f959e386f78ed8579b98d7d7e0",
+          "containerBinary": "/root/sudc-system/builds/doc-4",
+          "dockerLocalTag": "sudc/doc-4",
+          "buildNumber": 4,
+          "version": "0.0.0"
+        }
+      },
+      "hist-243332f": {
+        "id": "hist-243332f",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "hist",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-history.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 9003:9003 -d",
+            "exec": "/usr/bin/node /srv/hist-srv.js"
+          },
+          "dockerImageId": "e571ac568fba475f98ef9273aeae1ac4c05dd72bde54dcfb3c98f7ad75cea0b9",
+          "containerBinary": "/root/sudc-system/builds/hist-2",
+          "dockerLocalTag": "sudc/hist-2",
+          "buildNumber": 2,
+          "version": "0.0.0"
+        }
+      },
+      "real-9b4a6295": {
+        "id": "real-9b4a6295",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "real",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-realtime.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 9001:9001 -d",
+            "exec": "/usr/bin/node /srv/real-srv.js"
+          },
+          "dockerImageId": "1d02e82fff7d51209615f0d4fbaca531625d6a3fdc2d2caffd9466bdee60429f",
+          "containerBinary": "/root/sudc-system/builds/real-3",
+          "dockerLocalTag": "sudc/real-3",
+          "buildNumber": 3,
+          "version": "0.0.0"
+        }
+      },
+      "web-ec4d5203": {
+        "id": "web-ec4d5203",
+        "containedBy": "machine$123-8d591e7a",
+        "containerDefinitionId": "web",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/sudc-web.git",
+          "buildScript": "build.sh",
+          "execute": {
+            "args": "-p 8000:8000 -d",
+            "exec": "/bin/bash /web/run.sh"
+          },
+          "dockerImageId": "150b0d04f43a1a4b572b65f522158c55a4e456bb28d806ded0c48c65dc46ead0",
+          "containerBinary": "/root/sudc-system/builds/web-2",
+          "dockerLocalTag": "sudc/web-2",
+          "buildNumber": 2,
+          "version": "0.0.0"
+        }
+      },
+      "root-bbff7e65": {
+        "id": "root-bbff7e65",
+        "containedBy": "user-bbff7e65",
+        "containerDefinitionId": "root",
+        "type": "blank-container",
+        "contains": [],
+        "specific": {}
+      }
+    }
+  }
+}
