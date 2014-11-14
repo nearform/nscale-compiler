@@ -166,7 +166,12 @@ module.exports = function() {
     var containers = system.topology.containers;
     var match;
     var key;
+    var result = {result: 'ok', err: []};
+    var isDefined = [];
+    var notDefined = [];
 
+
+    // first pass create topology nodes and build definition list
     if (sys.topology[platform] && _.keys(sys.topology[platform]).length > 0) {
       traverse(sys.topology[platform]).forEach(function() {
         var _this = this;
@@ -174,6 +179,7 @@ module.exports = function() {
           _.each(defs, function(def) {
             match = _.find(_.keys(def), function(key) { return key === _this.node; });
             if (match) {
+              isDefined.push({path: _this.path, elm: _this.node});
               createTopologyNode(system, _this, containers, def[match]);
             }
           });
@@ -184,6 +190,7 @@ module.exports = function() {
               key = _this.key.indexOf('$') !== -1 ? _this.key.split('$')[0] : _this.key;
               match = _.find(_.keys(def), function(mkey) { return mkey === key; });
               if (match) {
+                isDefined.push({path: _this.path, elm: _this.key});
                 createTopologyNode(system, _this, containers, def[match]);
               }
             }
@@ -191,6 +198,34 @@ module.exports = function() {
         }
       });
     }
+
+    // second pass check for undefined elements
+    traverse(sys.topology[platform]).forEach(function() {
+      var _this = this;
+      if (_this.isLeaf) {
+        if (!_.find(isDefined, function(def) { return _this.node === def.elm; })) {
+          if (_this.node !== 'contains' && _this.path.indexOf('specific') === -1 && _this.path.length > 0 && isNaN(_this.key)) {
+            notDefined.push({path: _this.path, elm: _this.node});
+          }
+        }
+      }
+      else {
+        if (!_.find(isDefined, function(def) { return _this.key === def.elm; })) {
+          if (_this.key !== 'contains' && _this.path.indexOf('specific') === -1 && _this.path.length > 0 && isNaN(_this.key)) {
+            notDefined.push({path: _this.path, elm: _this.key});
+          }
+        }
+      }
+    });
+
+    if (notDefined.length > 0) {
+      result.result = 'err';
+      _.each(notDefined, function(ndef) {
+        result.err.push('undefined element: ' + ndef.elm + ' at path: ' + ndef.path);
+      });
+    }
+
+    return result;
   };
 
 
@@ -251,8 +286,13 @@ module.exports = function() {
 
           compileHeader(system, sys);
           compileContainerDefs(system, sys, defs);
-          compileTopology(platform, system, sys, defs);
-          cb(!validate(system), system);
+          var res = compileTopology(platform, system, sys, defs);
+          if (res.result === 'ok') {
+            cb(!validate(system), system);
+          }
+          else {
+            cb(res);
+          }
         });
       });
     });
