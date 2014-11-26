@@ -96,6 +96,13 @@ describe('compiler test', function() {
       done();
     });
   });
+
+  it('should ignore non-js files', function(done){
+    compiler.compile(__dirname + '/../fixture/non-js-files', 'direct', function(err) {
+      assert(!err)
+      done();
+    });
+  });
 });
 
 

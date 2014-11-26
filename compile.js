@@ -15,6 +15,7 @@
 'use strict';
 
 var fs = require('fs');
+var glob = require('glob');
 var _ = require('lodash');
 var traverse = require('traverse');
 var crc = require('crc');
@@ -273,20 +274,17 @@ module.exports = function() {
 
     checkPaths(path, function(err) {
       if (err) { return cb(err); }
-      fs.readdir(path + '/definitions', function(err, files) {
+      glob(path + '/definitions/**/*.js', function(err, files) {
         if (err) { return cb(err); }
 
-        var lintList = [];
-        _.each(files, function(file) {
-          lintList.push(path + '/definitions/' + file);
-        });
+        var lintList = [].concat(files);
         lintList.push(path + '/system.js');
         lintFiles(0, lintList, function(err, result) {
           if (err) { return cb(err); }
           if (result.result !== 'ok') { return cb(result); }
 
           _.each(files, function(file) {
-            defs.push(loadModule(path + '/definitions/' + file));
+            defs.push(loadModule(file));
           });
           sys = loadModule(path + '/system.js');
 
