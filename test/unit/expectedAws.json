@@ -4,11 +4,6 @@
   "id": "e7bb3963-fd16-4b1b-ae9f-5fa16e2d192d",
   "containerDefinitions": [
     {
-      "type": "blank-container",
-      "id": "root",
-      "name": "root"
-    },
-    {
       "type": "aws-elb",
       "specific": {
         "protocol": "HTTP",

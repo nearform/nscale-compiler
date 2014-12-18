@@ -14,15 +14,27 @@
 
 'use strict';
 
+var fs = require('fs');
 var _ = require('lodash');
 var assert = require('assert');
 var compiler = require('../../main')();
 
 
 
-describe('compiler test', function() {
+describe('environment test', function() {
 
-  it('should correctly add a container', function(done){
+  it('should correctly compile local', function(done){
+    compiler.compile(__dirname + '/../fixture/stgprod', 'local', function(err, system) {
+      assert(!err);
+      var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'docsrv'; });
+      assert(cd);
+      done();
+    });
+  });
+
+
+  /*
+  it('should correctly compile staging', function(done){
     compiler.edit(__dirname + '/../fixture/system2', 
                   'addContainer',
                   '{"name": "test123", "type": "process","specific": {"repositoryUrl": "d","buildScript": "g","execute": {"args": "s","exec": "v"}}}',
@@ -31,47 +43,27 @@ describe('compiler test', function() {
       compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
-        // assert !cd - the container definition will not appear in the compiled JSON because it 
-        // is not yet referenced from the topology section
-        assert(!cd);
+        assert(cd);
         done();
       });
     });
   });
 
 
-
-  it('should correctly link a container', function(done){
+  it('should correctly compile production', function(done){
     compiler.edit(__dirname + '/../fixture/system2', 
-                  'linkContainer',
-                  'local/root:test123',
-                  function(err, system) {
+                  'addContainer',
+                  '{"name": "test123", "type": "process","specific": {"repositoryUrl": "d","buildScript": "g","execute": {"args": "s","exec": "v"}}}',
+                  function(err) {
       assert(!err);
       compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
         assert(cd);
-        assert(system.topology.containers['test123-b37565a1']);
         done();
       });
     });
   });
-
-
-  it('should correctly remove a container', function(done){
-    compiler.edit(__dirname + '/../fixture/system2', 
-                  'removeContainer',
-                  'test123',
-                  function(err, system) {
-      assert(!err);
-      compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
-        assert(!err);
-        var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
-        assert(!cd);
-        assert(!system.topology.containers['test123-c4725537']);
-        done();
-      });
-    });
-  });
+  */
 });
 

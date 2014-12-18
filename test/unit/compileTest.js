@@ -99,7 +99,7 @@ describe('compiler test', function() {
 
   it('should ignore non-js files', function(done){
     compiler.compile(__dirname + '/../fixture/non-js-files', 'direct', function(err) {
-      assert(!err)
+      assert(!err);
       done();
     });
   });

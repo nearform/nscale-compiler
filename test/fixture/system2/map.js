@@ -1,9 +1,3 @@
-exports.types = {
-  aws: {},
-  local: {}
-};
-
-
 exports.ids = {
   aws: {
     webElb: {nativeId: 'sudc-bal-1117399678.us-west-2.elb.amazonaws.com'},
