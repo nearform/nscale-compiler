@@ -4,24 +4,26 @@ exports.types = {
     'process': 'docker',
     'load-balancer': 'aws-elb',
     'access-rules': 'aws-sg',
-    'machine-image': 'aws-ami',
-    'registry': 'docker-registry'
+    'machine-image': 'aws-ami'
   },
   local: {
     'container': 'blank-container',
-    'process': 'docker',
-    'registry': 'docker-registry'
+    'process': 'docker'
   },
   direct: {
     'container': 'blank-container',
-    'process': 'docker',
-    'registry': 'docker-registry'
+    'process': 'docker'
+  },
+  process: {
+    'container': 'blank-container',
+    'process': 'process'
   }
 };
 
 exports.ids = {
   aws: {},
   local: {},
-  direct: {}
+  direct: {},
+  process: {}
 };
 

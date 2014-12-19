@@ -61,7 +61,7 @@
       "name": "web"
     },
     {
-      "type": "docker-registry",
+      "type": "docker",
       "specific": {
         "args": "-d --appendonly -p 6379:6379",
         "name": "redis"
@@ -150,7 +150,7 @@
         "id": "redis-c4725537",
         "containedBy": "root-16f4f95b",
         "containerDefinitionId": "redis",
-        "type": "docker-registry",
+        "type": "docker",
         "contains": [],
         "specific": {
           "args": "-d --appendonly -p 6379:6379",
