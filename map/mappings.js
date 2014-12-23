@@ -4,19 +4,23 @@ exports.types = {
     'process': 'docker',
     'load-balancer': 'aws-elb',
     'access-rules': 'aws-sg',
-    'machine-image': 'aws-ami'
+    'machine-image': 'aws-ami',
+    'docker': 'docker'
   },
   local: {
     'container': 'blank-container',
-    'process': 'docker'
+    'process': 'docker',
+    'docker': 'docker'
   },
   direct: {
     'container': 'blank-container',
-    'process': 'docker'
+    'process': 'docker',
+    'docker': 'docker'
   },
   process: {
     'container': 'blank-container',
-    'process': 'process'
+    'process': 'process',
+    'docker': 'docker'
   }
 };
 
