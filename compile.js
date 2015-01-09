@@ -336,8 +336,24 @@ module.exports = function() {
   };
 
 
+
+  var targetList = function(path, cb) {
+    var sys;
+    var lintList = [path + '/system.js'];
+
+    lintFiles(0, lintList, function(err, result) {
+      if (err) { return cb(err); }
+      if (result.result !== 'ok') { return cb(result); }
+      sys = loadModule(path + '/system.js');
+      cb(null, _.keys(sys.topology));
+    });
+  };
+
+
+
   return {
-    compile: compile
+    compile: compile,
+    targetList: targetList
   };
 };
  

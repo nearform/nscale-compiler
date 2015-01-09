@@ -32,38 +32,32 @@ describe('environment test', function() {
     });
   });
 
-
-  /*
   it('should correctly compile staging', function(done){
-    compiler.edit(__dirname + '/../fixture/system2', 
-                  'addContainer',
-                  '{"name": "test123", "type": "process","specific": {"repositoryUrl": "d","buildScript": "g","execute": {"args": "s","exec": "v"}}}',
-                  function(err) {
+    compiler.compile(__dirname + '/../fixture/stgprod', 'staging', function(err, system) {
       assert(!err);
-      compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
-        assert(!err);
-        var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
-        assert(cd);
-        done();
-      });
+      var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'docsrv'; });
+      assert(cd);
+      done();
     });
   });
-
 
   it('should correctly compile production', function(done){
-    compiler.edit(__dirname + '/../fixture/system2', 
-                  'addContainer',
-                  '{"name": "test123", "type": "process","specific": {"repositoryUrl": "d","buildScript": "g","execute": {"args": "s","exec": "v"}}}',
-                  function(err) {
+    compiler.compile(__dirname + '/../fixture/stgprod', 'production', function(err, system) {
       assert(!err);
-      compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
-        assert(!err);
-        var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
-        assert(cd);
-        done();
-      });
+      var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'docsrv'; });
+      assert(cd);
+      done();
     });
   });
-  */
+
+  it('should correctly compile all targets', function(done){
+    compiler.compileAll(__dirname + '/../fixture/stgprod', function(err, results) {
+      assert(!err);
+      console.log(JSON.stringify(results, null, 2));
+      //var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'docsrv'; });
+      //assert(cd);
+      done();
+    });
+  });
 });
 

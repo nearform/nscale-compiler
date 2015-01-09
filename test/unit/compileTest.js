@@ -76,7 +76,7 @@ describe('compiler test', function() {
     compiler.compile(__dirname + '/../fixture/sudc-direct', 'direct', function(err, system) {
       assert(!err);
       assert(system);
-      assert(JSON.stringify(system) == JSON.stringify(expected));
+      assert(JSON.stringify(system) === JSON.stringify(expected));
       done();
     });
   });
@@ -100,6 +100,18 @@ describe('compiler test', function() {
   it('should ignore non-js files', function(done){
     compiler.compile(__dirname + '/../fixture/non-js-files', 'direct', function(err) {
       assert(!err);
+      done();
+    });
+  });
+
+  it('should correctly compile all targets', function(done){
+    var expectedLocal = require('./expectedLocal.json');
+    var expectedAws = require('./expectedAws.json');
+    compiler.compileAll(__dirname + '/../fixture/system2', function(err, systems) {
+      assert(!err);
+      assert(systems);
+      assert(_.isEqual(systems.local, expectedLocal));
+      assert(_.isEqual(systems.aws, expectedAws));
       done();
     });
   });
