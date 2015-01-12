@@ -14,6 +14,7 @@
 
 'use strict';
 
+var async = require('async');
 var cmp = require('./compile')();
 var map = require('./map')();
 var editor = require('./edit')();
@@ -27,8 +28,7 @@ module.exports = function() {
    * compile a full abstract system definition
    *
    * path - path to the defintion files
-   * platform - the platform to compile to curently one of:
-   *            'local' || 'aws'
+   * platform - the platform to compile to
    * cb - callback
    */
   var compile = function compile(path, platform, cb) {
@@ -43,6 +43,38 @@ module.exports = function() {
 
 
 
+  /**
+   * compile all targets
+   */
+  var compileAll = function compile(path, cb) {
+    var results = {};
+    cmp.targetList(path, function(err, targets) {
+      if (err) { return cb(err); }
+        async.eachSeries(targets, function(target, done) {
+          cmp.compile(path, target, function(err, abstractSystem) {
+            if (err) { return cb(err); }
+            map.map(path, target, abstractSystem, function(err, system) {
+              if (err) { return cb(err); }
+              results[target] = system;
+              done();
+            });
+          });
+        }, function() {
+        cb(null, results);
+      });
+    });
+  };
+
+
+
+  var listTargets = function listTargets(path, cb) {
+    cmp.targetList(path, function(err, targets) {
+      cb(err, targets);
+    });
+  };
+
+
+
   var edit = function(path, command, data, cb) {
     editor.edit(path, command, data, cb);
   };
@@ -51,6 +83,8 @@ module.exports = function() {
 
   return {
     compile: compile,
+    compileAll: compileAll,
+    listTargets: listTargets,
     edit: edit
   };
 };

@@ -260,6 +260,38 @@ module.exports = function() {
 
 
   /**
+   * remove container definitions that are not referenced in the topology section
+   */
+  var deleteUnreferenced = function(sys) {
+    var keepList = [];
+    var deleteList = [];
+    var idx = 0;
+
+    _.each(sys.containerDefinitions, function(cdef) {
+      _.each(sys.topology.containers, function(c) {
+        if (c.containerDefinitionId === cdef.id) {
+          keepList.push(cdef.id);
+        }
+      });
+    });
+
+    _.each(sys.containerDefinitions, function(cdef) {
+      if (!_.find(keepList, function(keep) { return keep === cdef.id; })) {
+        deleteList.push(idx);
+      }
+      ++idx;
+    });
+
+    idx = 0;
+    _.each(deleteList, function(deleteIdx) {
+      sys.containerDefinitions.splice(deleteIdx - idx, 1);
+      ++idx;
+    });
+  };
+
+
+
+  /**
    * compile an abstract system definition from the source files on disk.
    * The source files are:
    *
@@ -291,6 +323,7 @@ module.exports = function() {
           compileHeader(system, sys);
           compileContainerDefs(system, sys, defs);
           var res = compileTopology(platform, system, sys, defs);
+          deleteUnreferenced(system);
           if (res.result === 'ok') {
             cb(!validate(system), system);
           }
@@ -303,8 +336,24 @@ module.exports = function() {
   };
 
 
+
+  var targetList = function(path, cb) {
+    var sys;
+    var lintList = [path + '/system.js'];
+
+    lintFiles(0, lintList, function(err, result) {
+      if (err) { return cb(err); }
+      if (result.result !== 'ok') { return cb(result); }
+      sys = loadModule(path + '/system.js');
+      cb(null, _.keys(sys.topology));
+    });
+  };
+
+
+
   return {
-    compile: compile
+    compile: compile,
+    targetList: targetList
   };
 };
  

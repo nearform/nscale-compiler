@@ -4,16 +4,6 @@
   "id": "62999e58-66a0-4e50-a870-f2673acf6c79",
   "containerDefinitions": [
     {
-      "type": "blank-container",
-      "id": "machine",
-      "name": "machine"
-    },
-    {
-      "type": "blank-container",
-      "id": "root",
-      "name": "root"
-    },
-    {
       "type": "docker",
       "specific": {
         "repositoryUrl": "git@github.com:nearform/sudc-doc.git",

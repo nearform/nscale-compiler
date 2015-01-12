@@ -4,11 +4,6 @@
   "id": "12121212-bf98-4d29-b1c8-d1885bc5c294",
   "containerDefinitions": [
     {
-      "type": "blank-container",
-      "id": "root",
-      "name": "root"
-    },
-    {
       "type": "docker",
       "specific": {
         "buildScript": "buildsrv.sh",

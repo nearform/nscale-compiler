@@ -1,9 +1,9 @@
 exports.root = {
-  type: 'container'
+  type: 'blank-container'
 };
 
 exports.users = {
-  type: 'process',
+  type: 'docker',
   specific: {
     buildScript: 'buildsrv.sh',
     repositoryUrl: 'fish',
@@ -15,7 +15,7 @@ exports.users = {
 };
 
 exports.permissions = {
-  type: 'process',
+  type: 'docker',
   specific: {
     buildScript: 'buildsrv.sh',
     repositoryUrl: 'fish',
@@ -27,7 +27,7 @@ exports.permissions = {
 };
 
 exports['business-logic'] = {
-  type: 'process',
+  type: 'docker',
   specific: {
     buildScript: 'buildsrv.sh',
     repositoryUrl: 'fish',
@@ -39,7 +39,7 @@ exports['business-logic'] = {
 };
 
 exports.audit = {
-  type: 'process',
+  type: 'docker',
   specific: {
     buildScript: 'buildsrv.sh',
     repositoryUrl: 'fish',
@@ -51,7 +51,7 @@ exports.audit = {
 };
 
 exports.emails = {
-  type: 'process',
+  type: 'docker',
   specific: {
     buildScript: 'buildsrv.sh',
     repositoryUrl: 'fish',
@@ -63,7 +63,7 @@ exports.emails = {
 };
 
 exports.frontend = {
-  type: 'process',
+  type: 'docker',
   specific: {
     buildScript: 'buildsrv.sh',
     repositoryUrl: 'fish',

@@ -16,7 +16,6 @@
 
 var fs = require('fs');
 var _ = require('lodash');
-var stdMap = require('./map/mappings');
 
 
 
@@ -34,44 +33,9 @@ module.exports = function() {
 
 
 
-  var replaceTypes = function(sys, platform, mappings) {
-    _.each(sys.containerDefinitions, function(cdef) {
-      if (cdef.type && mappings.types[platform][cdef.type]) {
-        cdef.type = mappings.types[platform][cdef.type];
-      }
-    });
-    _.each(sys.topology.containers, function(c) {
-      if (c.type && mappings.types[platform][c.type]) {
-        c.type = mappings.types[platform][c.type];
-      }
-    });
-  };
-
-
-
-  var deleteUntyped = function(sys, platform, mappings) {
-    var toDelete = [];
-    var idx = 0;
-
-    _.each(sys.containerDefinitions, function(cdef) {
-      if (!(cdef.type && mappings.types[platform] && mappings.types[platform][cdef.type])) {
-        toDelete.push(idx);
-      }
-      ++idx;
-    });
-
-    idx = 0;
-    _.each(toDelete, function(deleteIdx) {
-      sys.containerDefinitions.splice(deleteIdx - idx, 1);
-      ++idx;
-    });
-  };
-
-
-
   var setIds = function(sys, platform, mappings) {
     _.each(sys.containerDefinitions, function(cdef) {
-      if (cdef.id && mappings.ids[platform][cdef.id]) {
+      if (cdef.id && mappings.ids[platform] && mappings.ids[platform][cdef.id]) {
         if (mappings.ids[platform][cdef.id].nativeId) {
           cdef.nativeId = mappings.ids[platform][cdef.id].nativeId;
         }
@@ -92,26 +56,24 @@ module.exports = function() {
 
 
 
+
+
   var map = function map(path, platform, abstractSystem, cb) {
-    var mp = _.cloneDeep(stdMap);
+    var mp = {ids: {}};
     var system;
 
     loadFile(path, 'map.js', function(err, customMap) {
       customMap = customMap || {};
-      if (customMap.types && customMap.types[platform]) {
-        _.each(_.keys(customMap.types[platform]), function(key) {
-          mp.types[platform][key] = customMap.types[platform][key];
-        });
-      }
       if (customMap.ids && customMap.ids[platform]) {
         _.each(_.keys(customMap.ids[platform]), function(key) {
+          if (!mp.ids[platform]) {
+            mp.ids[platform] = {};
+          }
           mp.ids[platform][key] = customMap.ids[platform][key];
         });
       }
 
       system = _.cloneDeep(abstractSystem);
-      deleteUntyped(system, platform, mp);
-      replaceTypes(system, platform, mp);
       setIds(system, platform, mp);
       cb(null, system);
     });

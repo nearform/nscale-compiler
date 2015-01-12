@@ -31,7 +31,9 @@ describe('compiler test', function() {
       compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
-        assert(cd);
+        // assert !cd - the container definition will not appear in the compiled JSON because it 
+        // is not yet referenced from the topology section
+        assert(!cd);
         done();
       });
     });

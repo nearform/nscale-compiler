@@ -1,5 +1,5 @@
 exports.docsrv = {
-  type: 'docker',
+  type: 'process',
   specific: {
     repositoryUrl: 'git@github.com:pelger/startupdeathclock.git',
     buildScript: 'builddoc.sh',
@@ -11,7 +11,7 @@ exports.docsrv = {
 };
 
 exports.histsrv = {
-  type: 'docker',
+  type: 'process',
   specific: {
     repositoryUrl: 'git@github.com:pelger/startupdeathclock.git',
     buildScript: 'buildhist.sh',
@@ -23,7 +23,7 @@ exports.histsrv = {
 };
 
 exports.realsrv = {
-  type: 'docker',
+  type: 'process',
   specific: {
     repositoryUrl: 'git@github.com:pelger/startupdeathclock.git',
     buildScript: 'buildreal.sh',
@@ -35,7 +35,7 @@ exports.realsrv = {
 };
 
 exports.web = {
-  type: 'docker',
+  type: 'process',
   specific: {
     repositoryUrl: 'git@github.com:pelger/startupdeathclock.git',
     buildScript: 'buildweb.sh',
@@ -47,7 +47,7 @@ exports.web = {
 };
 
 exports.redis = {
-  type: 'docker',
+  type: 'registry',
   specific: {
     args: '-d --appendonly -p 6379:6379',
     name: 'redis'

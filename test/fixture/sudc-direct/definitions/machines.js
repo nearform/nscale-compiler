@@ -1,4 +1,3 @@
-
 exports.machine = {
-  type: 'container'
+  type: 'blank-container'
 };

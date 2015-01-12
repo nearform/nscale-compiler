@@ -1,7 +1,4 @@
-// Place project specific type and id mappings here
-
-exports.types = {
-};
+// Place project specific id mappings here
 
 exports.ids = {
 };

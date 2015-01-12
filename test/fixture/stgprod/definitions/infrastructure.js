@@ -1,5 +1,5 @@
 exports.root = {
-  type: 'blank-container'
+  type: 'container'
 };
 
 exports.webElb = {
@@ -29,5 +29,6 @@ exports.webSg = {
 
 exports.machine = {
   type: 'aws-ami',
+
 };
 
