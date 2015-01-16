@@ -36,6 +36,7 @@ module.exports = function() {
       if (err) { return cb(err); }
       map.map(path, platform, abstractSystem, function(err, system) {
         if (err) { return cb(err); }
+        system.topology.name = platform;
         cb(null, system);
       });
     });
@@ -55,6 +56,7 @@ module.exports = function() {
             if (err) { return cb(err); }
             map.map(path, target, abstractSystem, function(err, system) {
               if (err) { return cb(err); }
+              system.topology.name = target;
               results[target] = system;
               done();
             });

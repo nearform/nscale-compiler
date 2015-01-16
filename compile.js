@@ -134,16 +134,17 @@ module.exports = function() {
 
 
 
-  var createTopologyNode = function(system, _this, containers, def) {
+  var createTopologyNode = function(system, _this, key, containers, def) {
     var identifier = _this.isLeaf ? _this.node : _this.key;
+    var containerDefId = _this.isLeaf ? _this.node : key;
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
     var id = identifier + '-' + crc.crc32('' + _this.path).toString(16);
     var parentId = containedBy.name + '-' + crc.crc32('' + containedBy.path).toString(16);
 
     containers[id] = {id: id,
                       containedBy: parentId,
-                      containerDefinitionId: identifier,
-                      type: getType(system, identifier),
+                      containerDefinitionId: containerDefId,
+                      type: getType(system, containerDefId),
                       contains: [],
                       specific: def.specific ? _.cloneDeep(def.specific) : {}};
 
@@ -187,7 +188,7 @@ module.exports = function() {
             match = _.find(_.keys(def), function(key) { return key === _this.node; });
             if (match) {
               isDefined.push({path: _this.path, elm: _this.node});
-              createTopologyNode(system, _this, containers, def[match]);
+              createTopologyNode(system, _this, _this.key, containers, def[match]);
             }
           });
         }
@@ -198,7 +199,7 @@ module.exports = function() {
               match = _.find(_.keys(def), function(mkey) { return mkey === key; });
               if (match) {
                 isDefined.push({path: _this.path, elm: _this.key});
-                createTopologyNode(system, _this, containers, def[match]);
+                createTopologyNode(system, _this, key, containers, def[match]);
               }
             }
           });

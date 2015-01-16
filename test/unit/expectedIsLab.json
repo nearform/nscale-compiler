@@ -80,6 +80,12 @@
       },
       "id": "frontend",
       "name": "frontend"
+    },
+    {
+      "type": "machine",
+      "name": "machine",
+      "specific": {},
+      "id": "machine"
     }
   ],
   "topology": {
@@ -87,7 +93,8 @@
       "machine$fe1-ff5e8cf0": {
         "id": "machine$fe1-ff5e8cf0",
         "containedBy": "machine$fe1-ff5e8cf0",
-        "containerDefinitionId": "machine$fe1",
+        "containerDefinitionId": "machine",
+        "type": "machine",
         "contains": [
           "frontend-af40cd52"
         ],
@@ -113,7 +120,8 @@
       "machine$svc-1399c21": {
         "id": "machine$svc-1399c21",
         "containedBy": "machine$svc-1399c21",
-        "containerDefinitionId": "machine$svc",
+        "containerDefinitionId": "machine",
+        "type": "machine",
         "contains": [
           "users-94dc91d4",
           "permissions-e3dba142",
@@ -203,7 +211,8 @@
       "machine$fe2-6657dd4a": {
         "id": "machine$fe2-6657dd4a",
         "containedBy": "machine$fe2-6657dd4a",
-        "containerDefinitionId": "machine$fe2",
+        "containerDefinitionId": "machine",
+        "type": "machine",
         "contains": [
           "frontend-d8de1fa2"
         ],
@@ -226,7 +235,7 @@
           }
         }
       }
-    }
+    },
+    "name": "direct"
   }
 }
-

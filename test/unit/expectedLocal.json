@@ -157,6 +157,7 @@
           "name": "redis"
         }
       }
-    }
+    },
+    "name": "local"
   }
 }

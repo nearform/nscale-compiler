@@ -1,5 +1,5 @@
 exports.machine = {
-  type: 'machine-image',
+  type: 'machine',
   name: 'machine',
   specific: {
   }
