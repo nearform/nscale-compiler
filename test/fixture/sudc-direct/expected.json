@@ -4,6 +4,11 @@
   "id": "62999e58-66a0-4e50-a870-f2673acf6c79",
   "containerDefinitions": [
     {
+      "type": "blank-container",
+      "id": "machine",
+      "name": "machine"
+    },
+    {
       "type": "docker",
       "specific": {
         "repositoryUrl": "git@github.com:nearform/sudc-doc.git",
@@ -61,7 +66,8 @@
       "machine$123-8d591e7a": {
         "id": "machine$123-8d591e7a",
         "containedBy": "machine$123-8d591e7a",
-        "containerDefinitionId": "machine$123",
+        "containerDefinitionId": "machine",
+        "type": "blank-container",
         "contains": [
           "doc-754403b9",
           "hist-243332f",
@@ -134,6 +140,8 @@
           }
         }
       }
-    }
+    },
+    "name": "direct"
   }
 }
+

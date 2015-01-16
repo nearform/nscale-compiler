@@ -5,6 +5,7 @@
   "containerDefinitions": [
   ],
   "topology": {
-    "containers": {}
+    "containers": {},
+    "name": "local"
   }
 }
