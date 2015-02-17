@@ -94,6 +94,12 @@ module.exports = function() {
 
   var getParentContainer = function(path, isLeaf) {
     var result = {};
+    var skipped = false;
+    var removedCount = 0;
+
+    if (isLeaf) {
+      skipped = true;
+    }
     
     if (path.length === 1) {
       result.name = path[0];
@@ -101,26 +107,29 @@ module.exports = function() {
       result.selfRef = true;
     }
     else {
-      for (var idx = path.length - 1; idx >= 0; --idx) {
-        if (isNaN(path[idx])) {
-          if (isLeaf) {
-            result.path = path.slice(0, idx + 1);
-            if (result.path[result.path.length - 1] === 'contains') {
-              result.path = path.slice(0, result.path.length - 1);
-            }
-          }
-          else {
-            if (!isNaN(path[path.length - 2])) {
-              result.path = path.slice(0, idx - 1);
-            }
-            else {
-              result.path = path.slice(0, idx);
-            }
-          }
-          result.name = result.path[result.path.length - 1];
+      var newPath = _.cloneDeep(path);
+      while (newPath.length > 0) {
+        if (!isNaN(newPath[newPath.length - 1])) {
+          newPath = newPath.slice(0, newPath.length - 1);
+          ++removedCount;
+          continue;
+        }
+        if (newPath[newPath.length - 1] === 'contains') {
+          newPath = newPath.slice(0, newPath.length - 1);
+          ++removedCount;
+          continue;
+        }
+        if (removedCount === 0) {
+          newPath = newPath.slice(0, newPath.length - 1);
+          ++removedCount;
+          continue;
+        }
+        else {
           break;
         }
       }
+      result.name = newPath[newPath.length - 1];
+      result.path = newPath;
     }
     return result;
   };
@@ -353,6 +362,7 @@ module.exports = function() {
 
 
   return {
+    getParentContainer: getParentContainer,
     compile: compile,
     targetList: targetList
   };
