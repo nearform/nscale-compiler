@@ -78,13 +78,17 @@ module.exports = function() {
 
 
 
-  var compileContainerDefs = function compileContainerDefs(system, sys, defs) {
+  var compileContainerDefs = function compileContainerDefs(system, sys, defs, platform) {
     system.containerDefinitions= [];
     _.each(defs, function(def) {
       _.each(_.keys(def), function(key) {
         var obj = def[key];
         if (!obj.id) { obj.id =  key; }
         if (!obj.name) { obj.name = key; }
+        if (obj.override && obj.override[platform]) {
+          _.merge(obj, obj.override[platform]);
+        }
+        delete obj.override;
         system.containerDefinitions.push(obj);
       });
     });
@@ -100,7 +104,7 @@ module.exports = function() {
     if (isLeaf) {
       skipped = true;
     }
-    
+
     if (path.length === 1) {
       result.name = path[0];
       result.path = path;
@@ -331,7 +335,7 @@ module.exports = function() {
           sys = loadModule(path + '/system.js');
 
           compileHeader(system, sys);
-          compileContainerDefs(system, sys, defs);
+          compileContainerDefs(system, sys, defs, platform);
           var res = compileTopology(platform, system, sys, defs);
           deleteUnreferenced(system);
           if (res.result === 'ok') {
@@ -367,4 +371,4 @@ module.exports = function() {
     targetList: targetList
   };
 };
- 
+

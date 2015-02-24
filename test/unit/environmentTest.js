@@ -32,10 +32,22 @@ describe('environment test', function() {
     });
   });
 
+  it('should compile local with overrides', function(done){
+    compiler.compile(__dirname + '/../fixture/stgprod', 'local', function(err, system) {
+      assert(!err);
+      var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'docsrv'; });
+      assert.equal(cd.type, 'process');
+      assert.equal(cd.override, undefined);
+      done();
+    });
+  });
+
   it('should correctly compile staging', function(done){
     compiler.compile(__dirname + '/../fixture/stgprod', 'staging', function(err, system) {
       assert(!err);
       var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'docsrv'; });
+      assert.equal(cd.type, 'docker');
+      assert.equal(cd.override, undefined);
       assert(cd);
       done();
     });
