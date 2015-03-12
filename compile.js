@@ -254,12 +254,12 @@ module.exports = function() {
   /**
    * lint system definition file list
    */
-  var lintFiles = function(index, list, cb) {
+  var lintFiles = function(index, list, systemPath, cb) {
     if (index < list.length) {
-      lint(list[index], function(err, result) {
+      lint(list[index], systemPath, function(err, result) {
         if (err) { return cb(err); }
         if (result.result === 'ok') {
-          lintFiles(index + 1, list, cb);
+          lintFiles(index + 1, list, systemPath, cb);
         }
         else {
           cb(null, result);
@@ -325,7 +325,7 @@ module.exports = function() {
 
         var lintList = [].concat(files);
         lintList.push(path + '/system.js');
-        lintFiles(0, lintList, function(err, result) {
+        lintFiles(0, lintList, path, function(err, result) {
           if (err) { return cb(err); }
           if (result.result !== 'ok') { return cb(result); }
 
@@ -355,7 +355,7 @@ module.exports = function() {
     var sys;
     var lintList = [path + '/system.js'];
 
-    lintFiles(0, lintList, function(err, result) {
+    lintFiles(0, lintList, path, function(err, result) {
       if (err) { return cb(err); }
       if (result.result !== 'ok') { return cb(result); }
       sys = loadModule(path + '/system.js');
