@@ -39,13 +39,22 @@ module.exports = function lint() {
   return function lint(filePath, systemPath, cb) {
     fs.readFile(filePath, 'utf8', function(err, str) {
       if (err) { return cb(err); }
-
       var localPath = systemPath + '/.jshintrc'
+      
       fs.exists(localPath, function (exists) {
-        var cfg = (exists) ? jshintcli.loadConfig(localPath) : defaultConfig;
-        delete cfg.dirname;
+        var cfg;
         var result = {};
         var stat;
+
+        if (exists) {
+          cfg = jshintcli.loadConfig(localPath);
+          result.localConfig = true;
+        } 
+        else {
+          cfg = defaultConfig;
+          result.localConfig = false;
+        }
+        delete cfg.dirname;
       
         stat = jshint(str, cfg, {});
         if (!stat) {
