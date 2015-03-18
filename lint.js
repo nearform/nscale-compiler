@@ -21,11 +21,8 @@ var fs = require('fs');
 
 module.exports = function lint() {
 
-  var cfg = jshintcli.loadConfig(__dirname + '/.jshintrc');
-  delete cfg.dirname;
-
-
-
+  var defaultConfig = jshintcli.loadConfig(__dirname + '/.jshintrc');
+  
   var reportErrors = function(filePath) {
     var results;
 
@@ -39,23 +36,37 @@ module.exports = function lint() {
 
 
 
-  return function lint(filePath, cb) {
+  return function lint(filePath, systemPath, cb) {
     fs.readFile(filePath, 'utf8', function(err, str) {
       if (err) { return cb(err); }
-      var result = {};
-      var stat;
+      var localPath = systemPath + '/.jshintrc'
+      
+      fs.exists(localPath, function (exists) {
+        var cfg;
+        var result = {};
+        var stat;
 
-      //result.result = jshint(str, cfg, {});
-      stat = jshint(str, cfg, {});
-      if (!stat) {
-        result.result = 'err';
-        result.err= reportErrors(filePath);
-      }
-      else {
-        result.result = 'ok';
-      }
+        if (exists) {
+          cfg = jshintcli.loadConfig(localPath);
+          result.localConfig = true;
+        } 
+        else {
+          cfg = defaultConfig;
+          result.localConfig = false;
+        }
+        delete cfg.dirname;
+      
+        stat = jshint(str, cfg, {});
+        if (!stat) {
+          result.result = 'err';
+          result.err= reportErrors(filePath);
+        }
+        else {
+          result.result = 'ok';
+        }
+        return cb(err, result);
+      });
 
-      return cb(err, result);
     });
   };
 };
