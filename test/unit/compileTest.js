@@ -115,6 +115,19 @@ describe('compiler test', function() {
       done();
     });
   });
+
+  describe('Given a system with two identical topologies', function () {
+    it('should generate two systems with different container names', function (done) {
+      compiler.compileAll(__dirname + '/../fixture/multipleIdenticalTopologies', function (err, systems) {
+        assert(!err);
+        assert(systems);
+        systems.local.topology.name = 'fakename';
+        systems.aws.topology.name = 'fakename';
+        assert(!_.isEqual(systems.local.topology, systems.aws.topology));
+        done();
+      });
+    });
+  });
 });
 
 
