@@ -17,13 +17,13 @@
 var _ = require('lodash');
 var assert = require('assert');
 var compiler = require('../../main')();
-
+var crc = require('crc');
 
 
 describe('compiler test', function() {
 
   it('should correctly add a container', function(done){
-    compiler.edit(__dirname + '/../fixture/system2', 
+    compiler.edit(__dirname + '/../fixture/system2',
                   'addContainer',
                   '{"name": "test123", "type": "process","specific": {"repositoryUrl": "d","buildScript": "g","execute": {"args": "s","exec": "v"}}}',
                   function(err) {
@@ -31,7 +31,7 @@ describe('compiler test', function() {
       compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
-        // assert !cd - the container definition will not appear in the compiled JSON because it 
+        // assert !cd - the container definition will not appear in the compiled JSON because it
         // is not yet referenced from the topology section
         assert(!cd);
         done();
@@ -42,7 +42,7 @@ describe('compiler test', function() {
 
 
   it('should correctly link a container', function(done){
-    compiler.edit(__dirname + '/../fixture/system2', 
+    compiler.edit(__dirname + '/../fixture/system2',
                   'linkContainer',
                   'local/root:test123',
                   function(err, system) {
@@ -51,7 +51,7 @@ describe('compiler test', function() {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
         assert(cd);
-        assert(system.topology.containers['test123-b37565a1']);
+        assert(system.topology.containers['test123-' + crc.crc32('local,root,5').toString(16)]);
         done();
       });
     });
@@ -59,7 +59,7 @@ describe('compiler test', function() {
 
 
   it('should correctly remove a container', function(done){
-    compiler.edit(__dirname + '/../fixture/system2', 
+    compiler.edit(__dirname + '/../fixture/system2',
                   'removeContainer',
                   'test123',
                   function(err, system) {
@@ -68,7 +68,7 @@ describe('compiler test', function() {
         assert(!err);
         var cd = _.find(system.containerDefinitions, function(cdef) { return cdef.name === 'test123'; });
         assert(!cd);
-        assert(!system.topology.containers['test123-c4725537']);
+        assert(!system.topology.containers['test123-' + crc.crc32('local,root,5').toString(16)]);
         done();
       });
     });
