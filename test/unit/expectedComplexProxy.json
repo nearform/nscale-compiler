@@ -1,0 +1,499 @@
+{
+  "name": "wibble",
+  "namespace": "wibble",
+  "id": "33adb1b7-d6cd-474a-9ef7-db188f9ea4b4",
+  "containerDefinitions": [
+    {
+      "type": "docker",
+      "specific": {
+        "name": "redis:2.8",
+        "execute": {
+          "args": "-d -p 6379:6379"
+        }
+      },
+      "id": "redis",
+      "name": "redis"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "name": "dockerfile/elasticsearch",
+        "execute": {
+          "args": "-d -p 9200:9200 -p 9300:9300 -v /mnt/elasticsearch:/data",
+          "exec": "/elasticsearch/bin/elasticsearch --network.bind_host=0.0.0.0 --network.publish_host=__TARGETIP__"
+        }
+      },
+      "id": "elasticsearch",
+      "name": "elasticsearch"
+    },
+    {
+      "type": "blank-container",
+      "id": "root",
+      "name": "root"
+    },
+    {
+      "type": "blank-container",
+      "id": "machine",
+      "name": "machine"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
+        "execute": {
+          "args": "-e _TARGETIP_=__TARGETIP__ -p __TARGETIP__:3000:3000 -d",
+          "exec": "/bin/bash /run.sh"
+        }
+      },
+      "id": "nginxfe",
+      "name": "nginxfe"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "proxyPort": 10002,
+        "buildScript": "buildusers.sh",
+        "processBuild": "npm install; cd wibble; npm install",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "node /wibble/srv/users.js",
+          "cwd": "srv",
+          "process": "node users.js"
+        }
+      },
+      "id": "users",
+      "name": "users"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "proxyPort": 10005,
+        "processBuild": "npm install; cd wibble; npm install",
+        "buildScript": "buildperms.sh",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "node /wibble/srv/permissions.js",
+          "cwd": "srv",
+          "process": "node permissions.js"
+        }
+      },
+      "id": "permissions",
+      "name": "permissions"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "proxyPort": 10001,
+        "processBuild": "npm install; cd wibble; npm install",
+        "buildScript": "buildbl.sh",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "node /wibble/srv/business-logic.js",
+          "cwd": "srv",
+          "process": "node business-logic.js"
+        }
+      },
+      "id": "business-logic",
+      "name": "business-logic"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "proxyPort": 10003,
+        "processBuild": "npm install; cd wibble; npm install",
+        "buildScript": "buildaudit.sh",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "node /wibble/srv/audit.js",
+          "cwd": "srv",
+          "process": "node audit.js"
+        }
+      },
+      "id": "audit",
+      "name": "audit"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "proxyPort": 10006,
+        "processBuild": "npm install; cd wibble; npm install",
+        "buildScript": "buildemail.sh",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "node /wibble/srv/emails.js",
+          "cwd": "srv",
+          "process": "node emails.js"
+        }
+      },
+      "id": "emails",
+      "name": "emails"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "proxyPort": 10004,
+        "processBuild": "npm install; cd wibble; npm install",
+        "buildScript": "buildsearch.sh",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "node /wibble/srv/search.js",
+          "cwd": "srv",
+          "process": "node search.js"
+        }
+      },
+      "id": "search",
+      "name": "search"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "buildScript": "buildfe.sh",
+        "processBuild": "npm install; cd wibble; npm install; bower install",
+        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "execute": {
+          "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
+          "process": "node srv/front.js"
+        }
+      },
+      "id": "frontend",
+      "name": "frontend"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+        "execute": {
+          "args": "--net=host -d"
+        }
+      },
+      "id": "__proxy",
+      "name": "__proxy"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "root-16f4f95b": {
+        "id": "root-16f4f95b",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "root",
+        "type": "blank-container",
+        "contains": [
+          "machine-bae48723",
+          "machine-ad9f9360",
+          "machine-9412afa5"
+        ],
+        "specific": {}
+      },
+      "machine-bae48723": {
+        "id": "machine-bae48723",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "machine",
+        "type": "blank-container",
+        "contains": [
+          "nginxfe-7d2a3e95",
+          "frontend-809f121",
+          "frontend-e33e4a22",
+          "__proxy-e4236f2f"
+        ],
+        "specific": {
+          "ipAddress": "10.1.0.101",
+          "user": "cexadministrator",
+          "identityFile": "/home/cexadministrator/keys/nscale-key"
+        }
+      },
+      "nginxfe-7d2a3e95": {
+        "id": "nginxfe-7d2a3e95",
+        "containedBy": "machine-bae48723",
+        "containerDefinitionId": "nginxfe",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
+          "execute": {
+            "args": "-e _TARGETIP_=__TARGETIP__ -p __TARGETIP__:3000:3000 -d",
+            "exec": "/bin/bash /run.sh"
+          }
+        }
+      },
+      "frontend-809f121": {
+        "id": "frontend-809f121",
+        "containedBy": "machine-bae48723",
+        "containerDefinitionId": "frontend",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildfe.sh",
+          "processBuild": "npm install; cd wibble; npm install; bower install",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
+            "process": "node srv/front.js",
+            "args": "-e MONITORING_INTERFACE=0.0.0.0 -e PORT=8000 -p 8000:8000 -p 8200:8002 --dns 172.17.42.1 -d"
+          }
+        }
+      },
+      "frontend-e33e4a22": {
+        "id": "frontend-e33e4a22",
+        "containedBy": "machine-bae48723",
+        "containerDefinitionId": "frontend",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "buildScript": "buildfe.sh",
+          "processBuild": "npm install; cd wibble; npm install; bower install",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
+            "process": "node srv/front.js",
+            "args": "-e MONITORING_INTERFACE=0.0.0.0 -e PORT=8000 -p 8003:8000 -p 8203:8002 --dns 172.17.42.1 -d"
+          }
+        }
+      },
+      "__proxy-e4236f2f": {
+        "id": "__proxy-e4236f2f",
+        "containedBy": "machine-bae48723",
+        "containerDefinitionId": "__proxy",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "execute": {
+            "args": "--net=host -d"
+          }
+        }
+      },
+      "machine-ad9f9360": {
+        "id": "machine-ad9f9360",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "machine",
+        "type": "blank-container",
+        "contains": [
+          "users-340ca5c3",
+          "permissions-db3bd337",
+          "business-logic-53f4eab",
+          "audit-837fe5ce",
+          "audit-46d8db40",
+          "emails-dffaa0e0",
+          "search-a90494f6",
+          "__proxy-86299070"
+        ],
+        "specific": {
+          "ipAddress": "10.1.0.103",
+          "user": "root",
+          "identityFile": "/home/root/keys/nscale-key"
+        }
+      },
+      "users-340ca5c3": {
+        "id": "users-340ca5c3",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "users",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10002,
+          "buildScript": "buildusers.sh",
+          "processBuild": "npm install; cd wibble; npm install",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/users.js",
+            "cwd": "srv",
+            "process": "node users.js",
+            "args": "-e PORT=10002 -p 11000:10002 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 11000
+        }
+      },
+      "permissions-db3bd337": {
+        "id": "permissions-db3bd337",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "permissions",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10005,
+          "processBuild": "npm install; cd wibble; npm install",
+          "buildScript": "buildperms.sh",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/permissions.js",
+            "cwd": "srv",
+            "process": "node permissions.js",
+            "args": "-e POSTGRESQL=1 -e PORT=10005 -p 12000:10005 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 12000
+        }
+      },
+      "business-logic-53f4eab": {
+        "id": "business-logic-53f4eab",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "business-logic",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10001,
+          "processBuild": "npm install; cd wibble; npm install",
+          "buildScript": "buildbl.sh",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/business-logic.js",
+            "cwd": "srv",
+            "process": "node business-logic.js",
+            "args": "-e POSTGRESQL=1 -e PORT=10001 -p 13000:10001 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 13000
+        }
+      },
+      "audit-837fe5ce": {
+        "id": "audit-837fe5ce",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "audit",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10003,
+          "processBuild": "npm install; cd wibble; npm install",
+          "buildScript": "buildaudit.sh",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/audit.js",
+            "cwd": "srv",
+            "process": "node audit.js",
+            "args": "-e POSTGRESQL=1 -e PORT=10003 -p 14000:10003 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 1400
+        }
+      },
+      "audit-46d8db40": {
+        "id": "audit-46d8db40",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "audit",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10003,
+          "processBuild": "npm install; cd wibble; npm install",
+          "buildScript": "buildaudit.sh",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/audit.js",
+            "cwd": "srv",
+            "process": "node audit.js",
+            "args": "-e POSTGRESQL=1 -e PORT=10003 -p 14000:10003 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 1401
+        }
+      },
+      "emails-dffaa0e0": {
+        "id": "emails-dffaa0e0",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "emails",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10006,
+          "processBuild": "npm install; cd wibble; npm install",
+          "buildScript": "buildemail.sh",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/emails.js",
+            "cwd": "srv",
+            "process": "node emails.js",
+            "args": "-e POSTGRESQL=1 -e PORT=10003 -p 16000:10003 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 1500
+        }
+      },
+      "search-a90494f6": {
+        "id": "search-a90494f6",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "search",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "proxyPort": 10004,
+          "processBuild": "npm install; cd wibble; npm install",
+          "buildScript": "buildsearch.sh",
+          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "execute": {
+            "exec": "node /wibble/srv/search.js",
+            "cwd": "srv",
+            "process": "node search.js",
+            "args": "-e PORT=10004 -p 15001:10004 --dns 172.17.42.1 -d"
+          },
+          "servicePort": 1600
+        }
+      },
+      "__proxy-86299070": {
+        "id": "__proxy-86299070",
+        "containedBy": "machine-ad9f9360",
+        "containerDefinitionId": "__proxy",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "execute": {
+            "args": "--net=host -d"
+          }
+        }
+      },
+      "machine-9412afa5": {
+        "id": "machine-9412afa5",
+        "containedBy": "root-16f4f95b",
+        "containerDefinitionId": "machine",
+        "type": "blank-container",
+        "contains": [
+          "redis-b7e44819",
+          "elasticsearch-c0e3788f",
+          "__proxy-59ea2935"
+        ],
+        "specific": {
+          "ipAddress": "10.1.0.105",
+          "user": "cexadministrator",
+          "identityFile": "/home/cexadministrator/keys/nscale-key"
+        }
+      },
+      "redis-b7e44819": {
+        "id": "redis-b7e44819",
+        "containedBy": "machine-9412afa5",
+        "containerDefinitionId": "redis",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "name": "redis:2.8",
+          "execute": {
+            "args": "-d -p 6379:6379"
+          }
+        }
+      },
+      "elasticsearch-c0e3788f": {
+        "id": "elasticsearch-c0e3788f",
+        "containedBy": "machine-9412afa5",
+        "containerDefinitionId": "elasticsearch",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "name": "dockerfile/elasticsearch",
+          "execute": {
+            "args": "-d -p 9200:9200 -p 9300:9300 -v /mnt/elasticsearch:/data",
+            "exec": "/elasticsearch/bin/elasticsearch --network.bind_host=0.0.0.0 --network.publish_host=__TARGETIP__"
+          }
+        }
+      },
+      "__proxy-59ea2935": {
+        "id": "__proxy-59ea2935",
+        "containedBy": "machine-9412afa5",
+        "containerDefinitionId": "__proxy",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "execute": {
+            "args": "--net=host -d"
+          }
+        }
+      }
+    },
+    "name": "beta"
+  }
+}
+

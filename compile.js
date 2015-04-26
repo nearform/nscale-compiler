@@ -20,6 +20,7 @@ var _ = require('lodash');
 var traverse = require('traverse');
 var crc = require('crc');
 var lint = require('./lint')();
+var proxy = require('./proxy.js')();
 
 
 
@@ -334,16 +335,20 @@ module.exports = function() {
           });
           sys = loadModule(path + '/system.js');
 
-          compileHeader(system, sys);
-          compileContainerDefs(system, sys, defs, platform);
-          var res = compileTopology(platform, system, sys, defs);
-          deleteUnreferenced(system);
-          if (res.result === 'ok') {
-            cb(!validate(system), system);
-          }
-          else {
-            cb(res);
-          }
+          debugger;
+          proxy.injectProxies(path, platform, sys, defs, function(err) {
+            if (err) { return cb(err); }
+            compileHeader(system, sys);
+            compileContainerDefs(system, sys, defs, platform);
+            var res = compileTopology(platform, system, sys, defs);
+            deleteUnreferenced(system);
+            if (res.result === 'ok') {
+              cb(!validate(system), system);
+            }
+            else {
+              cb(res);
+            }
+          });
         });
       });
     });
