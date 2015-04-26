@@ -172,28 +172,28 @@
   ],
   "topology": {
     "containers": {
-      "root-16f4f95b": {
-        "id": "root-16f4f95b",
-        "containedBy": "root-16f4f95b",
+      "root-e499dfd6": {
+        "id": "root-e499dfd6",
+        "containedBy": "root-e499dfd6",
         "containerDefinitionId": "root",
         "type": "blank-container",
         "contains": [
-          "machine-bae48723",
-          "machine-ad9f9360",
-          "machine-9412afa5"
+          "machine-e0fb6021",
+          "machine-f7807462",
+          "machine-ce0d48a7"
         ],
         "specific": {}
       },
-      "machine-bae48723": {
-        "id": "machine-bae48723",
-        "containedBy": "root-16f4f95b",
+      "machine-e0fb6021": {
+        "id": "machine-e0fb6021",
+        "containedBy": "root-e499dfd6",
         "containerDefinitionId": "machine",
         "type": "blank-container",
         "contains": [
-          "nginxfe-7d2a3e95",
-          "frontend-809f121",
-          "frontend-e33e4a22",
-          "__proxy-e4236f2f"
+          "nginxfe-47e7f3f2",
+          "frontend-d983952a",
+          "frontend-32b42e29",
+          "__proxy-deeea248"
         ],
         "specific": {
           "ipAddress": "10.1.0.101",
@@ -201,9 +201,9 @@
           "identityFile": "/home/cexadministrator/keys/nscale-key"
         }
       },
-      "nginxfe-7d2a3e95": {
-        "id": "nginxfe-7d2a3e95",
-        "containedBy": "machine-bae48723",
+      "nginxfe-47e7f3f2": {
+        "id": "nginxfe-47e7f3f2",
+        "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "nginxfe",
         "type": "docker",
         "contains": [],
@@ -215,9 +215,9 @@
           }
         }
       },
-      "frontend-809f121": {
-        "id": "frontend-809f121",
-        "containedBy": "machine-bae48723",
+      "frontend-d983952a": {
+        "id": "frontend-d983952a",
+        "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "frontend",
         "type": "docker",
         "contains": [],
@@ -232,9 +232,9 @@
           }
         }
       },
-      "frontend-e33e4a22": {
-        "id": "frontend-e33e4a22",
-        "containedBy": "machine-bae48723",
+      "frontend-32b42e29": {
+        "id": "frontend-32b42e29",
+        "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "frontend",
         "type": "docker",
         "contains": [],
@@ -249,9 +249,9 @@
           }
         }
       },
-      "__proxy-e4236f2f": {
-        "id": "__proxy-e4236f2f",
-        "containedBy": "machine-bae48723",
+      "__proxy-deeea248": {
+        "id": "__proxy-deeea248",
+        "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -262,20 +262,20 @@
           }
         }
       },
-      "machine-ad9f9360": {
-        "id": "machine-ad9f9360",
-        "containedBy": "root-16f4f95b",
+      "machine-f7807462": {
+        "id": "machine-f7807462",
+        "containedBy": "root-e499dfd6",
         "containerDefinitionId": "machine",
         "type": "blank-container",
         "contains": [
-          "users-340ca5c3",
-          "permissions-db3bd337",
-          "business-logic-53f4eab",
-          "audit-837fe5ce",
-          "audit-46d8db40",
-          "emails-dffaa0e0",
-          "search-a90494f6",
-          "__proxy-86299070"
+          "users-9da3e0d6",
+          "permissions-db92f89a",
+          "business-logic-de566bd",
+          "audit-2ad0a0db",
+          "audit-ef779e55",
+          "emails-b28eeb4e",
+          "search-c470df58",
+          "__proxy-bce45d17"
         ],
         "specific": {
           "ipAddress": "10.1.0.103",
@@ -283,9 +283,9 @@
           "identityFile": "/home/root/keys/nscale-key"
         }
       },
-      "users-340ca5c3": {
-        "id": "users-340ca5c3",
-        "containedBy": "machine-ad9f9360",
+      "users-9da3e0d6": {
+        "id": "users-9da3e0d6",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "users",
         "type": "docker",
         "contains": [],
@@ -303,9 +303,9 @@
           "servicePort": 11000
         }
       },
-      "permissions-db3bd337": {
-        "id": "permissions-db3bd337",
-        "containedBy": "machine-ad9f9360",
+      "permissions-db92f89a": {
+        "id": "permissions-db92f89a",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "permissions",
         "type": "docker",
         "contains": [],
@@ -323,9 +323,9 @@
           "servicePort": 12000
         }
       },
-      "business-logic-53f4eab": {
-        "id": "business-logic-53f4eab",
-        "containedBy": "machine-ad9f9360",
+      "business-logic-de566bd": {
+        "id": "business-logic-de566bd",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "business-logic",
         "type": "docker",
         "contains": [],
@@ -343,9 +343,9 @@
           "servicePort": 13000
         }
       },
-      "audit-837fe5ce": {
-        "id": "audit-837fe5ce",
-        "containedBy": "machine-ad9f9360",
+      "audit-2ad0a0db": {
+        "id": "audit-2ad0a0db",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "audit",
         "type": "docker",
         "contains": [],
@@ -363,9 +363,9 @@
           "servicePort": 1400
         }
       },
-      "audit-46d8db40": {
-        "id": "audit-46d8db40",
-        "containedBy": "machine-ad9f9360",
+      "audit-ef779e55": {
+        "id": "audit-ef779e55",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "audit",
         "type": "docker",
         "contains": [],
@@ -383,9 +383,9 @@
           "servicePort": 1401
         }
       },
-      "emails-dffaa0e0": {
-        "id": "emails-dffaa0e0",
-        "containedBy": "machine-ad9f9360",
+      "emails-b28eeb4e": {
+        "id": "emails-b28eeb4e",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "emails",
         "type": "docker",
         "contains": [],
@@ -403,9 +403,9 @@
           "servicePort": 1500
         }
       },
-      "search-a90494f6": {
-        "id": "search-a90494f6",
-        "containedBy": "machine-ad9f9360",
+      "search-c470df58": {
+        "id": "search-c470df58",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "search",
         "type": "docker",
         "contains": [],
@@ -423,9 +423,9 @@
           "servicePort": 1600
         }
       },
-      "__proxy-86299070": {
-        "id": "__proxy-86299070",
-        "containedBy": "machine-ad9f9360",
+      "__proxy-bce45d17": {
+        "id": "__proxy-bce45d17",
+        "containedBy": "machine-f7807462",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -436,15 +436,15 @@
           }
         }
       },
-      "machine-9412afa5": {
-        "id": "machine-9412afa5",
-        "containedBy": "root-16f4f95b",
+      "machine-ce0d48a7": {
+        "id": "machine-ce0d48a7",
+        "containedBy": "root-e499dfd6",
         "containerDefinitionId": "machine",
         "type": "blank-container",
         "contains": [
-          "redis-b7e44819",
-          "elasticsearch-c0e3788f",
-          "__proxy-59ea2935"
+          "redis-8d29857e",
+          "elasticsearch-fa2eb5e8",
+          "__proxy-6327e452"
         ],
         "specific": {
           "ipAddress": "10.1.0.105",
@@ -452,9 +452,9 @@
           "identityFile": "/home/cexadministrator/keys/nscale-key"
         }
       },
-      "redis-b7e44819": {
-        "id": "redis-b7e44819",
-        "containedBy": "machine-9412afa5",
+      "redis-8d29857e": {
+        "id": "redis-8d29857e",
+        "containedBy": "machine-ce0d48a7",
         "containerDefinitionId": "redis",
         "type": "docker",
         "contains": [],
@@ -465,9 +465,9 @@
           }
         }
       },
-      "elasticsearch-c0e3788f": {
-        "id": "elasticsearch-c0e3788f",
-        "containedBy": "machine-9412afa5",
+      "elasticsearch-fa2eb5e8": {
+        "id": "elasticsearch-fa2eb5e8",
+        "containedBy": "machine-ce0d48a7",
         "containerDefinitionId": "elasticsearch",
         "type": "docker",
         "contains": [],
@@ -479,9 +479,9 @@
           }
         }
       },
-      "__proxy-59ea2935": {
-        "id": "__proxy-59ea2935",
-        "containedBy": "machine-9412afa5",
+      "__proxy-6327e452": {
+        "id": "__proxy-6327e452",
+        "containedBy": "machine-ce0d48a7",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],

@@ -124,13 +124,13 @@
   ],
   "topology": {
     "containers": {
-      "webElb-7bbd309b": {
-        "id": "webElb-7bbd309b",
-        "containedBy": "webElb-7bbd309b",
+      "webElb-a9d0fd87": {
+        "id": "webElb-a9d0fd87",
+        "containedBy": "webElb-a9d0fd87",
         "containerDefinitionId": "webElb",
         "type": "aws-elb",
         "contains": [
-          "webSg-af30ca23"
+          "webSg-6eb120b1"
         ],
         "specific": {
           "protocol": "HTTP",
@@ -139,14 +139,14 @@
           "instancePort": 8000
         }
       },
-      "webSg-af30ca23": {
-        "id": "webSg-af30ca23",
-        "containedBy": "webElb-7bbd309b",
+      "webSg-6eb120b1": {
+        "id": "webSg-6eb120b1",
+        "containedBy": "webElb-a9d0fd87",
         "containerDefinitionId": "webSg",
         "type": "aws-sg",
         "contains": [
-          "machine-3c7fde6",
-          "machine-14bce9a5"
+          "machine-9c7abf3c",
+          "machine-8b01ab7f"
         ],
         "specific": {
           "ingress": [
@@ -174,20 +174,20 @@
           "egress": []
         }
       },
-      "machine-3c7fde6": {
-        "id": "machine-3c7fde6",
-        "containedBy": "webSg-af30ca23",
+      "machine-9c7abf3c": {
+        "id": "machine-9c7abf3c",
+        "containedBy": "webSg-6eb120b1",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
         "contains": [
-          "web-951990f1",
-          "__proxy-e21ea067"
+          "web-761c0265",
+          "__proxy-11b32f3"
         ],
         "specific": {}
       },
-      "web-951990f1": {
-        "id": "web-951990f1",
-        "containedBy": "machine-3c7fde6",
+      "web-761c0265": {
+        "id": "web-761c0265",
+        "containedBy": "machine-9c7abf3c",
         "containerDefinitionId": "web",
         "type": "docker",
         "contains": [],
@@ -200,9 +200,9 @@
           }
         }
       },
-      "__proxy-e21ea067": {
-        "id": "__proxy-e21ea067",
-        "containedBy": "machine-3c7fde6",
+      "__proxy-11b32f3": {
+        "id": "__proxy-11b32f3",
+        "containedBy": "machine-9c7abf3c",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -213,22 +213,22 @@
           }
         }
       },
-      "machine-14bce9a5": {
-        "id": "machine-14bce9a5",
-        "containedBy": "webSg-af30ca23",
+      "machine-8b01ab7f": {
+        "id": "machine-8b01ab7f",
+        "containedBy": "webSg-6eb120b1",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
         "contains": [
-          "docsrv-54974f31",
-          "histsrv-23907fa7",
-          "realsrv-ba992e1d",
-          "__proxy-cd9e1e8b"
+          "docsrv-b792dda5",
+          "histsrv-c095ed33",
+          "realsrv-599cbc89",
+          "__proxy-2e9b8c1f"
         ],
         "specific": {}
       },
-      "docsrv-54974f31": {
-        "id": "docsrv-54974f31",
-        "containedBy": "machine-14bce9a5",
+      "docsrv-b792dda5": {
+        "id": "docsrv-b792dda5",
+        "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "docsrv",
         "type": "docker",
         "contains": [],
@@ -241,9 +241,9 @@
           }
         }
       },
-      "histsrv-23907fa7": {
-        "id": "histsrv-23907fa7",
-        "containedBy": "machine-14bce9a5",
+      "histsrv-c095ed33": {
+        "id": "histsrv-c095ed33",
+        "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "histsrv",
         "type": "docker",
         "contains": [],
@@ -256,9 +256,9 @@
           }
         }
       },
-      "realsrv-ba992e1d": {
-        "id": "realsrv-ba992e1d",
-        "containedBy": "machine-14bce9a5",
+      "realsrv-599cbc89": {
+        "id": "realsrv-599cbc89",
+        "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "realsrv",
         "type": "docker",
         "contains": [],
@@ -271,9 +271,9 @@
           }
         }
       },
-      "__proxy-cd9e1e8b": {
-        "id": "__proxy-cd9e1e8b",
-        "containedBy": "machine-14bce9a5",
+      "__proxy-2e9b8c1f": {
+        "id": "__proxy-2e9b8c1f",
+        "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -284,20 +284,20 @@
           }
         }
       },
-      "machine-1505df84": {
-        "id": "machine-1505df84",
-        "containedBy": "machine-1505df84",
+      "machine-1d6ee06": {
+        "id": "machine-1d6ee06",
+        "containedBy": "machine-1d6ee06",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
         "contains": [
-          "redis-17b2cef2",
-          "__proxy-60b5fe64"
+          "redis-4fd920d2",
+          "__proxy-38de1044"
         ],
         "specific": {}
       },
-      "redis-17b2cef2": {
-        "id": "redis-17b2cef2",
-        "containedBy": "machine-1505df84",
+      "redis-4fd920d2": {
+        "id": "redis-4fd920d2",
+        "containedBy": "machine-1d6ee06",
         "containerDefinitionId": "redis",
         "type": "docker",
         "contains": [],
@@ -306,9 +306,9 @@
           "name": "redis"
         }
       },
-      "__proxy-60b5fe64": {
-        "id": "__proxy-60b5fe64",
-        "containedBy": "machine-1505df84",
+      "__proxy-38de1044": {
+        "id": "__proxy-38de1044",
+        "containedBy": "machine-1d6ee06",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
