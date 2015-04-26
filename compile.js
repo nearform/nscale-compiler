@@ -148,12 +148,12 @@ module.exports = function() {
 
 
 
-  var createTopologyNode = function(system, _this, key, containers, def) {
+  var createTopologyNode = function(system, _this, key, containers, def, platform) {
     var identifier = _this.isLeaf ? _this.node : _this.key;
     var containerDefId = _this.isLeaf ? _this.node : key;
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
-    var id = identifier + '-' + crc.crc32('' + _this.path).toString(16);
-    var parentId = containedBy.name + '-' + crc.crc32('' + containedBy.path).toString(16);
+    var id = identifier + '-' + crc.crc32('' + [platform].concat(_this.path)).toString(16);
+    var parentId = containedBy.name + '-' + crc.crc32('' + [platform].concat(containedBy.path)).toString(16);
 
     containers[id] = {id: id,
                       containedBy: parentId,
@@ -186,7 +186,6 @@ module.exports = function() {
     var isDefined = [];
     var notDefined = [];
 
-
     // first pass create topology nodes and build definition list
     if (sys.topology[platform] && _.keys(sys.topology[platform]).length > 0) {
       traverse(sys.topology[platform]).forEach(function() {
@@ -202,7 +201,7 @@ module.exports = function() {
             match = _.find(_.keys(def), function(key) { return key === _this.node; });
             if (match) {
               isDefined.push({path: _this.path, elm: _this.node});
-              createTopologyNode(system, _this, _this.key, containers, def[match]);
+              createTopologyNode(system, _this, _this.key, containers, def[match], platform);
             }
           });
         }
@@ -213,7 +212,7 @@ module.exports = function() {
               match = _.find(_.keys(def), function(mkey) { return mkey === key; });
               if (match) {
                 isDefined.push({path: _this.path, elm: _this.key});
-                createTopologyNode(system, _this, key, containers, def[match]);
+                createTopologyNode(system, _this, key, containers, def[match], platform);
               }
             }
           });
