@@ -37,6 +37,8 @@ module.exports = function() {
     type: 'docker',
     specific: {
       repositoryUrl: 'https://github.com/nearform/nscale-proxy-container.git',
+      configPath: '/etc/haproxy.cfg',
+      hup: 'haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)',
       execute: {
         args: '--net=host -d',
       }

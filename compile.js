@@ -334,7 +334,6 @@ module.exports = function() {
           });
           sys = loadModule(path + '/system.js');
 
-          debugger;
           proxy.injectProxies(path, platform, sys, defs, function(err) {
             if (err) { return cb(err); }
             compileHeader(system, sys);

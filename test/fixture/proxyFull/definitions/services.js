@@ -11,7 +11,7 @@ exports.users = {
     proxyPort: 10002,
     buildScript: 'buildusers.sh',
     processBuild: 'npm install; cd wibble; npm install',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: 'node /wibble/srv/users.js',
       cwd: 'srv',
@@ -31,7 +31,7 @@ exports.permissions = {
     proxyPort: 10005,
     processBuild: 'npm install; cd wibble; npm install',
     buildScript: 'buildperms.sh',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: 'node /wibble/srv/permissions.js',
       cwd: 'srv',
@@ -51,7 +51,7 @@ exports['business-logic'] = {
     proxyPort: 10001,
     processBuild: 'npm install; cd wibble; npm install',
     buildScript: 'buildbl.sh',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: 'node /wibble/srv/business-logic.js',
       cwd: 'srv',
@@ -71,7 +71,7 @@ exports.audit = {
     proxyPort: 10003,
     processBuild: 'npm install; cd wibble; npm install',
     buildScript: 'buildaudit.sh',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: 'node /wibble/srv/audit.js',
       cwd: 'srv',
@@ -91,7 +91,7 @@ exports.emails = {
     proxyPort: 10006,
     processBuild: 'npm install; cd wibble; npm install',
     buildScript: 'buildemail.sh',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: 'node /wibble/srv/emails.js',
       cwd: 'srv',
@@ -111,7 +111,7 @@ exports.search = {
     proxyPort: 10004,
     processBuild: 'npm install; cd wibble; npm install',
     buildScript: 'buildsearch.sh',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: 'node /wibble/srv/search.js',
       cwd: 'srv',
@@ -130,7 +130,7 @@ exports.frontend = {
   specific: {
     buildScript: 'buildfe.sh',
     processBuild: 'npm install; cd wibble; npm install; bower install',
-    repositoryUrl: 'git@github.com:i-Sight/v5_nginx_services.git',
+    repositoryUrl: 'git@github.com:nearform/nscale.git',
     execute: {
       exec: '/bin/bash -c \'cd /wibble/wibble; node index.js\'',
       process: 'node srv/front.js'

@@ -26,7 +26,7 @@ exports.topology = {
                               {frontend: { specific: { execute: {args: '-e MONITORING_INTERFACE=0.0.0.0 -e PORT=8000 -p 8003:8000 -p 8203:8002 --dns 172.17.42.1 -d'}}}}],
         specific: { 
           ipAddress: '10.1.0.101',
-          user: 'cexadministrator',
+          user: 'wibble',
           identityFile: '/home/cexadministrator/keys/nscale-key'
         }
       }},
@@ -42,7 +42,7 @@ exports.topology = {
                    {search: { specific: { servicePort: 1600, execute: { args: '-e PORT=10004 -p 15001:10004 --dns 172.17.42.1 -d'}}}}],
         specific: { 
           ipAddress: '10.1.0.103',
-          user: 'root',
+          user: 'wibble',
           identityFile: '/home/root/keys/nscale-key'
         }
       }},
@@ -52,7 +52,7 @@ exports.topology = {
         contains: ['redis', 'elasticsearch'],
         specific: { 
           ipAddress: '10.1.0.105',
-          user: 'cexadministrator',
+          user: 'wibble',
           identityFile: '/home/cexadministrator/keys/nscale-key'
         }
       }},

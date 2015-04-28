@@ -54,7 +54,7 @@
         "proxyPort": 10002,
         "buildScript": "buildusers.sh",
         "processBuild": "npm install; cd wibble; npm install",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "node /wibble/srv/users.js",
           "cwd": "srv",
@@ -70,7 +70,7 @@
         "proxyPort": 10005,
         "processBuild": "npm install; cd wibble; npm install",
         "buildScript": "buildperms.sh",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "node /wibble/srv/permissions.js",
           "cwd": "srv",
@@ -86,7 +86,7 @@
         "proxyPort": 10001,
         "processBuild": "npm install; cd wibble; npm install",
         "buildScript": "buildbl.sh",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "node /wibble/srv/business-logic.js",
           "cwd": "srv",
@@ -102,7 +102,7 @@
         "proxyPort": 10003,
         "processBuild": "npm install; cd wibble; npm install",
         "buildScript": "buildaudit.sh",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "node /wibble/srv/audit.js",
           "cwd": "srv",
@@ -118,7 +118,7 @@
         "proxyPort": 10006,
         "processBuild": "npm install; cd wibble; npm install",
         "buildScript": "buildemail.sh",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "node /wibble/srv/emails.js",
           "cwd": "srv",
@@ -134,7 +134,7 @@
         "proxyPort": 10004,
         "processBuild": "npm install; cd wibble; npm install",
         "buildScript": "buildsearch.sh",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "node /wibble/srv/search.js",
           "cwd": "srv",
@@ -149,7 +149,7 @@
       "specific": {
         "buildScript": "buildfe.sh",
         "processBuild": "npm install; cd wibble; npm install; bower install",
-        "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+        "repositoryUrl": "git@github.com:nearform/nscale.git",
         "execute": {
           "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
           "process": "node srv/front.js"
@@ -162,6 +162,8 @@
       "type": "docker",
       "specific": {
         "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+        "configPath": "/etc/haproxy.cfg",
+        "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
         "execute": {
           "args": "--net=host -d"
         }
@@ -197,7 +199,7 @@
         ],
         "specific": {
           "ipAddress": "10.1.0.101",
-          "user": "cexadministrator",
+          "user": "wibble",
           "identityFile": "/home/cexadministrator/keys/nscale-key"
         }
       },
@@ -224,7 +226,7 @@
         "specific": {
           "buildScript": "buildfe.sh",
           "processBuild": "npm install; cd wibble; npm install; bower install",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
             "process": "node srv/front.js",
@@ -241,7 +243,7 @@
         "specific": {
           "buildScript": "buildfe.sh",
           "processBuild": "npm install; cd wibble; npm install; bower install",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
             "process": "node srv/front.js",
@@ -257,6 +259,8 @@
         "contains": [],
         "specific": {
           "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "configPath": "/etc/haproxy.cfg",
+          "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
           "execute": {
             "args": "--net=host -d"
           }
@@ -279,7 +283,7 @@
         ],
         "specific": {
           "ipAddress": "10.1.0.103",
-          "user": "root",
+          "user": "wibble",
           "identityFile": "/home/root/keys/nscale-key"
         }
       },
@@ -293,7 +297,7 @@
           "proxyPort": 10002,
           "buildScript": "buildusers.sh",
           "processBuild": "npm install; cd wibble; npm install",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/users.js",
             "cwd": "srv",
@@ -313,7 +317,7 @@
           "proxyPort": 10005,
           "processBuild": "npm install; cd wibble; npm install",
           "buildScript": "buildperms.sh",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/permissions.js",
             "cwd": "srv",
@@ -333,7 +337,7 @@
           "proxyPort": 10001,
           "processBuild": "npm install; cd wibble; npm install",
           "buildScript": "buildbl.sh",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/business-logic.js",
             "cwd": "srv",
@@ -353,7 +357,7 @@
           "proxyPort": 10003,
           "processBuild": "npm install; cd wibble; npm install",
           "buildScript": "buildaudit.sh",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/audit.js",
             "cwd": "srv",
@@ -373,7 +377,7 @@
           "proxyPort": 10003,
           "processBuild": "npm install; cd wibble; npm install",
           "buildScript": "buildaudit.sh",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/audit.js",
             "cwd": "srv",
@@ -393,7 +397,7 @@
           "proxyPort": 10006,
           "processBuild": "npm install; cd wibble; npm install",
           "buildScript": "buildemail.sh",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/emails.js",
             "cwd": "srv",
@@ -413,7 +417,7 @@
           "proxyPort": 10004,
           "processBuild": "npm install; cd wibble; npm install",
           "buildScript": "buildsearch.sh",
-          "repositoryUrl": "git@github.com:i-Sight/v5_nginx_services.git",
+          "repositoryUrl": "git@github.com:nearform/nscale.git",
           "execute": {
             "exec": "node /wibble/srv/search.js",
             "cwd": "srv",
@@ -431,6 +435,8 @@
         "contains": [],
         "specific": {
           "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "configPath": "/etc/haproxy.cfg",
+          "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
           "execute": {
             "args": "--net=host -d"
           }
@@ -448,7 +454,7 @@
         ],
         "specific": {
           "ipAddress": "10.1.0.105",
-          "user": "cexadministrator",
+          "user": "wibble",
           "identityFile": "/home/cexadministrator/keys/nscale-key"
         }
       },
@@ -487,6 +493,8 @@
         "contains": [],
         "specific": {
           "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "configPath": "/etc/haproxy.cfg",
+          "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
           "execute": {
             "args": "--net=host -d"
           }
