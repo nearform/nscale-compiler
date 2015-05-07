@@ -128,6 +128,15 @@ describe('compiler test', function() {
       });
     });
   });
+
+  it('should not compile a system with a double definition', function(done){
+    compiler.compile(__dirname + '/../fixture/doubledef', 'direct', function(err) {
+      assert(err, 'compile should error');
+      assert.equal(err.message, 'unable to compile');
+      assert.equal(err.reasons[0], 'definition web already added');
+      done();
+    });
+  });
 });
 
 
