@@ -338,10 +338,16 @@ module.exports = function() {
           var res = compileTopology(platform, system, sys, defs);
           deleteUnreferenced(system);
           if (res.result === 'ok') {
-            cb(!validate(system), system);
+            if (!validate(system)) {
+              cb(new Error('invalid system generated, please report an issue'));
+            } else {
+              cb(null, system);
+            }
           }
           else {
-            cb(res);
+            err = new Error('unable to compile');
+            err.reasons = res.err;
+            cb(err);
           }
         });
       });

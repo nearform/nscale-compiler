@@ -91,8 +91,8 @@ describe('compiler test', function() {
 
   it('should not compile a system with a missing definition', function(done){
     compiler.compile(__dirname + '/../fixture/missing', 'direct', function(err) {
-      assert(err.result === 'err');
-      assert(err.err[0].indexOf('undefined element') !== -1);
+      assert.equal(err.message, 'unable to compile');
+      assert(err.reasons[0].indexOf('undefined element') !== -1);
       done();
     });
   });
