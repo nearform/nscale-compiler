@@ -24,8 +24,9 @@ describe('new syntax test', function() {
 
   it('should correctly compile a system definition for local', function(done){
     var expected = require('./expectedNewLocal.json');
-    compiler.compile(__dirname + '/../fixture/newSyntax', 'local', function(err, system) {
+    compiler.compile(__dirname + '/../fixture/newSyntax', 'local', { autoCheckoutDir: true }, function(err, system) {
       assert(!err);
+      require('chai').expect(system).to.eql(expected);
       assert(system);
       assert(_.isEqual(system, expected));
       done();
@@ -33,20 +34,19 @@ describe('new syntax test', function() {
   });
 
 
-  it('should correctly compile a system definition for staging', function(done){
+  it('should correctly compile a system definition for staging enabling the branch setting', function(done){
     var expected = require('./expectedNewStaging.json');
-    compiler.compile(__dirname + '/../fixture/newSyntax', 'staging', function(err, system) {
+    compiler.compile(__dirname + '/../fixture/newSyntax', 'staging', { autoCheckoutDir: true }, function(err, system) {
       assert(!err);
       assert(system);
       assert(_.isEqual(system, expected));
       done();
     });
   });
-
 
   it('should correctly compile a system definition for local and ignore the branch setting', function(done){
     var expected = require('./expectedIgnoreBranch.json');
-    compiler.compile(__dirname + '/../fixture/newSyntax', 'staging', {disableAutoCheckoutDir: true}, function(err, system) {
+    compiler.compile(__dirname + '/../fixture/newSyntax', 'staging', { autoCheckoutDir: false }, function(err, system) {
       assert(!err);
       assert(system);
       assert(_.isEqual(system, expected));
