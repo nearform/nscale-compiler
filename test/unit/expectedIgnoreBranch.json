@@ -42,8 +42,7 @@
         "container": {
           "args": "-p 9001:9001",
           "exec": "/usr/bin/node /srv/real-srv"
-        },
-        "checkoutDir": "test"
+        }
       },
       "id": "realsrv",
       "name": "realsrv"
@@ -56,8 +55,7 @@
         "container": {
           "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
           "exec": "sh /web/run.sh"
-        },
-        "checkoutDir": "develop"
+        }
       },
       "id": "web",
       "name": "web"

@@ -78,7 +78,21 @@ module.exports = function() {
 
 
 
-  var compileContainerDefs = function compileContainerDefs(system, sys, defs, platform) {
+  var handleCheckoutDir = function handleCheckoutDir(def, config) {
+    if (!config.disableAutoCheckoutDir) {
+      if (def.specific && def.specific.repositoryUrl && def.specific.repositoryUrl.indexOf('#') > 0) {
+        if (!def.specific.checkoutDir) {
+          var s = def.specific.repositoryUrl.split('#');
+          def.specific.checkoutDir = s[1];
+        }
+      }
+    }
+    return def;
+  };
+
+
+
+  var compileContainerDefs = function compileContainerDefs(system, sys, defs, platform, config) {
     system.containerDefinitions =  _.chain(defs).reduce(function(acc, def) {
       _.each(_.keys(def), function(key) {
         var obj = def[key];
@@ -93,6 +107,8 @@ module.exports = function() {
             _.merge(obj, obj.override[platform]);
           }
           delete obj.override;
+          handleCheckoutDir(obj, config);
+
           if (acc[obj.id]) {
             throw new Error('definition ' + obj.id + ' already added');
           }
@@ -105,6 +121,7 @@ module.exports = function() {
           }
           defObj.id = obj.id ? obj.id : key;
           defObj.name = obj.name ? obj.name : key;
+          handleCheckoutDir(defObj, config);
           acc[defObj.id] = defObj;
         }
       });
@@ -344,7 +361,7 @@ module.exports = function() {
    * - system.js
    */
   // handle require fail
-  var compile = function compile(path, platform, cb) {
+  var compile = function compile(path, platform, config, cb) {
     var defs = [];
     var sys;
     var system = {};
@@ -366,13 +383,15 @@ module.exports = function() {
           sys = loadModule(path + '/system.js');
 
           compileHeader(system, sys);
+
           try {
-            compileContainerDefs(system, sys, defs, platform);
+            compileContainerDefs(system, sys, defs, platform, config);
           } catch(compErr) {
             err = new Error('unable to compile');
             err.reasons = [compErr.message];
             return cb(err);
           }
+
           var res = compileTopology(platform, system, sys, defs);
           deleteUnreferenced(system);
           if (res.result === 'ok') {

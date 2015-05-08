@@ -23,6 +23,7 @@ var compiler = require('../../main')();
 describe('compiler test', function() {
 
   it('should correctly compile a system definition for local', function(done){
+    this.timeout(1000000);
     var expected = require('./expectedLocal.json');
     compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
       assert(!err);
