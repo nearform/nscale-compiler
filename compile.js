@@ -79,7 +79,7 @@ module.exports = function() {
 
 
   var handleCheckoutDir = function handleCheckoutDir(def, config) {
-    if (!config.disableAutoCheckoutDir) {
+    if (config.autoCheckoutDir) {
       if (def.specific && def.specific.repositoryUrl && def.specific.repositoryUrl.indexOf('#') > 0) {
         if (!def.specific.checkoutDir) {
           var s = def.specific.repositoryUrl.split('#');
