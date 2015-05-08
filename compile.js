@@ -79,8 +79,7 @@ module.exports = function() {
 
 
   var compileContainerDefs = function compileContainerDefs(system, sys, defs, platform) {
-    system.containerDefinitions= [];
-    _.each(defs, function(def) {
+    system.containerDefinitions =  _.chain(defs).reduce(function(acc, def) {
       _.each(_.keys(def), function(key) {
         var obj = def[key];
         var defObj;
@@ -94,7 +93,10 @@ module.exports = function() {
             _.merge(obj, obj.override[platform]);
           }
           delete obj.override;
-          system.containerDefinitions.push(obj);
+          if (acc[obj.id]) {
+            throw new Error('definition ' + obj.id + ' already added');
+          }
+          acc[obj.id] = obj;
         }
         else {
           defObj = _.merge({}, obj.shared$);
@@ -103,10 +105,12 @@ module.exports = function() {
           }
           defObj.id = obj.id ? obj.id : key;
           defObj.name = obj.name ? obj.name : key;
-          system.containerDefinitions.push(defObj);
+          acc[defObj.id] = defObj;
         }
       });
-    });
+
+      return acc;
+    }, {}).values().value();
   };
 
 
@@ -362,14 +366,26 @@ module.exports = function() {
           sys = loadModule(path + '/system.js');
 
           compileHeader(system, sys);
-          compileContainerDefs(system, sys, defs, platform);
+          try {
+            compileContainerDefs(system, sys, defs, platform);
+          } catch(compErr) {
+            err = new Error('unable to compile');
+            err.reasons = [compErr.message];
+            return cb(err);
+          }
           var res = compileTopology(platform, system, sys, defs);
           deleteUnreferenced(system);
           if (res.result === 'ok') {
-            cb(!validate(system), system);
+            if (!validate(system)) {
+              cb(new Error('invalid system generated, please report an issue'));
+            } else {
+              cb(null, system);
+            }
           }
           else {
-            cb(res);
+            err = new Error('unable to compile');
+            err.reasons = res.err;
+            cb(err);
           }
         });
       });
