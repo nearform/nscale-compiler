@@ -1,0 +1,173 @@
+{
+  "name": "sudc",
+  "namespace": "sudc",
+  "id": "e7bb3963-fd16-4b1b-ae9f-5fa16e2d192d",
+  "containerDefinitions": [
+    {
+      "type": "aws-ami",
+      "id": "machine",
+      "name": "machine"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "builddoc.sh",
+        "container": {
+          "args": "-p 9002:9002",
+          "exec": "/usr/bin/node /srv/doc-srv"
+        }
+      },
+      "id": "docsrv",
+      "name": "docsrv"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "buildhist.sh",
+        "container": {
+          "args": "-p 9000:9000",
+          "exec": "/usr/bin/node /srv/hist-srv"
+        }
+      },
+      "id": "histsrv",
+      "name": "histsrv"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "buildreal.sh",
+        "container": {
+          "args": "-p 9001:9001",
+          "exec": "/usr/bin/node /srv/real-srv"
+        }
+      },
+      "id": "realsrv",
+      "name": "realsrv"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "buildScript": "buildweb.sh",
+        "container": {
+          "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+          "exec": "sh /web/run.sh"
+        }
+      },
+      "id": "web",
+      "name": "web"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "args": "-d --appendonly -p 6379:6379",
+        "name": "redis"
+      },
+      "id": "redis",
+      "name": "redis"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "machine-8b499842": {
+        "id": "machine-8b499842",
+        "containedBy": "undefined-bd528925",
+        "containerDefinitionId": "machine",
+        "type": "aws-ami",
+        "contains": [
+          "web-62aaf445"
+        ],
+        "specific": {}
+      },
+      "web-62aaf445": {
+        "id": "web-62aaf445",
+        "containedBy": "machine-8b499842",
+        "containerDefinitionId": "web",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildweb.sh",
+          "container": {
+            "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+            "exec": "sh /web/run.sh"
+          }
+        }
+      },
+      "machine-9c328c01": {
+        "id": "machine-9c328c01",
+        "containedBy": "undefined-bd528925",
+        "containerDefinitionId": "machine",
+        "type": "aws-ami",
+        "contains": [
+          "docsrv-a3242b85",
+          "histsrv-d4231b13",
+          "realsrv-4d2a4aa9",
+          "redis-3a2d7a3f"
+        ],
+        "specific": {}
+      },
+      "docsrv-a3242b85": {
+        "id": "docsrv-a3242b85",
+        "containedBy": "machine-9c328c01",
+        "containerDefinitionId": "docsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "builddoc.sh",
+          "container": {
+            "args": "-p 9002:9002",
+            "exec": "/usr/bin/node /srv/doc-srv"
+          }
+        }
+      },
+      "histsrv-d4231b13": {
+        "id": "histsrv-d4231b13",
+        "containedBy": "machine-9c328c01",
+        "containerDefinitionId": "histsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildhist.sh",
+          "container": {
+            "args": "-p 9000:9000",
+            "exec": "/usr/bin/node /srv/hist-srv"
+          }
+        }
+      },
+      "realsrv-4d2a4aa9": {
+        "id": "realsrv-4d2a4aa9",
+        "containedBy": "machine-9c328c01",
+        "containerDefinitionId": "realsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "buildScript": "buildreal.sh",
+          "container": {
+            "args": "-p 9001:9001",
+            "exec": "/usr/bin/node /srv/real-srv"
+          }
+        }
+      },
+      "redis-3a2d7a3f": {
+        "id": "redis-3a2d7a3f",
+        "containedBy": "machine-9c328c01",
+        "containerDefinitionId": "redis",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "args": "-d --appendonly -p 6379:6379",
+          "name": "redis"
+        }
+      }
+    },
+    "name": "staging"
+  }
+}
+

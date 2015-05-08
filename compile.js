@@ -83,13 +83,28 @@ module.exports = function() {
     _.each(defs, function(def) {
       _.each(_.keys(def), function(key) {
         var obj = def[key];
-        if (!obj.id) { obj.id =  key; }
-        if (!obj.name) { obj.name = key; }
-        if (obj.override && obj.override[platform]) {
-          _.merge(obj, obj.override[platform]);
+        var defObj;
+
+        if (obj.type) {
+
+          // old style for backwards compatibility - deprecate..
+          if (!obj.id) { obj.id =  key; }
+          if (!obj.name) { obj.name = key; }
+          if (obj.override && obj.override[platform]) {
+            _.merge(obj, obj.override[platform]);
+          }
+          delete obj.override;
+          system.containerDefinitions.push(obj);
         }
-        delete obj.override;
-        system.containerDefinitions.push(obj);
+        else {
+          defObj = _.merge({}, obj.shared$);
+          if (obj[platform]) {
+            _.merge(defObj, obj[platform]);
+          }
+          defObj.id = obj.id ? obj.id : key;
+          defObj.name = obj.name ? obj.name : key;
+          system.containerDefinitions.push(defObj);
+        }
       });
     });
   };
@@ -153,13 +168,26 @@ module.exports = function() {
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
     var id = identifier + '-' + crc.crc32('' + [platform].concat(_this.path)).toString(16);
     var parentId = containedBy.name + '-' + crc.crc32('' + [platform].concat(containedBy.path)).toString(16);
+    var specific = {};
+
+    if (def.shared$) {
+      if (def.shared$.specific) {
+        specific = def.shared$.specific;
+      }
+      if (def[platform] && def[platform].specific) {
+        _.merge(specific, def[platform].specific);
+      }
+    }
+    else {
+      specific = def.specific ? _.cloneDeep(def.specific) : {};
+    }
 
     containers[id] = {id: id,
                       containedBy: parentId,
                       containerDefinitionId: containerDefId,
                       type: getType(system, containerDefId),
                       contains: [],
-                      specific: def.specific ? _.cloneDeep(def.specific) : {}};
+                      specific: specific};
 
     _.each(_this.keys, function(key) {
       if (isNaN(key) && key !== 'contains') {
