@@ -16,7 +16,8 @@
         "container": {
           "args": "-p 9002:9002",
           "exec": "/usr/bin/node /srv/doc-srv"
-        }
+        },
+        "checkoutDir": "startupdeathclock-master"
       },
       "id": "docsrv",
       "name": "docsrv"
@@ -29,7 +30,8 @@
         "container": {
           "args": "-p 9000:9000",
           "exec": "/usr/bin/node /srv/hist-srv"
-        }
+        },
+        "checkoutDir": "startupdeathclock-master"
       },
       "id": "histsrv",
       "name": "histsrv"
@@ -43,7 +45,7 @@
           "args": "-p 9001:9001",
           "exec": "/usr/bin/node /srv/real-srv"
         },
-        "checkoutDir": "test"
+        "checkoutDir": "startupdeathclock-test"
       },
       "id": "realsrv",
       "name": "realsrv"
@@ -57,7 +59,7 @@
           "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
           "exec": "sh /web/run.sh"
         },
-        "checkoutDir": "develop"
+        "checkoutDir": "startupdeathclock-develop"
       },
       "id": "web",
       "name": "web"
@@ -100,7 +102,8 @@
           "container": {
             "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
             "exec": "sh /web/run.sh"
-          }
+          },
+          "checkoutDir": "startupdeathclock-develop"
         }
       },
       "docsrv-6eea498b": {
@@ -115,7 +118,8 @@
           "container": {
             "args": "-p 9002:9002",
             "exec": "/usr/bin/node /srv/doc-srv"
-          }
+          },
+          "checkoutDir": "startupdeathclock-master"
         }
       },
       "histsrv-f7e31831": {
@@ -130,7 +134,8 @@
           "container": {
             "args": "-p 9000:9000",
             "exec": "/usr/bin/node /srv/hist-srv"
-          }
+          },
+          "checkoutDir": "startupdeathclock-master"
         }
       },
       "realsrv-80e428a7": {
@@ -145,7 +150,8 @@
           "container": {
             "args": "-p 9001:9001",
             "exec": "/usr/bin/node /srv/real-srv"
-          }
+          },
+          "checkoutDir": "startupdeathclock-test"
         }
       },
       "redis-1e80bd04": {

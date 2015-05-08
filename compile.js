@@ -77,13 +77,46 @@ module.exports = function() {
   };
 
 
+  // FIXME copied from kernel, needs to be released in its own module
+  var reSsh = /([a-zA-Z0-9_.\-]+)\@([a-zA-Z0-9_.\-]+):[a-zA-Z0-9_.\-]+\/([a-zA-Z0-9_.-]+)\.git(?:\#([a-zA-Z0-9_.\-\/]+))?/i;
+  var reHttp = /https?:\/\/(?:([a-zA-Z0-9_.\-\\%]+)(?::([a-zA-Z0-9_.\-]+))@){0,1}([a-zA-Z0-9_.\-]+)\/(?:[a-zA-Z0-9_.\-]+\/)+([a-zA-Z0-9_\-]+)(?:\.git){0,1}(?:\#([a-zA-Z0-9_.\-\/]+)){0,1}/i;
+
+  function parseGitUrl(url, config) {
+    var rpath;
+    var result;
+
+    if (url.indexOf('http') === 0) {
+      rpath = reHttp.exec(url);
+      result = {
+        type: 'http',
+        user: rpath[1] || 'git',
+        pass: rpath[2],
+        host: rpath[3],
+        repo: rpath[4],
+        branch: rpath[5] || 'master'
+      };
+    }
+    else {
+      rpath = reSsh.exec(url);
+      result = {
+        type: 'ssh',
+        user: rpath[1],
+        host: rpath[2],
+        repo: rpath[3],
+        branch: rpath[4] || 'master'
+      };
+    }
+
+    return result;
+  }
 
   var handleCheckoutDir = function handleCheckoutDir(def, config) {
+    var uh;
     if (config.autoCheckoutDir) {
-      if (def.specific && def.specific.repositoryUrl && def.specific.repositoryUrl.indexOf('#') > 0) {
+      if (def.specific && def.specific.repositoryUrl) {
+        uh = parseGitUrl(def.specific.repositoryUrl)
         if (!def.specific.checkoutDir) {
-          var s = def.specific.repositoryUrl.split('#');
-          def.specific.checkoutDir = s[1];
+          def.specific.checkoutDir = uh.repo + '-' + uh.branch.replace(/[\/.$ ]/, '-');
         }
       }
     }
@@ -121,8 +154,12 @@ module.exports = function() {
           }
           defObj.id = obj.id ? obj.id : key;
           defObj.name = obj.name ? obj.name : key;
+
           handleCheckoutDir(defObj, config);
           acc[defObj.id] = defObj;
+
+          delete def[key];
+          def[key] = defObj;
         }
       });
 
@@ -189,19 +226,7 @@ module.exports = function() {
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
     var id = identifier + '-' + crc.crc32('' + [platform].concat(_this.path)).toString(16);
     var parentId = containedBy.name + '-' + crc.crc32('' + [platform].concat(containedBy.path)).toString(16);
-    var specific = {};
-
-    if (def.shared$) {
-      if (def.shared$.specific) {
-        specific = def.shared$.specific;
-      }
-      if (def[platform] && def[platform].specific) {
-        _.merge(specific, def[platform].specific);
-      }
-    }
-    else {
-      specific = def.specific ? _.cloneDeep(def.specific) : {};
-    }
+    var specific = def.specific ? _.cloneDeep(def.specific) : {};
 
     containers[id] = {id: id,
                       containedBy: parentId,
