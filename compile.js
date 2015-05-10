@@ -114,7 +114,7 @@ module.exports = function() {
     var uh;
     if (config.autoCheckoutDir) {
       if (def.specific && def.specific.repositoryUrl) {
-        uh = parseGitUrl(def.specific.repositoryUrl)
+        uh = parseGitUrl(def.specific.repositoryUrl);
         if (!def.specific.checkoutDir) {
           def.specific.checkoutDir = uh.repo + '-' + uh.branch.replace(/[\/.$ ]/, '-');
         }
@@ -148,9 +148,13 @@ module.exports = function() {
           acc[obj.id] = obj;
         }
         else {
-          defObj = _.merge({}, obj.shared$);
+          defObj = {specific:{}};
+          _.merge(defObj.specific, obj.shared$);
+          if (obj.shared$.type) { defObj.type = obj.shared$.type; }
+
           if (obj[platform]) {
-            _.merge(defObj, obj[platform]);
+            _.merge(defObj.specific, obj[platform]);
+            if (obj[platform].type) { defObj.type = obj[platform].type; }
           }
           defObj.id = obj.id ? obj.id : key;
           defObj.name = obj.name ? obj.name : key;

@@ -37,8 +37,8 @@
       "name": "histsrv"
     },
     {
-      "type": "process",
       "specific": {
+        "type": "process",
         "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#test",
         "buildScript": "buildreal.sh",
         "container": {
@@ -47,12 +47,13 @@
         },
         "checkoutDir": "startupdeathclock-test"
       },
+      "type": "process",
       "id": "realsrv",
       "name": "realsrv"
     },
     {
-      "type": "process",
       "specific": {
+        "type": "process",
         "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#develop",
         "buildScript": "buildweb.sh",
         "container": {
@@ -61,6 +62,7 @@
         },
         "checkoutDir": "startupdeathclock-develop"
       },
+      "type": "process",
       "id": "web",
       "name": "web"
     },
@@ -97,6 +99,7 @@
         "type": "process",
         "contains": [],
         "specific": {
+          "type": "process",
           "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#develop",
           "buildScript": "buildweb.sh",
           "container": {
@@ -145,6 +148,7 @@
         "type": "process",
         "contains": [],
         "specific": {
+          "type": "process",
           "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#test",
           "buildScript": "buildreal.sh",
           "container": {

@@ -35,18 +35,14 @@ exports.histsrv = {
 exports.realsrv = {
   local: {
     type: 'process',
-    specific: {
-    }
   },
   shared$: {
     type: 'docker',
-    specific: {
-      repositoryUrl: 'git@github.com:pelger/startupdeathclock.git#test',
-      buildScript: 'buildreal.sh',
-      container: {
-        args: '-p 9001:9001',
-        exec: '/usr/bin/node /srv/real-srv'
-      }
+    repositoryUrl: 'git@github.com:pelger/startupdeathclock.git#test',
+    buildScript: 'buildreal.sh',
+    container: {
+      args: '-p 9001:9001',
+      exec: '/usr/bin/node /srv/real-srv'
     }
   }
 };
@@ -58,13 +54,11 @@ exports.web = {
   },
   shared$: {
     type: 'docker',
-    specific: {
-      repositoryUrl: 'git@github.com:pelger/startupdeathclock.git#develop',
-      buildScript: 'buildweb.sh',
-      container: {
-        args: '-e WEB_HOST=10.75.29.243 -p 8000:8000',
-        exec: 'sh /web/run.sh'
-      }
+    repositoryUrl: 'git@github.com:pelger/startupdeathclock.git#develop',
+    buildScript: 'buildweb.sh',
+    container: {
+      args: '-e WEB_HOST=10.75.29.243 -p 8000:8000',
+      exec: 'sh /web/run.sh'
     }
   }
 };
