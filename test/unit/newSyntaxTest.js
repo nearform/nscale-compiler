@@ -26,7 +26,6 @@ describe('new syntax test', function() {
     var expected = require('./expectedNewLocal.json');
     compiler.compile(__dirname + '/../fixture/newSyntax', 'local', { autoCheckoutDir: true }, function(err, system) {
       assert(!err);
-      require('chai').expect(system).to.eql(expected);
       assert(system);
       assert(_.isEqual(system, expected));
       done();
