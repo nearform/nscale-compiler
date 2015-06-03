@@ -20,6 +20,8 @@ var _ = require('lodash');
 var traverse = require('traverse');
 var crc = require('crc');
 var lint = require('./lint')();
+var proxy = require('./proxy.js')();
+var env = require('./environment')();
 
 
 
@@ -148,6 +150,10 @@ module.exports = function() {
           acc[obj.id] = obj;
         }
         else {
+          if (!obj.shared$) {
+            throw new Error('missing shared$ key on object: ' + key);
+          }
+
           defObj = {specific:{}};
           _.merge(defObj.specific, obj.shared$);
           if (obj.shared$.type) { defObj.type = obj.shared$.type; }
@@ -233,6 +239,7 @@ module.exports = function() {
     var specific = def.specific ? _.cloneDeep(def.specific) : {};
 
     containers[id] = {id: id,
+                      name: identifier,
                       containedBy: parentId,
                       containerDefinitionId: containerDefId,
                       type: getType(system, containerDefId),
@@ -295,6 +302,7 @@ module.exports = function() {
           });
         }
       });
+      //env.generate(system);
     }
 
     // second pass check for undefined elements
@@ -411,30 +419,33 @@ module.exports = function() {
           });
           sys = loadModule(path + '/system.js');
 
-          compileHeader(system, sys);
+          proxy.injectProxies(path, platform, sys, defs, function(err) {
+            compileHeader(system, sys);
 
-          try {
-            compileContainerDefs(system, sys, defs, platform, config);
-          } catch(compErr) {
-            err = new Error('unable to compile');
-            err.reasons = [compErr.message];
-            return cb(err);
-          }
-
-          var res = compileTopology(platform, system, sys, defs);
-          deleteUnreferenced(system);
-          if (res.result === 'ok') {
-            if (!validate(system)) {
-              cb(new Error('invalid system generated, please report an issue'));
-            } else {
-              cb(null, system);
+            try {
+              compileContainerDefs(system, sys, defs, platform, config);
+            } catch(compErr) {
+              err = new Error('unable to compile');
+              err.reasons = [compErr.message];
+              return cb(err);
             }
-          }
-          else {
-            err = new Error('unable to compile');
-            err.reasons = res.err;
-            cb(err);
-          }
+
+            var res = compileTopology(platform, system, sys, defs);
+            deleteUnreferenced(system);
+            env.generate(path, system);
+            if (res.result === 'ok') {
+              if (!validate(system)) {
+                cb(new Error('invalid system generated, please report an issue'));
+              } else {
+                cb(null, system);
+              }
+            }
+            else {
+              err = new Error('unable to compile');
+              err.reasons = res.err;
+              cb(err);
+            }
+          });
         });
       });
     });
@@ -462,4 +473,5 @@ module.exports = function() {
     targetList: targetList
   };
 };
+
 

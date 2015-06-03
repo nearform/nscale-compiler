@@ -84,6 +84,7 @@ describe('compiler test', function() {
 
   it('should handle JS errors', function(done){
     compiler.compile(__dirname + '/../fixture/jserrors', 'direct', function(err) {
+      //console.log(JSON.stringify(system, null, 2));
       assert(err.result === 'err');
       assert(err.err[0].indexOf('error: Duplicate key') !== -1);
       done();

@@ -1,0 +1,336 @@
+{
+  "name": "sudc",
+  "namespace": "sudc",
+  "id": "e7bb3963-fd16-4b1b-ae9f-5fa16e2d192d",
+  "containerDefinitions": [
+    {
+      "type": "aws-elb",
+      "specific": {
+        "protocol": "HTTP",
+        "loadBalancerPort": 80,
+        "instanceProtocol": "HTTP",
+        "instancePort": 8000
+      },
+      "id": "webElb",
+      "name": "webElb"
+    },
+    {
+      "type": "aws-sg",
+      "specific": {
+        "ingress": [
+          {
+            "ipProtocol": "tcp",
+            "fromPort": 22,
+            "toPort": 22,
+            "ipRanges": [
+              {
+                "cidrIp": "0.0.0.0/0"
+              }
+            ]
+          },
+          {
+            "ipProtocol": "tcp",
+            "fromPort": 3000,
+            "toPort": 3000,
+            "ipRanges": [
+              {
+                "cidrIp": "0.0.0.0/0"
+              }
+            ]
+          }
+        ],
+        "egress": []
+      },
+      "id": "webSg",
+      "name": "webSg"
+    },
+    {
+      "type": "aws-ami",
+      "id": "machine",
+      "name": "machine"
+    },
+    {
+      "specific": {
+        "type": "docker",
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#test",
+        "buildScript": "buildreal.sh",
+        "container": {
+          "args": "-p 9001:9001",
+          "exec": "/usr/bin/node /srv/real-srv"
+        },
+        "checkoutDir": "startupdeathclock-test"
+      },
+      "type": "docker",
+      "id": "realsrv",
+      "name": "realsrv"
+    },
+    {
+      "specific": {
+        "type": "docker",
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#develop",
+        "buildScript": "buildweb.sh",
+        "container": {
+          "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+          "exec": "sh /web/run.sh"
+        },
+        "checkoutDir": "startupdeathclock-develop"
+      },
+      "type": "docker",
+      "id": "web",
+      "name": "web"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "args": "-d --appendonly -p 6379:6379",
+        "name": "redis"
+      },
+      "id": "redis",
+      "name": "redis"
+    },
+    {
+      "type": "docker",
+      "specific": {
+        "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+        "configPath": "/etc/haproxy/haproxy.cfg",
+        "hup": "killall haproxy",
+        "execute": {
+          "args": "--net=host -d"
+        },
+        "checkoutDir": "nscale-proxy-container-master"
+      },
+      "id": "__proxy",
+      "name": "__proxy"
+    }
+  ],
+  "topology": {
+    "containers": {
+      "webElb-699d6e70": {
+        "id": "webElb-699d6e70",
+        "name": "webElb",
+        "containedBy": "webElb-699d6e70",
+        "containerDefinitionId": "webElb",
+        "type": "aws-elb",
+        "contains": [
+          "webSg-aab9b719"
+        ],
+        "specific": {
+          "protocol": "HTTP",
+          "loadBalancerPort": 80,
+          "instanceProtocol": "HTTP",
+          "instancePort": 8000,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "webSg-aab9b719": {
+        "id": "webSg-aab9b719",
+        "name": "webSg",
+        "containedBy": "webElb-699d6e70",
+        "containerDefinitionId": "webSg",
+        "type": "aws-sg",
+        "contains": [
+          "machine-63b67ac3",
+          "machine-74cd6e80",
+          "machine-4d405245"
+        ],
+        "specific": {
+          "ingress": [
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 22,
+              "toPort": 22,
+              "ipRanges": [
+                {
+                  "cidrIp": "0.0.0.0/0"
+                }
+              ]
+            },
+            {
+              "ipProtocol": "tcp",
+              "fromPort": 3000,
+              "toPort": 3000,
+              "ipRanges": [
+                {
+                  "cidrIp": "0.0.0.0/0"
+                }
+              ]
+            }
+          ],
+          "egress": [],
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "machine-63b67ac3": {
+        "id": "machine-63b67ac3",
+        "name": "machine",
+        "containedBy": "webSg-aab9b719",
+        "containerDefinitionId": "machine",
+        "type": "aws-ami",
+        "contains": [
+          "web-e3636e4",
+          "__proxy-79310672"
+        ],
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "web-e3636e4": {
+        "id": "web-e3636e4",
+        "name": "web",
+        "containedBy": "machine-63b67ac3",
+        "containerDefinitionId": "web",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "type": "docker",
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#develop",
+          "buildScript": "buildweb.sh",
+          "container": {
+            "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
+            "exec": "sh /web/run.sh"
+          },
+          "checkoutDir": "startupdeathclock-develop",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "__proxy-79310672": {
+        "id": "__proxy-79310672",
+        "name": "__proxy",
+        "containedBy": "machine-63b67ac3",
+        "containerDefinitionId": "__proxy",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "configPath": "/etc/haproxy/haproxy.cfg",
+          "hup": "killall haproxy",
+          "execute": {
+            "args": "--net=host -d"
+          },
+          "checkoutDir": "nscale-proxy-container-master",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "machine-74cd6e80": {
+        "id": "machine-74cd6e80",
+        "name": "machine",
+        "containedBy": "webSg-aab9b719",
+        "containerDefinitionId": "machine",
+        "type": "aws-ami",
+        "contains": [
+          "realsrv-cfb8e924",
+          "__proxy-b8bfd9b2"
+        ],
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "realsrv-cfb8e924": {
+        "id": "realsrv-cfb8e924",
+        "name": "realsrv",
+        "containedBy": "machine-74cd6e80",
+        "containerDefinitionId": "realsrv",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "type": "docker",
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#test",
+          "buildScript": "buildreal.sh",
+          "container": {
+            "args": "-p 9001:9001",
+            "exec": "/usr/bin/node /srv/real-srv"
+          },
+          "checkoutDir": "startupdeathclock-test",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "__proxy-b8bfd9b2": {
+        "id": "__proxy-b8bfd9b2",
+        "name": "__proxy",
+        "containedBy": "machine-74cd6e80",
+        "containerDefinitionId": "__proxy",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "configPath": "/etc/haproxy/haproxy.cfg",
+          "hup": "killall haproxy",
+          "execute": {
+            "args": "--net=host -d"
+          },
+          "checkoutDir": "nscale-proxy-container-master",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "machine-4d405245": {
+        "id": "machine-4d405245",
+        "name": "machine",
+        "containedBy": "webSg-aab9b719",
+        "containerDefinitionId": "machine",
+        "type": "aws-ami",
+        "contains": [
+          "redis-565a8f25",
+          "__proxy-215dbfb3"
+        ],
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "redis-565a8f25": {
+        "id": "redis-565a8f25",
+        "name": "redis",
+        "containedBy": "machine-4d405245",
+        "containerDefinitionId": "redis",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "args": "-d --appendonly -p 6379:6379",
+          "name": "redis",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      },
+      "__proxy-215dbfb3": {
+        "id": "__proxy-215dbfb3",
+        "name": "__proxy",
+        "containedBy": "machine-4d405245",
+        "containerDefinitionId": "__proxy",
+        "type": "docker",
+        "contains": [],
+        "specific": {
+          "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
+          "configPath": "/etc/haproxy/haproxy.cfg",
+          "hup": "killall haproxy",
+          "execute": {
+            "args": "--net=host -d"
+          },
+          "checkoutDir": "nscale-proxy-container-master",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
+      }
+    },
+    "name": "production"
+  }
+}
+

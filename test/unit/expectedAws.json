@@ -117,6 +117,7 @@
     "containers": {
       "webElb-a9d0fd87": {
         "id": "webElb-a9d0fd87",
+        "name": "webElb",
         "containedBy": "webElb-a9d0fd87",
         "containerDefinitionId": "webElb",
         "type": "aws-elb",
@@ -132,6 +133,7 @@
       },
       "webSg-6eb120b1": {
         "id": "webSg-6eb120b1",
+        "name": "webSg",
         "containedBy": "webElb-a9d0fd87",
         "containerDefinitionId": "webSg",
         "type": "aws-sg",
@@ -167,6 +169,7 @@
       },
       "machine-9c7abf3c": {
         "id": "machine-9c7abf3c",
+        "name": "machine",
         "containedBy": "webSg-6eb120b1",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
@@ -177,6 +180,7 @@
       },
       "web-761c0265": {
         "id": "web-761c0265",
+        "name": "web",
         "containedBy": "machine-9c7abf3c",
         "containerDefinitionId": "web",
         "type": "docker",
@@ -192,6 +196,7 @@
       },
       "machine-8b01ab7f": {
         "id": "machine-8b01ab7f",
+        "name": "machine",
         "containedBy": "webSg-6eb120b1",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
@@ -204,6 +209,7 @@
       },
       "docsrv-b792dda5": {
         "id": "docsrv-b792dda5",
+        "name": "docsrv",
         "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "docsrv",
         "type": "docker",
@@ -219,6 +225,7 @@
       },
       "histsrv-c095ed33": {
         "id": "histsrv-c095ed33",
+        "name": "histsrv",
         "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "histsrv",
         "type": "docker",
@@ -234,6 +241,7 @@
       },
       "realsrv-599cbc89": {
         "id": "realsrv-599cbc89",
+        "name": "realsrv",
         "containedBy": "machine-8b01ab7f",
         "containerDefinitionId": "realsrv",
         "type": "docker",
@@ -249,6 +257,7 @@
       },
       "machine-1d6ee06": {
         "id": "machine-1d6ee06",
+        "name": "machine",
         "containedBy": "machine-1d6ee06",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
@@ -259,6 +268,7 @@
       },
       "redis-4fd920d2": {
         "id": "redis-4fd920d2",
+        "name": "redis",
         "containedBy": "machine-1d6ee06",
         "containerDefinitionId": "redis",
         "type": "docker",
@@ -272,3 +282,4 @@
     "name": "aws"
   }
 }
+
