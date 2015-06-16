@@ -62,6 +62,7 @@ module.exports = function() {
     var mp = {ids: {}};
     var system;
 
+    debugger;
     loadFile(path, 'map.js', function(err, customMap) {
       customMap = customMap || {};
       if (customMap.ids && customMap.ids[platform]) {

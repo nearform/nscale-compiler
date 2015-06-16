@@ -23,6 +23,7 @@ var compiler = require('../../main')();
 describe('compiler test', function() {
 
   it('should correctly compile a system definition for local', function(done){
+    this.timeout(1000000);
     var expected = require('./expectedLocal.json');
     compiler.compile(__dirname + '/../fixture/system2', 'local', function(err, system) {
       assert(!err);
@@ -91,8 +92,8 @@ describe('compiler test', function() {
 
   it('should not compile a system with a missing definition', function(done){
     compiler.compile(__dirname + '/../fixture/missing', 'direct', function(err) {
-      assert(err.result === 'err');
-      assert(err.err[0].indexOf('undefined element') !== -1);
+      assert.equal(err.message, 'unable to compile');
+      assert(err.reasons[0].indexOf('undefined element') !== -1);
       done();
     });
   });
@@ -126,6 +127,15 @@ describe('compiler test', function() {
         assert(!_.isEqual(systems.local.topology, systems.aws.topology));
         done();
       });
+    });
+  });
+
+  it('should not compile a system with a double definition', function(done){
+    compiler.compile(__dirname + '/../fixture/doubledef', 'direct', function(err) {
+      assert(err, 'compile should error');
+      assert.equal(err.message, 'unable to compile');
+      assert.equal(err.reasons[0], 'definition web already added');
+      done();
     });
   });
 });

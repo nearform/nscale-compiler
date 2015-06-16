@@ -78,21 +78,98 @@ module.exports = function() {
   };
 
 
+  // FIXME copied from kernel, needs to be released in its own module
+  var reSsh = /([a-zA-Z0-9_.\-]+)\@([a-zA-Z0-9_.\-]+):[a-zA-Z0-9_.\-]+\/([a-zA-Z0-9_.-]+)\.git(?:\#([a-zA-Z0-9_.\-\/]+))?/i;
+  var reHttp = /https?:\/\/(?:([a-zA-Z0-9_.\-\\%]+)(?::([a-zA-Z0-9_.\-]+))@){0,1}([a-zA-Z0-9_.\-]+)\/(?:[a-zA-Z0-9_.\-]+\/)+([a-zA-Z0-9_\-]+)(?:\.git){0,1}(?:\#([a-zA-Z0-9_.\-\/]+)){0,1}/i;
 
-  var compileContainerDefs = function compileContainerDefs(system, sys, defs, platform) {
-    system.containerDefinitions= [];
-    _.each(defs, function(def) {
+  function parseGitUrl(url, config) {
+    var rpath;
+    var result;
+
+    if (url.indexOf('http') === 0) {
+      rpath = reHttp.exec(url);
+      result = {
+        type: 'http',
+        user: rpath[1] || 'git',
+        pass: rpath[2],
+        host: rpath[3],
+        repo: rpath[4],
+        branch: rpath[5] || 'master'
+      };
+    }
+    else {
+      rpath = reSsh.exec(url);
+      result = {
+        type: 'ssh',
+        user: rpath[1],
+        host: rpath[2],
+        repo: rpath[3],
+        branch: rpath[4] || 'master'
+      };
+    }
+
+    return result;
+  }
+
+  var handleCheckoutDir = function handleCheckoutDir(def, config) {
+    var uh;
+    if (config.autoCheckoutDir) {
+      if (def.specific && def.specific.repositoryUrl) {
+        uh = parseGitUrl(def.specific.repositoryUrl);
+        if (!def.specific.checkoutDir) {
+          def.specific.checkoutDir = uh.repo + '-' + uh.branch.replace(/[\/.$ ]/, '-');
+        }
+      }
+    }
+    return def;
+  };
+
+
+
+  var compileContainerDefs = function compileContainerDefs(system, sys, defs, platform, config) {
+    system.containerDefinitions =  _.chain(defs).reduce(function(acc, def) {
       _.each(_.keys(def), function(key) {
         var obj = def[key];
-        if (!obj.id) { obj.id =  key; }
-        if (!obj.name) { obj.name = key; }
-        if (obj.override && obj.override[platform]) {
-          _.merge(obj, obj.override[platform]);
+        var defObj;
+
+        if (obj.type) {
+
+          // old style for backwards compatibility - deprecate..
+          if (!obj.id) { obj.id =  key; }
+          if (!obj.name) { obj.name = key; }
+          if (obj.override && obj.override[platform]) {
+            _.merge(obj, obj.override[platform]);
+          }
+          delete obj.override;
+          handleCheckoutDir(obj, config);
+
+          if (acc[obj.id]) {
+            throw new Error('definition ' + obj.id + ' already added');
+          }
+          acc[obj.id] = obj;
         }
-        delete obj.override;
-        system.containerDefinitions.push(obj);
+        else {
+          defObj = {specific:{}};
+          _.merge(defObj.specific, obj.shared$);
+          if (obj.shared$.type) { defObj.type = obj.shared$.type; }
+
+          if (obj[platform]) {
+            _.merge(defObj.specific, obj[platform]);
+            if (obj[platform].type) { defObj.type = obj[platform].type; }
+          }
+          defObj.id = obj.id ? obj.id : key;
+          defObj.name = obj.name ? obj.name : key;
+
+          handleCheckoutDir(defObj, config);
+          acc[defObj.id] = defObj;
+
+          delete def[key];
+          def[key] = defObj;
+        }
       });
-    });
+
+      return acc;
+    }, {}).values().value();
   };
 
 
@@ -154,13 +231,14 @@ module.exports = function() {
     var containedBy = getParentContainer(_this.path, _this.isLeaf);
     var id = identifier + '-' + crc.crc32('' + [platform].concat(_this.path)).toString(16);
     var parentId = containedBy.name + '-' + crc.crc32('' + [platform].concat(containedBy.path)).toString(16);
+    var specific = def.specific ? _.cloneDeep(def.specific) : {};
 
     containers[id] = {id: id,
                       containedBy: parentId,
                       containerDefinitionId: containerDefId,
                       type: getType(system, containerDefId),
                       contains: [],
-                      specific: def.specific ? _.cloneDeep(def.specific) : {}};
+                      specific: specific};
 
     _.each(_this.keys, function(key) {
       if (isNaN(key) && key !== 'contains') {
@@ -313,7 +391,7 @@ module.exports = function() {
    * - system.js
    */
   // handle require fail
-  var compile = function compile(path, platform, cb) {
+  var compile = function compile(path, platform, config, cb) {
     var defs = [];
     var sys;
     var system = {};
@@ -337,14 +415,30 @@ module.exports = function() {
           proxy.injectProxies(path, platform, sys, defs, function(err) {
             if (err) { return cb(err); }
             compileHeader(system, sys);
-            compileContainerDefs(system, sys, defs, platform);
+
+            try {
+              compileContainerDefs(system, sys, defs, platform, config);
+            } 
+            catch(compErr) {
+              err = new Error('unable to compile');
+              err.reasons = [compErr.message];
+              return cb(err);
+            }
+
             var res = compileTopology(platform, system, sys, defs);
             deleteUnreferenced(system);
             if (res.result === 'ok') {
-              cb(!validate(system), system);
+              if (!validate(system)) {
+                cb(new Error('invalid system generated, please report an issue'));
+              } 
+              else {
+                cb(null, system);
+              }
             }
             else {
-              cb(res);
+              err = new Error('unable to compile');
+              err.reasons = res.err;
+              cb(err);
             }
           });
         });

@@ -31,8 +31,13 @@ module.exports = function() {
    * platform - the platform to compile to
    * cb - callback
    */
-  var compile = function compile(path, platform, cb) {
-    cmp.compile(path, platform, function(err, abstractSystem) {
+  var compile = function compile(path, platform, config, cb) {
+    if (typeof config === 'function') {
+      cb = config;
+      config = {};
+    }
+
+    cmp.compile(path, platform, config, function(err, abstractSystem) {
       if (err) { return cb(err); }
       map.map(path, platform, abstractSystem, function(err, system) {
         if (err) { return cb(err); }
@@ -47,12 +52,18 @@ module.exports = function() {
   /**
    * compile all targets
    */
-  var compileAll = function compile(path, cb) {
+  var compileAll = function compile(path, config, cb) {
     var results = {};
+
+    if (typeof config === 'function') {
+      cb = config;
+      config = {};
+    }
+
     cmp.targetList(path, function(err, targets) {
       if (err) { return cb(err); }
         async.eachSeries(targets, function(target, done) {
-          cmp.compile(path, target, function(err, abstractSystem) {
+          cmp.compile(path, target, config, function(err, abstractSystem) {
             if (err) { return cb(err); }
             map.map(path, target, abstractSystem, function(err, system) {
               if (err) { return cb(err); }
