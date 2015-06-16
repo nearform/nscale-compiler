@@ -20,6 +20,7 @@ var _ = require('lodash');
 var traverse = require('traverse');
 var crc = require('crc');
 var lint = require('./lint')();
+var proxy = require('./proxy.js')();
 
 
 
@@ -411,30 +412,35 @@ module.exports = function() {
           });
           sys = loadModule(path + '/system.js');
 
-          compileHeader(system, sys);
+          proxy.injectProxies(path, platform, sys, defs, function(err) {
+            if (err) { return cb(err); }
+            compileHeader(system, sys);
 
-          try {
-            compileContainerDefs(system, sys, defs, platform, config);
-          } catch(compErr) {
-            err = new Error('unable to compile');
-            err.reasons = [compErr.message];
-            return cb(err);
-          }
-
-          var res = compileTopology(platform, system, sys, defs);
-          deleteUnreferenced(system);
-          if (res.result === 'ok') {
-            if (!validate(system)) {
-              cb(new Error('invalid system generated, please report an issue'));
-            } else {
-              cb(null, system);
+            try {
+              compileContainerDefs(system, sys, defs, platform, config);
+            } 
+            catch(compErr) {
+              err = new Error('unable to compile');
+              err.reasons = [compErr.message];
+              return cb(err);
             }
-          }
-          else {
-            err = new Error('unable to compile');
-            err.reasons = res.err;
-            cb(err);
-          }
+
+            var res = compileTopology(platform, system, sys, defs);
+            deleteUnreferenced(system);
+            if (res.result === 'ok') {
+              if (!validate(system)) {
+                cb(new Error('invalid system generated, please report an issue'));
+              } 
+              else {
+                cb(null, system);
+              }
+            }
+            else {
+              err = new Error('unable to compile');
+              err.reasons = res.err;
+              cb(err);
+            }
+          });
         });
       });
     });
