@@ -80,6 +80,7 @@
     "containers": {
       "root-94990997": {
         "id": "root-94990997",
+        "name": "root",
         "containedBy": "root-94990997",
         "containerDefinitionId": "root",
         "type": "container",
@@ -94,6 +95,7 @@
       },
       "web-19ed791d": {
         "id": "web-19ed791d",
+        "name": "web",
         "containedBy": "root-94990997",
         "containerDefinitionId": "web",
         "type": "process",
@@ -111,6 +113,7 @@
       },
       "docsrv-6eea498b": {
         "id": "docsrv-6eea498b",
+        "name": "docsrv",
         "containedBy": "root-94990997",
         "containerDefinitionId": "docsrv",
         "type": "process",
@@ -127,6 +130,7 @@
       },
       "histsrv-f7e31831": {
         "id": "histsrv-f7e31831",
+        "name": "histsrv",
         "containedBy": "root-94990997",
         "containerDefinitionId": "histsrv",
         "type": "process",
@@ -143,6 +147,7 @@
       },
       "realsrv-80e428a7": {
         "id": "realsrv-80e428a7",
+        "name": "realsrv",
         "containedBy": "root-94990997",
         "containerDefinitionId": "realsrv",
         "type": "process",
@@ -160,6 +165,7 @@
       },
       "redis-1e80bd04": {
         "id": "redis-1e80bd04",
+        "name": "redis",
         "containedBy": "root-94990997",
         "containerDefinitionId": "redis",
         "type": "docker",

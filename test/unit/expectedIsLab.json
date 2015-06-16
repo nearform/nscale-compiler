@@ -92,6 +92,7 @@
     "containers": {
       "machine$fe1-b347795f": {
         "id": "machine$fe1-b347795f",
+        "name": "machine$fe1",
         "containedBy": "machine$fe1-b347795f",
         "containerDefinitionId": "machine",
         "type": "machine",
@@ -104,6 +105,7 @@
       },
       "frontend-45f1e789": {
         "id": "frontend-45f1e789",
+        "name": "frontend",
         "containedBy": "machine$fe1-b347795f",
         "containerDefinitionId": "frontend",
         "type": "docker",
@@ -119,6 +121,7 @@
       },
       "machine$svc-4d20698e": {
         "id": "machine$svc-4d20698e",
+        "name": "machine$svc",
         "containedBy": "machine$svc-4d20698e",
         "containerDefinitionId": "machine",
         "type": "machine",
@@ -135,6 +138,7 @@
       },
       "users-7e6dbb0f": {
         "id": "users-7e6dbb0f",
+        "name": "users",
         "containedBy": "machine$svc-4d20698e",
         "containerDefinitionId": "users",
         "type": "docker",
@@ -150,6 +154,7 @@
       },
       "permissions-96a8b99": {
         "id": "permissions-96a8b99",
+        "name": "permissions",
         "containedBy": "machine$svc-4d20698e",
         "containerDefinitionId": "permissions",
         "type": "docker",
@@ -165,6 +170,7 @@
       },
       "business-logic-9063da23": {
         "id": "business-logic-9063da23",
+        "name": "business-logic",
         "containedBy": "machine$svc-4d20698e",
         "containerDefinitionId": "business-logic",
         "type": "docker",
@@ -180,6 +186,7 @@
       },
       "audit-e764eab5": {
         "id": "audit-e764eab5",
+        "name": "audit",
         "containedBy": "machine$svc-4d20698e",
         "containerDefinitionId": "audit",
         "type": "docker",
@@ -195,6 +202,7 @@
       },
       "emails-79007f16": {
         "id": "emails-79007f16",
+        "name": "emails",
         "containedBy": "machine$svc-4d20698e",
         "containerDefinitionId": "emails",
         "type": "docker",
@@ -210,6 +218,7 @@
       },
       "machine$fe2-2a4e28e5": {
         "id": "machine$fe2-2a4e28e5",
+        "name": "machine$fe2",
         "containedBy": "machine$fe2-2a4e28e5",
         "containerDefinitionId": "machine",
         "type": "machine",
@@ -222,6 +231,7 @@
       },
       "frontend-326f3579": {
         "id": "frontend-326f3579",
+        "name": "frontend",
         "containedBy": "machine$fe2-2a4e28e5",
         "containerDefinitionId": "frontend",
         "type": "docker",
@@ -239,3 +249,4 @@
     "name": "direct"
   }
 }
+
