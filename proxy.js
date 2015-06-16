@@ -37,8 +37,8 @@ module.exports = function() {
     type: 'docker',
     specific: {
       repositoryUrl: 'https://github.com/nearform/nscale-proxy-container.git',
-      configPath: '/etc/haproxy.cfg',
-      hup: 'haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)',
+      configPath: '/etc/haproxy/haproxy.cfg',
+      hup: 'killall haproxy',
       execute: {
         args: '--net=host -d',
       }
@@ -56,8 +56,17 @@ module.exports = function() {
   var isExecutableContainer = function(name, defs) {
     var result = false;
     _.each(defs, function(defSet) {
-      if (defSet[name] && defSet[name].type && (defSet[name].type === 'docker' || defSet[name].type === 'process')) {
-        result = true;
+      if (defSet[name] && defSet[name].type) {
+        if (defSet[name] && defSet[name].type && (defSet[name].type === 'docker' || defSet[name].type === 'process')) {
+          result = true;
+        }
+      }
+      else {
+        _.each(defSet[name], function(ds) {
+          if (ds.type && (ds.type === 'docker' || ds.type === 'process')) {
+            result = true;
+          }
+        });
       }
     });
     return result;

@@ -17,6 +17,7 @@
 var jshint = require('jshint').JSHINT;
 var jshintcli = require('jshint/src/cli');
 var fs = require('fs');
+var _ = require('lodash');
 
 
 module.exports = function lint() {
@@ -39,7 +40,7 @@ module.exports = function lint() {
   return function lint(filePath, systemPath, cb) {
     fs.readFile(filePath, 'utf8', function(err, str) {
       if (err) { return cb(err); }
-      var localPath = systemPath + '/.jshintrc'
+      var localPath = systemPath + '/.jshintrc';
       
       fs.exists(localPath, function (exists) {
         var cfg;

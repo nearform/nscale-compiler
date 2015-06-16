@@ -2,10 +2,10 @@
   "name": "wibble",
   "namespace": "wibble",
   "id": "c749fb4c-aae3-4bc9-bdf3-8d5d6abd62c6",
-  "containerDefinitions": [
-  ],
+  "containerDefinitions": [],
   "topology": {
     "containers": {},
     "name": "local"
   }
 }
+

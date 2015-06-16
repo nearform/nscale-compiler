@@ -31,7 +31,6 @@ describe('proxy test', function() {
     });
   });
 
-
   it('should correctly inject proxy containers in a complex config', function(done){
     this.timeout(10000000);
     var expected = require('./expectedComplexProxy.json');

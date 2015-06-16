@@ -162,8 +162,8 @@
       "type": "docker",
       "specific": {
         "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
-        "configPath": "/etc/haproxy.cfg",
-        "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
+        "configPath": "/etc/haproxy/haproxy.cfg",
+        "hup": "killall haproxy",
         "execute": {
           "args": "--net=host -d"
         }
@@ -176,6 +176,7 @@
     "containers": {
       "root-e499dfd6": {
         "id": "root-e499dfd6",
+        "name": "root",
         "containedBy": "root-e499dfd6",
         "containerDefinitionId": "root",
         "type": "blank-container",
@@ -188,6 +189,7 @@
       },
       "machine-e0fb6021": {
         "id": "machine-e0fb6021",
+        "name": "machine",
         "containedBy": "root-e499dfd6",
         "containerDefinitionId": "machine",
         "type": "blank-container",
@@ -205,6 +207,7 @@
       },
       "nginxfe-47e7f3f2": {
         "id": "nginxfe-47e7f3f2",
+        "name": "nginxfe",
         "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "nginxfe",
         "type": "docker",
@@ -219,6 +222,7 @@
       },
       "frontend-d983952a": {
         "id": "frontend-d983952a",
+        "name": "frontend",
         "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "frontend",
         "type": "docker",
@@ -236,6 +240,7 @@
       },
       "frontend-32b42e29": {
         "id": "frontend-32b42e29",
+        "name": "frontend",
         "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "frontend",
         "type": "docker",
@@ -253,14 +258,15 @@
       },
       "__proxy-deeea248": {
         "id": "__proxy-deeea248",
+        "name": "__proxy",
         "containedBy": "machine-e0fb6021",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
         "specific": {
           "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
-          "configPath": "/etc/haproxy.cfg",
-          "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
+          "configPath": "/etc/haproxy/haproxy.cfg",
+          "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
           }
@@ -268,6 +274,7 @@
       },
       "machine-f7807462": {
         "id": "machine-f7807462",
+        "name": "machine",
         "containedBy": "root-e499dfd6",
         "containerDefinitionId": "machine",
         "type": "blank-container",
@@ -289,6 +296,7 @@
       },
       "users-9da3e0d6": {
         "id": "users-9da3e0d6",
+        "name": "users",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "users",
         "type": "docker",
@@ -309,6 +317,7 @@
       },
       "permissions-db92f89a": {
         "id": "permissions-db92f89a",
+        "name": "permissions",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "permissions",
         "type": "docker",
@@ -329,6 +338,7 @@
       },
       "business-logic-de566bd": {
         "id": "business-logic-de566bd",
+        "name": "business-logic",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "business-logic",
         "type": "docker",
@@ -349,6 +359,7 @@
       },
       "audit-2ad0a0db": {
         "id": "audit-2ad0a0db",
+        "name": "audit",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "audit",
         "type": "docker",
@@ -369,6 +380,7 @@
       },
       "audit-ef779e55": {
         "id": "audit-ef779e55",
+        "name": "audit",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "audit",
         "type": "docker",
@@ -389,6 +401,7 @@
       },
       "emails-b28eeb4e": {
         "id": "emails-b28eeb4e",
+        "name": "emails",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "emails",
         "type": "docker",
@@ -409,6 +422,7 @@
       },
       "search-c470df58": {
         "id": "search-c470df58",
+        "name": "search",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "search",
         "type": "docker",
@@ -429,14 +443,15 @@
       },
       "__proxy-bce45d17": {
         "id": "__proxy-bce45d17",
+        "name": "__proxy",
         "containedBy": "machine-f7807462",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
         "specific": {
           "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
-          "configPath": "/etc/haproxy.cfg",
-          "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
+          "configPath": "/etc/haproxy/haproxy.cfg",
+          "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
           }
@@ -444,6 +459,7 @@
       },
       "machine-ce0d48a7": {
         "id": "machine-ce0d48a7",
+        "name": "machine",
         "containedBy": "root-e499dfd6",
         "containerDefinitionId": "machine",
         "type": "blank-container",
@@ -460,6 +476,7 @@
       },
       "redis-8d29857e": {
         "id": "redis-8d29857e",
+        "name": "redis",
         "containedBy": "machine-ce0d48a7",
         "containerDefinitionId": "redis",
         "type": "docker",
@@ -473,6 +490,7 @@
       },
       "elasticsearch-fa2eb5e8": {
         "id": "elasticsearch-fa2eb5e8",
+        "name": "elasticsearch",
         "containedBy": "machine-ce0d48a7",
         "containerDefinitionId": "elasticsearch",
         "type": "docker",
@@ -487,14 +505,15 @@
       },
       "__proxy-6327e452": {
         "id": "__proxy-6327e452",
+        "name": "__proxy",
         "containedBy": "machine-ce0d48a7",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
         "specific": {
           "repositoryUrl": "https://github.com/nearform/nscale-proxy-container.git",
-          "configPath": "/etc/haproxy.cfg",
-          "hup": "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)",
+          "configPath": "/etc/haproxy/haproxy.cfg",
+          "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
           }

@@ -21,6 +21,7 @@ var traverse = require('traverse');
 var crc = require('crc');
 var lint = require('./lint')();
 var proxy = require('./proxy.js')();
+var env = require('./environment')();
 
 
 
@@ -149,6 +150,10 @@ module.exports = function() {
           acc[obj.id] = obj;
         }
         else {
+          if (!obj.shared$) {
+            throw new Error('missing shared$ key on object: ' + key);
+          }
+
           defObj = {specific:{}};
           _.merge(defObj.specific, obj.shared$);
           if (obj.shared$.type) { defObj.type = obj.shared$.type; }
@@ -234,6 +239,7 @@ module.exports = function() {
     var specific = def.specific ? _.cloneDeep(def.specific) : {};
 
     containers[id] = {id: id,
+                      name: identifier,
                       containedBy: parentId,
                       containerDefinitionId: containerDefId,
                       type: getType(system, containerDefId),
@@ -296,6 +302,7 @@ module.exports = function() {
           });
         }
       });
+      //env.generate(system);
     }
 
     // second pass check for undefined elements
@@ -468,4 +475,5 @@ module.exports = function() {
     targetList: targetList
   };
 };
+
 

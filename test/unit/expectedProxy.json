@@ -50,54 +50,32 @@
       "name": "machine"
     },
     {
-      "type": "docker",
       "specific": {
-        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
-        "buildScript": "builddoc.sh",
-        "execute": {
-          "args": "-p 9002:9002",
-          "exec": "/usr/bin/node /srv/doc-srv"
-        }
-      },
-      "id": "docsrv",
-      "name": "docsrv"
-    },
-    {
-      "type": "docker",
-      "specific": {
-        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
-        "buildScript": "buildhist.sh",
-        "execute": {
-          "args": "-p 9000:9000",
-          "exec": "/usr/bin/node /srv/hist-srv"
-        }
-      },
-      "id": "histsrv",
-      "name": "histsrv"
-    },
-    {
-      "type": "docker",
-      "specific": {
-        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "type": "docker",
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#test",
         "buildScript": "buildreal.sh",
-        "execute": {
+        "container": {
           "args": "-p 9001:9001",
           "exec": "/usr/bin/node /srv/real-srv"
-        }
+        },
+        "checkoutDir": "startupdeathclock-test"
       },
+      "type": "docker",
       "id": "realsrv",
       "name": "realsrv"
     },
     {
-      "type": "docker",
       "specific": {
-        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+        "type": "docker",
+        "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#develop",
         "buildScript": "buildweb.sh",
-        "execute": {
+        "container": {
           "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
           "exec": "sh /web/run.sh"
-        }
+        },
+        "checkoutDir": "startupdeathclock-develop"
       },
+      "type": "docker",
       "id": "web",
       "name": "web"
     },
@@ -118,7 +96,8 @@
         "hup": "killall haproxy",
         "execute": {
           "args": "--net=host -d"
-        }
+        },
+        "checkoutDir": "nscale-proxy-container-master"
       },
       "id": "__proxy",
       "name": "__proxy"
@@ -126,31 +105,35 @@
   ],
   "topology": {
     "containers": {
-      "webElb-a9d0fd87": {
-        "id": "webElb-a9d0fd87",
+      "webElb-699d6e70": {
+        "id": "webElb-699d6e70",
         "name": "webElb",
-        "containedBy": "webElb-a9d0fd87",
+        "containedBy": "webElb-699d6e70",
         "containerDefinitionId": "webElb",
         "type": "aws-elb",
         "contains": [
-          "webSg-6eb120b1"
+          "webSg-aab9b719"
         ],
         "specific": {
           "protocol": "HTTP",
           "loadBalancerPort": 80,
           "instanceProtocol": "HTTP",
-          "instancePort": 8000
+          "instancePort": 8000,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
         }
       },
-      "webSg-6eb120b1": {
-        "id": "webSg-6eb120b1",
+      "webSg-aab9b719": {
+        "id": "webSg-aab9b719",
         "name": "webSg",
-        "containedBy": "webElb-a9d0fd87",
+        "containedBy": "webElb-699d6e70",
         "containerDefinitionId": "webSg",
         "type": "aws-sg",
         "contains": [
-          "machine-9c7abf3c",
-          "machine-8b01ab7f"
+          "machine-63b67ac3",
+          "machine-74cd6e80",
+          "machine-4d405245"
         ],
         "specific": {
           "ingress": [
@@ -175,41 +158,53 @@
               ]
             }
           ],
-          "egress": []
+          "egress": [],
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
         }
       },
-      "machine-9c7abf3c": {
-        "id": "machine-9c7abf3c",
+      "machine-63b67ac3": {
+        "id": "machine-63b67ac3",
         "name": "machine",
-        "containedBy": "webSg-6eb120b1",
+        "containedBy": "webSg-aab9b719",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
         "contains": [
-          "web-761c0265",
-          "__proxy-11b32f3"
+          "web-e3636e4",
+          "__proxy-79310672"
         ],
-        "specific": {}
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
       },
-      "web-761c0265": {
-        "id": "web-761c0265",
+      "web-e3636e4": {
+        "id": "web-e3636e4",
         "name": "web",
-        "containedBy": "machine-9c7abf3c",
+        "containedBy": "machine-63b67ac3",
         "containerDefinitionId": "web",
         "type": "docker",
         "contains": [],
         "specific": {
-          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "type": "docker",
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#develop",
           "buildScript": "buildweb.sh",
-          "execute": {
+          "container": {
             "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
             "exec": "sh /web/run.sh"
+          },
+          "checkoutDir": "startupdeathclock-develop",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
-      "__proxy-11b32f3": {
-        "id": "__proxy-11b32f3",
+      "__proxy-79310672": {
+        "id": "__proxy-79310672",
         "name": "__proxy",
-        "containedBy": "machine-9c7abf3c",
+        "containedBy": "machine-63b67ac3",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -219,75 +214,54 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "checkoutDir": "nscale-proxy-container-master",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
-      "machine-8b01ab7f": {
-        "id": "machine-8b01ab7f",
+      "machine-74cd6e80": {
+        "id": "machine-74cd6e80",
         "name": "machine",
-        "containedBy": "webSg-6eb120b1",
+        "containedBy": "webSg-aab9b719",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
         "contains": [
-          "docsrv-b792dda5",
-          "histsrv-c095ed33",
-          "realsrv-599cbc89",
-          "__proxy-2e9b8c1f"
+          "realsrv-cfb8e924",
+          "__proxy-b8bfd9b2"
         ],
-        "specific": {}
-      },
-      "docsrv-b792dda5": {
-        "id": "docsrv-b792dda5",
-        "name": "docsrv",
-        "containedBy": "machine-8b01ab7f",
-        "containerDefinitionId": "docsrv",
-        "type": "docker",
-        "contains": [],
         "specific": {
-          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
-          "buildScript": "builddoc.sh",
-          "execute": {
-            "args": "-p 9002:9002",
-            "exec": "/usr/bin/node /srv/doc-srv"
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
-      "histsrv-c095ed33": {
-        "id": "histsrv-c095ed33",
-        "name": "histsrv",
-        "containedBy": "machine-8b01ab7f",
-        "containerDefinitionId": "histsrv",
-        "type": "docker",
-        "contains": [],
-        "specific": {
-          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
-          "buildScript": "buildhist.sh",
-          "execute": {
-            "args": "-p 9000:9000",
-            "exec": "/usr/bin/node /srv/hist-srv"
-          }
-        }
-      },
-      "realsrv-599cbc89": {
-        "id": "realsrv-599cbc89",
+      "realsrv-cfb8e924": {
+        "id": "realsrv-cfb8e924",
         "name": "realsrv",
-        "containedBy": "machine-8b01ab7f",
+        "containedBy": "machine-74cd6e80",
         "containerDefinitionId": "realsrv",
         "type": "docker",
         "contains": [],
         "specific": {
-          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git",
+          "type": "docker",
+          "repositoryUrl": "git@github.com:pelger/startupdeathclock.git#test",
           "buildScript": "buildreal.sh",
-          "execute": {
+          "container": {
             "args": "-p 9001:9001",
             "exec": "/usr/bin/node /srv/real-srv"
+          },
+          "checkoutDir": "startupdeathclock-test",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
-      "__proxy-2e9b8c1f": {
-        "id": "__proxy-2e9b8c1f",
+      "__proxy-b8bfd9b2": {
+        "id": "__proxy-b8bfd9b2",
         "name": "__proxy",
-        "containedBy": "machine-8b01ab7f",
+        "containedBy": "machine-74cd6e80",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -297,37 +271,48 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "checkoutDir": "nscale-proxy-container-master",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
-      "machine-1d6ee06": {
-        "id": "machine-1d6ee06",
+      "machine-4d405245": {
+        "id": "machine-4d405245",
         "name": "machine",
-        "containedBy": "machine-1d6ee06",
+        "containedBy": "webSg-aab9b719",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
         "contains": [
-          "redis-4fd920d2",
-          "__proxy-38de1044"
+          "redis-565a8f25",
+          "__proxy-215dbfb3"
         ],
-        "specific": {}
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
       },
-      "redis-4fd920d2": {
-        "id": "redis-4fd920d2",
+      "redis-565a8f25": {
+        "id": "redis-565a8f25",
         "name": "redis",
-        "containedBy": "machine-1d6ee06",
+        "containedBy": "machine-4d405245",
         "containerDefinitionId": "redis",
         "type": "docker",
         "contains": [],
         "specific": {
           "args": "-d --appendonly -p 6379:6379",
-          "name": "redis"
+          "name": "redis",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
         }
       },
-      "__proxy-38de1044": {
-        "id": "__proxy-38de1044",
+      "__proxy-215dbfb3": {
+        "id": "__proxy-215dbfb3",
         "name": "__proxy",
-        "containedBy": "machine-1d6ee06",
+        "containedBy": "machine-4d405245",
         "containerDefinitionId": "__proxy",
         "type": "docker",
         "contains": [],
@@ -337,11 +322,15 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "checkoutDir": "nscale-proxy-container-master",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       }
     },
-    "name": "aws"
+    "name": "production"
   }
 }
 

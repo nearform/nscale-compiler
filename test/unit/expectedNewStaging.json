@@ -80,6 +80,7 @@
     "containers": {
       "machine-8b499842": {
         "id": "machine-8b499842",
+        "name": "machine",
         "containedBy": "undefined-bd528925",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
@@ -90,6 +91,7 @@
       },
       "web-62aaf445": {
         "id": "web-62aaf445",
+        "name": "web",
         "containedBy": "machine-8b499842",
         "containerDefinitionId": "web",
         "type": "docker",
@@ -107,6 +109,7 @@
       },
       "machine-9c328c01": {
         "id": "machine-9c328c01",
+        "name": "machine",
         "containedBy": "undefined-bd528925",
         "containerDefinitionId": "machine",
         "type": "aws-ami",
@@ -120,6 +123,7 @@
       },
       "docsrv-a3242b85": {
         "id": "docsrv-a3242b85",
+        "name": "docsrv",
         "containedBy": "machine-9c328c01",
         "containerDefinitionId": "docsrv",
         "type": "docker",
@@ -136,6 +140,7 @@
       },
       "histsrv-d4231b13": {
         "id": "histsrv-d4231b13",
+        "name": "histsrv",
         "containedBy": "machine-9c328c01",
         "containerDefinitionId": "histsrv",
         "type": "docker",
@@ -152,6 +157,7 @@
       },
       "realsrv-4d2a4aa9": {
         "id": "realsrv-4d2a4aa9",
+        "name": "realsrv",
         "containedBy": "machine-9c328c01",
         "containerDefinitionId": "realsrv",
         "type": "docker",
@@ -169,6 +175,7 @@
       },
       "redis-3a2d7a3f": {
         "id": "redis-3a2d7a3f",
+        "name": "redis",
         "containedBy": "machine-9c328c01",
         "containerDefinitionId": "redis",
         "type": "docker",
