@@ -31,28 +31,5 @@ describe('new syntax test', function() {
       done();
     });
   });
-
-
-  /*
-  it('should correctly compile a system definition for staging enabling the branch setting', function(done){
-    var expected = require('./expectedNewStaging.json');
-    compiler.compile(__dirname + '/../fixture/newSyntax', 'staging', { autoCheckoutDir: true }, function(err, system) {
-      assert(!err);
-      assert(system);
-      assert(_.isEqual(system, expected));
-      done();
-    });
-  });
-
-  it('should correctly compile a system definition for local and ignore the branch setting', function(done){
-    var expected = require('./expectedIgnoreBranch.json');
-    compiler.compile(__dirname + '/../fixture/newSyntax', 'staging', { autoCheckoutDir: false }, function(err, system) {
-      assert(!err);
-      assert(system);
-      assert(_.isEqual(system, expected));
-      done();
-    });
-  });
-  */
 });
 
