@@ -139,7 +139,10 @@
           "protocol": "HTTP",
           "loadBalancerPort": 80,
           "instanceProtocol": "HTTP",
-          "instancePort": 8000
+          "instancePort": 8000,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
         }
       },
       "webSg-6eb120b1": {
@@ -175,7 +178,10 @@
               ]
             }
           ],
-          "egress": []
+          "egress": [],
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
         }
       },
       "machine-9c7abf3c": {
@@ -188,7 +194,11 @@
           "web-761c0265",
           "__proxy-11b32f3"
         ],
-        "specific": {}
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
       },
       "web-761c0265": {
         "id": "web-761c0265",
@@ -203,6 +213,9 @@
           "execute": {
             "args": "-e WEB_HOST=10.75.29.243 -p 8000:8000",
             "exec": "sh /web/run.sh"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
@@ -219,6 +232,9 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
@@ -234,7 +250,11 @@
           "realsrv-599cbc89",
           "__proxy-2e9b8c1f"
         ],
-        "specific": {}
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
       },
       "docsrv-b792dda5": {
         "id": "docsrv-b792dda5",
@@ -249,6 +269,9 @@
           "execute": {
             "args": "-p 9002:9002",
             "exec": "/usr/bin/node /srv/doc-srv"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
@@ -265,6 +288,9 @@
           "execute": {
             "args": "-p 9000:9000",
             "exec": "/usr/bin/node /srv/hist-srv"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
@@ -281,6 +307,9 @@
           "execute": {
             "args": "-p 9001:9001",
             "exec": "/usr/bin/node /srv/real-srv"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
@@ -297,6 +326,9 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       },
@@ -310,7 +342,11 @@
           "redis-4fd920d2",
           "__proxy-38de1044"
         ],
-        "specific": {}
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
+        }
       },
       "redis-4fd920d2": {
         "id": "redis-4fd920d2",
@@ -321,7 +357,10 @@
         "contains": [],
         "specific": {
           "args": "-d --appendonly -p 6379:6379",
-          "name": "redis"
+          "name": "redis",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
+          }
         }
       },
       "__proxy-38de1044": {
@@ -337,6 +376,9 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__"
           }
         }
       }
@@ -344,4 +386,3 @@
     "name": "aws"
   }
 }
-

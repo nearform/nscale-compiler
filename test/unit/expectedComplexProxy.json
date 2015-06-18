@@ -185,7 +185,17 @@
           "machine-f7807462",
           "machine-ce0d48a7"
         ],
-        "specific": {}
+        "specific": {
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
+          }
+        }
       },
       "machine-e0fb6021": {
         "id": "machine-e0fb6021",
@@ -202,7 +212,16 @@
         "specific": {
           "ipAddress": "10.1.0.101",
           "user": "wibble",
-          "identityFile": "/home/cexadministrator/keys/nscale-key"
+          "identityFile": "/home/cexadministrator/keys/nscale-key",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
+          }
         }
       },
       "nginxfe-47e7f3f2": {
@@ -217,6 +236,15 @@
           "execute": {
             "args": "-e _TARGETIP_=__TARGETIP__ -p __TARGETIP__:3000:3000 -d",
             "exec": "/bin/bash /run.sh"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -235,6 +263,15 @@
             "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
             "process": "node srv/front.js",
             "args": "-e MONITORING_INTERFACE=0.0.0.0 -e PORT=8000 -p 8000:8000 -p 8200:8002 --dns 172.17.42.1 -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -253,6 +290,15 @@
             "exec": "/bin/bash -c 'cd /wibble/wibble; node index.js'",
             "process": "node srv/front.js",
             "args": "-e MONITORING_INTERFACE=0.0.0.0 -e PORT=8000 -p 8003:8000 -p 8203:8002 --dns 172.17.42.1 -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -269,6 +315,15 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -291,7 +346,16 @@
         "specific": {
           "ipAddress": "10.1.0.103",
           "user": "wibble",
-          "identityFile": "/home/root/keys/nscale-key"
+          "identityFile": "/home/root/keys/nscale-key",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
+          }
         }
       },
       "users-9da3e0d6": {
@@ -312,7 +376,18 @@
             "process": "node users.js",
             "args": "-e PORT=10002 -p 11000:10002 --dns 172.17.42.1 -d"
           },
-          "servicePort": 11000
+          "servicePort": 11000,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 11000
+          }
         }
       },
       "permissions-db92f89a": {
@@ -333,7 +408,18 @@
             "process": "node permissions.js",
             "args": "-e POSTGRESQL=1 -e PORT=10005 -p 12000:10005 --dns 172.17.42.1 -d"
           },
-          "servicePort": 12000
+          "servicePort": 12000,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 12000
+          }
         }
       },
       "business-logic-de566bd": {
@@ -354,7 +440,18 @@
             "process": "node business-logic.js",
             "args": "-e POSTGRESQL=1 -e PORT=10001 -p 13000:10001 --dns 172.17.42.1 -d"
           },
-          "servicePort": 13000
+          "servicePort": 13000,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 13000
+          }
         }
       },
       "audit-2ad0a0db": {
@@ -375,7 +472,18 @@
             "process": "node audit.js",
             "args": "-e POSTGRESQL=1 -e PORT=10003 -p 14000:10003 --dns 172.17.42.1 -d"
           },
-          "servicePort": 1400
+          "servicePort": 1400,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 1400
+          }
         }
       },
       "audit-ef779e55": {
@@ -396,7 +504,18 @@
             "process": "node audit.js",
             "args": "-e POSTGRESQL=1 -e PORT=10003 -p 14000:10003 --dns 172.17.42.1 -d"
           },
-          "servicePort": 1401
+          "servicePort": 1401,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 1401
+          }
         }
       },
       "emails-b28eeb4e": {
@@ -417,7 +536,18 @@
             "process": "node emails.js",
             "args": "-e POSTGRESQL=1 -e PORT=10003 -p 16000:10003 --dns 172.17.42.1 -d"
           },
-          "servicePort": 1500
+          "servicePort": 1500,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 1500
+          }
         }
       },
       "search-c470df58": {
@@ -438,7 +568,18 @@
             "process": "node search.js",
             "args": "-e PORT=10004 -p 15001:10004 --dns 172.17.42.1 -d"
           },
-          "servicePort": 1600
+          "servicePort": 1600,
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004,
+            "SERVICE_HOST": "0.0.0.0",
+            "SERVICE_PORT": 1600
+          }
         }
       },
       "__proxy-bce45d17": {
@@ -454,6 +595,15 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -471,7 +621,16 @@
         "specific": {
           "ipAddress": "10.1.0.105",
           "user": "wibble",
-          "identityFile": "/home/cexadministrator/keys/nscale-key"
+          "identityFile": "/home/cexadministrator/keys/nscale-key",
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
+          }
         }
       },
       "redis-8d29857e": {
@@ -485,6 +644,15 @@
           "name": "redis:2.8",
           "execute": {
             "args": "-d -p 6379:6379"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -500,6 +668,15 @@
           "execute": {
             "args": "-d -p 9200:9200 -p 9300:9300 -v /mnt/elasticsearch:/data",
             "exec": "/elasticsearch/bin/elasticsearch --network.bind_host=0.0.0.0 --network.publish_host=__TARGETIP__"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       },
@@ -516,6 +693,15 @@
           "hup": "killall haproxy",
           "execute": {
             "args": "--net=host -d"
+          },
+          "environment": {
+            "PROXY_HOST": "__TARGETIP__",
+            "users_PORT": 10002,
+            "permissions_PORT": 10005,
+            "business-logic_PORT": 10001,
+            "audit_PORT": 10003,
+            "emails_PORT": 10006,
+            "search_PORT": 10004
           }
         }
       }
@@ -523,4 +709,3 @@
     "name": "beta"
   }
 }
-

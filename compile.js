@@ -83,7 +83,7 @@ module.exports = function() {
   var reSsh = /([a-zA-Z0-9_.\-]+)\@([a-zA-Z0-9_.\-]+):[a-zA-Z0-9_.\-]+\/([a-zA-Z0-9_.-]+)\.git(?:\#([a-zA-Z0-9_.\-\/]+))?/i;
   var reHttp = /https?:\/\/(?:([a-zA-Z0-9_.\-\\%]+)(?::([a-zA-Z0-9_.\-]+))@){0,1}([a-zA-Z0-9_.\-]+)\/(?:[a-zA-Z0-9_.\-]+\/)+([a-zA-Z0-9_\-]+)(?:\.git){0,1}(?:\#([a-zA-Z0-9_.\-\/]+)){0,1}/i;
 
-  function parseGitUrl(url, config) {
+  function parseGitUrl(url) {
     var rpath;
     var result;
 
@@ -434,6 +434,7 @@ module.exports = function() {
 
             var res = compileTopology(platform, system, sys, defs);
             deleteUnreferenced(system);
+            env.generate(path, system);
             if (res.result === 'ok') {
               if (!validate(system)) {
                 cb(new Error('invalid system generated, please report an issue'));
